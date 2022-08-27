@@ -1,0 +1,19 @@
+2022-08-26 13:20:21,157 INFO    MainThread:4570 [internal.py:wandb_internal():93] W&B internal server running at pid: 4570, started at: 2022-08-26 13:20:21.156904
+2022-08-26 13:20:21,160 INFO    WriterThread:4570 [datastore.py:open_for_write():75] open: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/run-36bi3hhk.wandb
+2022-08-26 13:20:21,163 DEBUG   SenderThread:4570 [sender.py:send():236] send: header
+2022-08-26 13:20:21,163 DEBUG   SenderThread:4570 [sender.py:send():236] send: run
+2022-08-26 13:20:21,279 WARNING MainThread:4570 [internal.py:wandb_internal():153] Internal process interrupt: 1
+2022-08-26 13:20:21,520 INFO    SenderThread:4570 [dir_watcher.py:__init__():216] watching files in: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/files
+2022-08-26 13:20:21,521 INFO    SenderThread:4570 [sender.py:_start_run_threads():818] run started: 36bi3hhk with start time 1661512820
+2022-08-26 13:20:27,022 WARNING MainThread:4570 [internal.py:wandb_internal():153] Internal process interrupt: 2
+2022-08-26 13:20:27,022 ERROR   MainThread:4570 [internal.py:wandb_internal():156] Internal process interrupted.
+2022-08-26 13:20:27,163 INFO    WriterThread:4570 [datastore.py:close():279] close: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/run-36bi3hhk.wandb
+2022-08-26 13:20:27,165 INFO    HandlerThread:4570 [handler.py:finish():806] shutting down handler
+2022-08-26 13:20:27,522 INFO    SenderThread:4570 [sender.py:finish():1114] shutting down sender
+2022-08-26 13:20:27,522 INFO    SenderThread:4570 [dir_watcher.py:finish():353] shutting down directory watcher
+2022-08-26 13:20:28,522 INFO    SenderThread:4570 [dir_watcher.py:finish():383] scan: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/files
+2022-08-26 13:20:28,522 INFO    SenderThread:4570 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/files/config.yaml config.yaml
+2022-08-26 13:20:28,522 INFO    SenderThread:4570 [file_pusher.py:finish():171] shutting down file pusher
+2022-08-26 13:20:28,523 INFO    SenderThread:4570 [file_pusher.py:join():176] waiting for file pusher
+2022-08-26 13:20:29,493 INFO    Thread-9  :4570 [upload_job.py:push():138] Uploaded file /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132020-36bi3hhk/files/config.yaml
+2022-08-26 13:20:30,303 INFO    Dummy-10  :4570 [internal.py:handle_exit():80] Internal process exited

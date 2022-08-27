@@ -1,0 +1,179 @@
+2022-08-26 13:20:33,149 INFO    MainThread:4698 [internal.py:wandb_internal():93] W&B internal server running at pid: 4698, started at: 2022-08-26 13:20:33.148895
+2022-08-26 13:20:33,151 INFO    WriterThread:4698 [datastore.py:open_for_write():75] open: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/run-2ezn2wns.wandb
+2022-08-26 13:20:33,153 DEBUG   SenderThread:4698 [sender.py:send():236] send: header
+2022-08-26 13:20:33,153 DEBUG   SenderThread:4698 [sender.py:send():236] send: run
+2022-08-26 13:20:33,503 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: check_version
+2022-08-26 13:20:33,505 INFO    SenderThread:4698 [dir_watcher.py:__init__():216] watching files in: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files
+2022-08-26 13:20:33,506 INFO    SenderThread:4698 [sender.py:_start_run_threads():818] run started: 2ezn2wns with start time 1661512832
+2022-08-26 13:20:33,506 DEBUG   SenderThread:4698 [sender.py:send():236] send: summary
+2022-08-26 13:20:33,507 INFO    SenderThread:4698 [sender.py:_save_file():952] saving file wandb-summary.json with policy end
+2022-08-26 13:20:33,507 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: check_version
+2022-08-26 13:20:33,755 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: run_start
+2022-08-26 13:20:33,760 DEBUG   HandlerThread:4698 [meta.py:__init__():35] meta init
+2022-08-26 13:20:33,760 DEBUG   HandlerThread:4698 [meta.py:__init__():49] meta init done
+2022-08-26 13:20:33,761 DEBUG   HandlerThread:4698 [meta.py:probe():209] probe
+2022-08-26 13:20:33,768 DEBUG   HandlerThread:4698 [meta.py:_setup_git():199] setup git
+2022-08-26 13:20:33,783 DEBUG   HandlerThread:4698 [meta.py:_setup_git():206] setup git done
+2022-08-26 13:20:33,783 DEBUG   HandlerThread:4698 [meta.py:_save_pip():53] save pip
+2022-08-26 13:20:33,785 DEBUG   HandlerThread:4698 [meta.py:_save_pip():67] save pip done
+2022-08-26 13:20:33,785 DEBUG   HandlerThread:4698 [meta.py:_save_conda():74] save conda
+2022-08-26 13:20:34,294 DEBUG   HandlerThread:4698 [meta.py:_save_conda():84] save conda done
+2022-08-26 13:20:34,295 DEBUG   HandlerThread:4698 [meta.py:probe():247] probe done
+2022-08-26 13:20:34,302 DEBUG   SenderThread:4698 [sender.py:send():236] send: files
+2022-08-26 13:20:34,302 INFO    SenderThread:4698 [sender.py:_save_file():952] saving file wandb-metadata.json with policy now
+2022-08-26 13:20:34,309 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: stop_status
+2022-08-26 13:20:34,309 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: stop_status
+2022-08-26 13:20:34,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_created():269] file/dir created: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/output.log
+2022-08-26 13:20:34,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_created():269] file/dir created: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-metadata.json
+2022-08-26 13:20:34,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_created():269] file/dir created: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-summary.json
+2022-08-26 13:20:34,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_created():269] file/dir created: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/conda-environment.yaml
+2022-08-26 13:20:34,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_created():269] file/dir created: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/requirements.txt
+2022-08-26 13:20:34,616 DEBUG   SenderThread:4698 [sender.py:send():236] send: telemetry
+2022-08-26 13:20:34,618 DEBUG   SenderThread:4698 [sender.py:send():236] send: telemetry
+2022-08-26 13:20:35,229 INFO    Thread-11 :4698 [upload_job.py:push():138] Uploaded file /tmp/tmparrt497nwandb/3qnse9vt-wandb-metadata.json
+2022-08-26 13:20:36,507 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_modified():286] file/dir modified: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/output.log
+2022-08-26 13:20:36,830 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:36,830 DEBUG   SenderThread:4698 [sender.py:send():236] send: exit
+2022-08-26 13:20:36,830 INFO    SenderThread:4698 [sender.py:send_exit():372] handling exit code: 1
+2022-08-26 13:20:36,831 INFO    SenderThread:4698 [sender.py:send_exit():374] handling runtime: 3
+2022-08-26 13:20:36,832 INFO    SenderThread:4698 [sender.py:_save_file():952] saving file wandb-summary.json with policy end
+2022-08-26 13:20:36,832 INFO    SenderThread:4698 [sender.py:send_exit():380] send defer
+2022-08-26 13:20:36,832 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:36,833 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,833 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 0
+2022-08-26 13:20:36,833 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,834 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 0
+2022-08-26 13:20:36,834 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 1
+2022-08-26 13:20:36,834 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,834 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 1
+2022-08-26 13:20:36,938 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:36,939 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,939 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 1
+2022-08-26 13:20:36,939 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 2
+2022-08-26 13:20:36,939 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:36,940 DEBUG   SenderThread:4698 [sender.py:send():236] send: stats
+2022-08-26 13:20:36,940 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,941 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 2
+2022-08-26 13:20:36,941 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,941 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 2
+2022-08-26 13:20:36,941 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 3
+2022-08-26 13:20:36,942 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,942 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 3
+2022-08-26 13:20:36,942 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,942 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 3
+2022-08-26 13:20:36,943 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 4
+2022-08-26 13:20:36,943 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,944 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 4
+2022-08-26 13:20:36,944 DEBUG   SenderThread:4698 [sender.py:send():236] send: summary
+2022-08-26 13:20:36,945 INFO    SenderThread:4698 [sender.py:_save_file():952] saving file wandb-summary.json with policy end
+2022-08-26 13:20:36,946 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,946 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 4
+2022-08-26 13:20:36,946 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 5
+2022-08-26 13:20:36,947 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:36,947 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 5
+2022-08-26 13:20:36,947 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:36,947 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 5
+2022-08-26 13:20:37,041 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,284 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 6
+2022-08-26 13:20:37,284 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:37,285 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:37,285 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 6
+2022-08-26 13:20:37,286 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:37,286 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 6
+2022-08-26 13:20:37,286 INFO    SenderThread:4698 [dir_watcher.py:finish():353] shutting down directory watcher
+2022-08-26 13:20:37,387 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,508 INFO    Thread-7  :4698 [dir_watcher.py:_on_file_modified():286] file/dir modified: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/config.yaml
+2022-08-26 13:20:37,509 INFO    SenderThread:4698 [dir_watcher.py:_on_file_modified():286] file/dir modified: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/output.log
+2022-08-26 13:20:37,509 INFO    SenderThread:4698 [dir_watcher.py:_on_file_modified():286] file/dir modified: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-summary.json
+2022-08-26 13:20:37,510 INFO    SenderThread:4698 [dir_watcher.py:finish():383] scan: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files
+2022-08-26 13:20:37,510 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/config.yaml config.yaml
+2022-08-26 13:20:37,510 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/conda-environment.yaml conda-environment.yaml
+2022-08-26 13:20:37,516 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/output.log output.log
+2022-08-26 13:20:37,517 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/requirements.txt requirements.txt
+2022-08-26 13:20:37,521 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-metadata.json wandb-metadata.json
+2022-08-26 13:20:37,521 INFO    SenderThread:4698 [dir_watcher.py:finish():397] scan save: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-summary.json wandb-summary.json
+2022-08-26 13:20:37,526 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 7
+2022-08-26 13:20:37,526 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:37,535 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:20:37,535 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 7
+2022-08-26 13:20:37,536 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:20:37,536 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 7
+2022-08-26 13:20:37,536 INFO    SenderThread:4698 [file_pusher.py:finish():171] shutting down file pusher
+2022-08-26 13:20:37,637 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,637 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:37,739 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,739 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:37,841 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,842 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:37,944 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:20:37,945 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:20:43,364 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:09,482 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:09,504 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:09,512 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:09,516 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:09,516 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:09,586 ERROR   Thread-14 :4698 [internal_api.py:upload_file():1694] upload_file exception https://storage.googleapis.com/wandb-production.appspot.com/redwing2002/CitySpacesSemanticAdversarial/2ezn2wns/requirements.txt?Expires=1661599237&GoogleAccessId=wandb-production%40appspot.gserviceaccount.com&Signature=LLsH9ALw0Gdx7O6YXmsGkjquJa2Uvri8qWlFbHAafROS0ZCy%2BAuDTkKeh2cE9nWSE8ImlJ4bpmyR4QBDJQut6HlzxjelvPwDyRGLeg2b7G5yKqpt7he1Lvv%2FwqLg8Yz%2ByGfwKmJp9XtmXZsjIP0j%2BirGLO1ZW9%2F36JSjGE96DJZYNfguEj1dgm9bSbH1e%2FYF910lkHrz8WIK36j7OdUQ8cRA1dnRwTubQ%2FJhmHlDbJ3RtLaJmH95xlLvzxn9aw0NHfTCIzt7s1KJ2WRo0qWzJ30EK20Cn%2BuW%2B5XAWz0bcWzqU%2FJ7o72QF8tkFB43%2FiplukVhCG9NyVmWCX1lKVDaHA%3D%3D: ("bad handshake: Error([('SSL routines', '', 'unexpected eof while reading')],)",)
+2022-08-26 13:21:09,589 ERROR   Thread-12 :4698 [internal_api.py:upload_file():1694] upload_file exception https://storage.googleapis.com/wandb-production.appspot.com/redwing2002/CitySpacesSemanticAdversarial/2ezn2wns/config.yaml?Expires=1661599237&GoogleAccessId=wandb-production%40appspot.gserviceaccount.com&Signature=PXgNuuqyy30pzMajTuSGQj7ousfcOg03yzRpAsjxpDqnlnMGMDpd9BF%2BCItWMpxxfL%2Fxg15SxtMAAFfgXHQRFk1F2Fo4rBb2RisWcyKX5hGijGdNi3Jqc2M99Eesmf%2Fx06PK%2BVPvbQgm3dmjSkVaLAgVZyHkjjtsGDOjcf%2FROHO6hTlRZWCMJ8xbFk%2BSHsts9lWcbuQXubf1slKNVmOeSBt66XnGbh%2F6l5ClnSpCruSYV7hOM%2FysZrclzKGb0SiikEHE0lqPgoO%2BKwnKOvsFa69gd4ny%2BEXCuiNlPv20MHRjS6LaoX0BOt%2BjP2ixD15pktmAmNQnW6GlspKB2b%2FpNw%3D%3D: ("bad handshake: Error([('SSL routines', '', 'unexpected eof while reading')],)",)
+2022-08-26 13:21:09,590 ERROR   Thread-15 :4698 [internal_api.py:upload_file():1694] upload_file exception https://storage.googleapis.com/wandb-production.appspot.com/redwing2002/CitySpacesSemanticAdversarial/2ezn2wns/wandb-summary.json?Expires=1661599237&GoogleAccessId=wandb-production%40appspot.gserviceaccount.com&Signature=NqR726yeEo3ZG4H4dpdcZUy7EygKyGE0nj%2BpSh%2BwSouL%2FvoQ1He2rfLvoehpRnXbJp%2FO%2F7i2iOmjld9WLLa3VGHz6%2Fw22Ilw3FjhPwS9V1CTgIm3p%2FoXpTHelYMjlB%2BkWTk4w0giFdtI%2F5ZVVjF%2FUn7766zyb19IxFjlv5jLXxyrmmwdyugvQZSYuTIh37aspp94N8CIkn9gg7FroL%2FvEiJNrwGzWlCVDOakRz9SciWuK7UJvjVp6sr0gZ67be0yiYgEVAJUiSYrYh5gvXHZMUnXzc10BfQpKpoIjyMgd%2FCLTOs8ozUOsobfumb4vk01s0VQkPkiDGAJl%2FXsuTMmbA%3D%3D: ("bad handshake: Error([('SSL routines', '', 'unexpected eof while reading')],)",)
+2022-08-26 13:21:09,593 ERROR   Thread-14 :4698 [internal_api.py:upload_file():1696] upload_file request headers: {'User-Agent': 'python-requests/2.14.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '2280'}
+2022-08-26 13:21:09,593 ERROR   Thread-12 :4698 [internal_api.py:upload_file():1696] upload_file request headers: {'User-Agent': 'python-requests/2.14.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '341'}
+2022-08-26 13:21:09,594 ERROR   Thread-15 :4698 [internal_api.py:upload_file():1696] upload_file request headers: {'User-Agent': 'python-requests/2.14.2', 'Accept-Encoding': 'gzip, deflate', 'Accept': '*/*', 'Connection': 'keep-alive', 'Content-Length': '26'}
+2022-08-26 13:21:09,594 ERROR   Thread-14 :4698 [internal_api.py:upload_file():1698] upload_file response body: 
+2022-08-26 13:21:09,594 ERROR   Thread-12 :4698 [internal_api.py:upload_file():1698] upload_file response body: 
+2022-08-26 13:21:09,594 ERROR   Thread-15 :4698 [internal_api.py:upload_file():1698] upload_file response body: 
+2022-08-26 13:21:09,635 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:09,637 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:34,598 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:34,610 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:34,617 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:34,618 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:34,719 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:34,720 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:34,822 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:34,822 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:34,924 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:34,925 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,023 INFO    Thread-13 :4698 [upload_job.py:push():138] Uploaded file /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/output.log
+2022-08-26 13:21:35,027 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,027 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,130 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,130 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,137 INFO    Thread-12 :4698 [upload_job.py:push():138] Uploaded file /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/config.yaml
+2022-08-26 13:21:35,138 INFO    Thread-14 :4698 [upload_job.py:push():138] Uploaded file /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/requirements.txt
+2022-08-26 13:21:35,159 INFO    Thread-15 :4698 [upload_job.py:push():138] Uploaded file /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/files/wandb-summary.json
+2022-08-26 13:21:35,232 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,233 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,335 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,336 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,360 INFO    Thread-6  :4698 [sender.py:transition_state():393] send defer: 8
+2022-08-26 13:21:35,361 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:21:35,361 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 8
+2022-08-26 13:21:35,362 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:21:35,362 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 8
+2022-08-26 13:21:35,438 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,571 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 9
+2022-08-26 13:21:35,572 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,572 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:21:35,572 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 9
+2022-08-26 13:21:35,572 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:21:35,572 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 9
+2022-08-26 13:21:35,573 INFO    SenderThread:4698 [sender.py:transition_state():393] send defer: 10
+2022-08-26 13:21:35,573 DEBUG   SenderThread:4698 [sender.py:send():236] send: final
+2022-08-26 13:21:35,573 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: defer
+2022-08-26 13:21:35,574 DEBUG   SenderThread:4698 [sender.py:send():236] send: footer
+2022-08-26 13:21:35,574 INFO    HandlerThread:4698 [handler.py:handle_request_defer():163] handle defer: 10
+2022-08-26 13:21:35,574 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: defer
+2022-08-26 13:21:35,574 INFO    SenderThread:4698 [sender.py:send_request_defer():389] handle sender defer: 10
+2022-08-26 13:21:35,674 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: poll_exit
+2022-08-26 13:21:35,674 DEBUG   SenderThread:4698 [sender.py:send_request():250] send_request: poll_exit
+2022-08-26 13:21:35,674 INFO    SenderThread:4698 [file_pusher.py:join():176] waiting for file pusher
+2022-08-26 13:21:36,465 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: sampled_history
+2022-08-26 13:21:36,466 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: get_summary
+2022-08-26 13:21:36,467 DEBUG   HandlerThread:4698 [handler.py:handle_request():140] handle_request: shutdown
+2022-08-26 13:21:36,468 INFO    HandlerThread:4698 [handler.py:finish():806] shutting down handler
+2022-08-26 13:21:36,574 INFO    WriterThread:4698 [datastore.py:close():279] close: /home/developer/Desktop/continum/AdversarialTraning/train_tools/wandb/run-20220826_132032-2ezn2wns/run-2ezn2wns.wandb
+2022-08-26 13:21:37,363 INFO    SenderThread:4698 [sender.py:finish():1114] shutting down sender
+2022-08-26 13:21:37,363 INFO    SenderThread:4698 [file_pusher.py:finish():171] shutting down file pusher
+2022-08-26 13:21:37,364 INFO    SenderThread:4698 [file_pusher.py:join():176] waiting for file pusher
+2022-08-26 13:21:37,369 INFO    Dummy-16  :4698 [internal.py:handle_exit():80] Internal process exited

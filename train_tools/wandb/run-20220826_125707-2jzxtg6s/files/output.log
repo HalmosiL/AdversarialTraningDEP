@@ -1,0 +1,8 @@
+Traceback (most recent call last):
+  File "start_traning.py", line 87, in <module>
+    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader)
+  File "../train_tools/Train.py", line 83, in train
+    [{'params': model.layer0.parameters()},
+  File "/home/developer/anaconda3/envs/pytorch/lib/python3.6/site-packages/torch/nn/modules/module.py", line 1178, in __getattr__
+    type(self).__name__, name))
+AttributeError: 'Dummy' object has no attribute 'layer0'

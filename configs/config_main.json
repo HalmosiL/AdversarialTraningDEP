@@ -1,0 +1,57 @@
+{
+    "WB_LOG": "CitySpacesSemanticAdversarial",
+    "LOG_PATH": "../AdversarialExecutor/Logs/",
+
+    "QUEUE_SIZE_TRAIN": 25,
+    "QUEUE_SIZE_VAL": 25,
+    "DATA_QUEUE": "../data_queue/",
+
+    "NUMBER_OF_WORKERS_DATALOADER": 0,
+    "NUMBER_OF_WORKERS_EXECUTOR": 0,
+    "PIN_MEMORY_ALLOWED_DATALOADER": true,
+    
+    "DEVICE_TRAIN": "cuda:0",
+    "EPOCHS": 500,
+    "LEARNING_RATE": 0.001,
+    "MOMENTUM": 0.99,
+    "WEIGHT_DECAY": 0.01,
+    "POWER": 1,
+    "BATCH_SIZE": 1,
+    "TRAIN_BATCH_SIZE": 1,
+
+    "DATA_PATH":"../../../CitySpace/Data/ok/",
+    "PRINT_LOG": true,
+    "MODEL_CACHE_PERIOD": 10,
+    "MODEL_CACHE": "../ModelCache/",
+    "MODEL_SAVE": "../Models/",
+    "MODEL_NAME": "test",
+    "GPU_MAX_MEMORY_IN_USED": [
+        14000
+    ],
+
+    "DEVICE": [
+        "cuda:0"
+    ],
+
+    "NUMBER_OF_STEPS": 3,
+    "STEPS_SIZE": 1,
+    "CLIP_SIZE": 0.03,
+
+    "MODE_LOADE": false,
+    "MODEL_CONTINUM_PATH": "",
+    "OPTIMIZER_CONTINUM_PATH": "",
+
+    "DATASET": {
+        "scale_min":0.25, 
+        "scale_max":1.0,
+        "rotate_min":-10, 
+        "rotate_max":10,
+        "ignore_label":255,
+        "train_h":449,
+        "train_w":449,
+        "data_root":"",
+        "train_list":"../configs/train.txt",
+        "val_list":"../configs/val.txt"
+    }
+}
+

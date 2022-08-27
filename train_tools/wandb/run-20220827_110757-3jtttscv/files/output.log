@@ -1,0 +1,14 @@
+
+Traning started.....
+Traceback (most recent call last):
+  File "start_traning.py", line 87, in <module>
+    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader)
+  File "../train_tools/Train.py", line 97, in train
+    max_iter = CONFIG["EPOCHS"] * len(train_loader_adversarial)
+  File "/home/developer/anaconda3/envs/pytorch/lib/python3.6/site-packages/torch/utils/data/dataloader.py", line 404, in __len__
+    return len(self._index_sampler)
+  File "/home/developer/anaconda3/envs/pytorch/lib/python3.6/site-packages/torch/utils/data/sampler.py", line 245, in __len__
+    return (len(self.sampler) + self.batch_size - 1) // self.batch_size  # type: ignore[arg-type]
+  File "/home/developer/anaconda3/envs/pytorch/lib/python3.6/site-packages/torch/utils/data/sampler.py", line 69, in __len__
+    return len(self.data_source)
+TypeError: object of type 'DatasetAdversarial' has no len()

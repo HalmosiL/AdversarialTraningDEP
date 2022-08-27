@@ -1,0 +1,26 @@
+{
+    "os": "Linux-5.18.8-arch1-1-x86_64-with-arch",
+    "python": "3.6.2",
+    "heartbeatAt": "2022-08-26T10:57:09.351639",
+    "startedAt": "2022-08-26T10:57:07.946855",
+    "docker": null,
+    "gpu": "NVIDIA GeForce GTX 1650",
+    "gpu_count": 1,
+    "cpu_count": 12,
+    "cuda": null,
+    "args": [
+        "../configs/config_main.json"
+    ],
+    "state": "running",
+    "program": "start_traning.py",
+    "codePath": "train_tools/start_traning.py",
+    "git": {
+        "remote": "https://github.com/HalmosiL/AdversarialTraning.git",
+        "commit": "9f94d32cf7e64a74671b7355a2ccaed75c1b78a6"
+    },
+    "email": null,
+    "root": "/home/developer/Desktop/continum/AdversarialTraning",
+    "host": "developer",
+    "username": "root",
+    "executable": "/home/developer/anaconda3/envs/pytorch/bin/python3"
+}

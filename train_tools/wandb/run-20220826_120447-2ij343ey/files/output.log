@@ -1,0 +1,14 @@
+Traceback (most recent call last):
+  File "start_traning.py", line 87, in <module>
+    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader)
+  File "../train_tools/Train.py", line 73, in train
+    model = get_model(CONFIG['DEVICE'])
+  File "../models/Model.py", line 22, in get_model
+    model = model.to(device)
+  File "/home/developer/anaconda3/envs/pytorch/lib/python3.6/site-packages/torch/nn/modules/module.py", line 880, in to
+    device, dtype, non_blocking, convert_to_format = torch._C._nn._parse_to(*args, **kwargs)
+TypeError: to() received an invalid combination of arguments - got (list), but expected one of:
+ * (torch.device device, torch.dtype dtype, bool non_blocking, bool copy, *, torch.memory_format memory_format)
+ * (torch.dtype dtype, bool non_blocking, bool copy, *, torch.memory_format memory_format)
+ * (Tensor tensor, bool non_blocking, bool copy, *, torch.memory_format memory_format)
+Continum Traning.....
