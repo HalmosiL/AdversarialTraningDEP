@@ -28,16 +28,7 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            exit = False 
-            
-            while(not exit):
-                try:
-                    con_conf = json.load(open(self.con_conf_path, "r"))
-                    exit = True
-                except Exception as e: 
-                    print(e)
-                    print("json error...")
-                    time.sleep(2)
+            con_conf = json.load(open(self.con_conf_path, "r"))
                 
             if(self.mode_ == "train"):
                 if(con_conf['Executor_Finished_Train']):
