@@ -8,7 +8,6 @@ import sys
 
 from executor.Gen import run
 from executor.Adversarial import Cosine_PDG_Adam
-
 import util.Transforms as transform
 from dataset.Dataset import SemData
 
