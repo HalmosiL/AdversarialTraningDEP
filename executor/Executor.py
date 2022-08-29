@@ -173,6 +173,8 @@ class Executor:
                     f.truncate()
                 
                 exit = True
+            except:
+                print("json error")
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
