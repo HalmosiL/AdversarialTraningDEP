@@ -152,9 +152,9 @@ class Executor:
                 return model
 
     def alertGenerationFinished(self, mode):
-        with open("../configs/config_com.json", 'r+') as f:
-            data_json = json.load(f)
+        data_json = json.load(open("../configs/config_com.json", "r+"))
 
+        with open("../configs/config_com.json", 'w+') as f:
             if(mode == "train"):
                 data_json["Executor_Finished_Train"] = True
                 data_json["Executor_Finished_Val"] = False
