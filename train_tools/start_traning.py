@@ -31,7 +31,7 @@ def conConfInit(mode):
             }
 
         f.seek(0)
-        f.write(json.dump(data_json, indent=4))
+        json.dump(data_json, f)
         f.close()
 
 if __name__ == '__main__':
