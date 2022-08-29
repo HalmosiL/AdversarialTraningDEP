@@ -16,17 +16,11 @@ def start(CONFIG_PATH, script):
     list_files = subprocess.Popen(bashCommand, stdout=subprocess.PIPE)
 
 def conConfInit(mode):
-    with open("../configs/config_com.json", 'r+') as f:
-        data_json = json.load(f)
-
+    with open("../configs/config_com.json", 'w+') as f:
         if(mode == "train"):
-            data_json["MODE"] = "train"
-            data_json["Executor_Finished_Train"] = False
-            data_json["Executor_Finished_Val"] = True
+            data_json = [{'MODE', 'train'}, 'Executor_Finished_Train', False}, 'Executor_Finished_Val', True}]
         elif(mode == "val"):
-            data_json["MODE"] = "val"
-            data_json["Executor_Finished_Train"] = True
-            data_json["Executor_Finished_Val"] = False
+            data_json = [{'MODE', 'val'}, 'Executor_Finished_Train', True}, 'Executor_Finished_Val', False}]
 
         f.seek(0)
         json.dump(data_json, f, indent=4)
