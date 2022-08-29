@@ -37,6 +37,7 @@ class DatasetAdversarial:
                 except Exception as e: 
                     print(e)
                     print("json error...")
+                    time.sleep(2)
                 
             if(self.mode_ == "train"):
                 if(con_conf['Executor_Finished_Train']):
