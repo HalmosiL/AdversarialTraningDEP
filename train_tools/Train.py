@@ -35,8 +35,12 @@ def removeFiles(data):
         os.remove(m)
 
 def setMode(mode):
+    data_json = None
+        
     with open("../configs/config_com.json", 'r+') as f:
         data_json = json.load(f)
+
+    with open("../configs/config_com.json", 'w') as f:    
         data_json["MODE"] = mode
         f.seek(0)
         json.dump(data_json, f, indent=4)
@@ -94,8 +98,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
     cache_id = 0
     cache_id = cacheModel(cache_id, model, CONFIG)
     
-    max_iter = CONFIG["EPOCHS"] * len(train_loader_adversarial)
-    cut_all = 0
+    max_iter = int(CONFIG["EPOCHS"] * CONFIG["TRAIN_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
+
+    train_loader_len = int(CONFIG["TRAIN_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
+    val_loader_len = int(CONFIG["VAL_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
 
     for e in range(CONFIG["EPOCHS"]):
         model = model.train()
@@ -104,24 +110,28 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         iou_train_epoch = 0
         acc_train_epoch = 0
 
-        clearDataQueue(CONFIG, "train")
+        if(CONFIG["START_EXECUTOR"]):
+            clearDataQueue(CONFIG, "train")
+
+        print("Train Adversarial loader length:", train_loader_len)
+        print("Val Adversarial loader length:", val_loader_len)
         
-        cut_ = 0
-        
-        print("Train Adversarial loader length:", len(train_loader_adversarial))
-        print("Val Adversarial loader length:", len(val_loader_adversarial))
-        
-        for batch_id, data in enumerate(train_loader_adversarial):
+        cut = 0
+        batch_id = 0
+        train_loader_adversarial_iter = iter(train_loader_adversarial)
+        data = next(train_loader_adversarial_iter)
+
+        while(len(data)):
             if(len(data) == 3):
-                image = data[0][0].to(DEVICE)
-                target = data[1][0].to(DEVICE)
+                image = data[0][0].to(CONFIG["DEVICE"][0])
+                target = data[1][0].to(CONFIG["DEVICE"][0])
                 
-                current_iter = e * len(train_loader_adversarial) + batch_id + 1 - cut_all
+                current_iter = e * len(train_loader_adversarial) + batch_id + 1 - cut
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
                 
                 remove_files = np.array(data[2]).flatten()
                 optimizer.zero_grad()
-                
+
                 output, main_loss, aux_loss, _ = model(image, target)
                 loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
                 
@@ -146,17 +156,21 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     cache_id = cacheModel(cache_id, model, CONFIG)
 
                 removeFiles(remove_files)
+                batch_id += 1
             else:
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
                 removeFiles(remove_files)
-                
-                cut_ += 1
-                cut_all += 1
 
-        loss_train_epoch = loss_train_epoch / (train_loader_adversarial.__len__() - cut_)
-        iou_train_epoch = iou_train_epoch / (train_loader_adversarial.__len__() - cut_)
-        acc_train_epoch = acc_train_epoch / (train_loader_adversarial.__len__() - cut_)
+                cut += 1
+
+            data = next(train_loader_adversarial_iter)
+
+        setMode("val")
+
+        loss_train_epoch = loss_train_epoch / batch_id
+        iou_train_epoch = iou_train_epoch / batch_id
+        acc_train_epoch = acc_train_epoch / batch_id
 
         logger.log_loss_epoch_train_adversarial(e, loss_train_epoch)
         logger.log_iou_epoch_train_adversarial(e, iou_train_epoch)
@@ -166,7 +180,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         torch.save(optimizer.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_optimizer" + str(e) + ".pt")
 
         cache_id = cacheModel(cache_id, model, CONFIG)
-        setMode("val")
 
         model = model.eval()
 
@@ -178,13 +191,19 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         clearDataQueue(CONFIG, "val")
         
-        print("Val finished:" + str(val_status / val_loader_adversarial.__len__())[:5] + "%", end="\r")
+        print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
-        for data in val_loader_adversarial:
+
+        val_loader_adversarial_iter = iter(val_loader_adversarial)
+        data = next(val_loader_adversarial_iter)
+
+        batch_id = 0
+
+        while(len(data)):
             with torch.no_grad():
                 if(len(data) == 3):
-                    image_val = data[0][0].to(DEVICE)
-                    target = data[1][0].to(DEVICE)
+                    image_val = data[0][0].to(CONFIG["DEVICE"][0])
+                    target = data[1][0].to(CONFIG["DEVICE"][0])
                     remove_files = np.array(data[2]).flatten()
 
                     output, _ = model(image_val)
@@ -200,17 +219,18 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     acc_val_epoch += acc
                     val_status += 1
                     
-                    print("Val finished:" + str(val_status / (val_loader_adversarial.__len__() - cut_))[:5] + "%", end="\r")
+                    print("Val finished:" + str(val_status / (val_loader_len - cut_))[:5] + "%", end="\r")
                     removeFiles(remove_files)
+                    batch_id += 1
                 else:
                     print("jump...")
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
                     cut_ = cut_ + 1
                 
-        loss_val_epoch = loss_val_epoch / (val_loader_adversarial.__len__() - cut_)
-        iou_val_epoch = iou_val_epoch / (val_loader_adversarial.__len__() - cut_)
-        acc_val_epoch = acc_val_epoch / (val_loader_adversarial.__len__() - cut_)
+        loss_val_epoch = loss_val_epoch / (batch_id - cut_)
+        iou_val_epoch = iou_val_epoch / (batch_id - cut_)
+        acc_val_epoch = acc_val_epoch / (batch_id - cut_)
 
         logger.log_loss_epoch_val_adversarial(e, loss_val_epoch)
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)

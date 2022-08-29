@@ -1,5 +1,5 @@
 {
     "MODE": "train",
     "Executor_Finished_Train": false,
-    "Executor_Finished_Val": false
+    "Executor_Finished_Val": true
 }

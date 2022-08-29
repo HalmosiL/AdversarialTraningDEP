@@ -9,6 +9,9 @@
     "NUMBER_OF_WORKERS_DATALOADER": 0,
     "NUMBER_OF_WORKERS_EXECUTOR": 0,
     "PIN_MEMORY_ALLOWED_DATALOADER": true,
+
+    "TRAIN_DATASET_SIZE":2975,
+    "VAL_DATASET_SIZE": 500, 
     
     "DEVICE_TRAIN": "cuda:0",
     "EPOCHS": 500,
@@ -16,14 +19,19 @@
     "MOMENTUM": 0.99,
     "WEIGHT_DECAY": 0.01,
     "POWER": 1,
-    "BATCH_SIZE": 1,
-    "TRAIN_BATCH_SIZE": 1,
+    "AUX_WEIGHT": 0.01,
+    "BATCH_SIZE": 16,
+    "TRAIN_BATCH_SIZE": 4,
+    "CALSSES": 19,
+    "IGNOR_LABEL": 255,
 
     "DATA_PATH":"../../../CitySpace/Data/ok/",
+    "START_EXECUTOR": false,
     "PRINT_LOG": true,
+    "MODE": "train",
     "MODEL_CACHE_PERIOD": 10,
     "MODEL_CACHE": "../ModelCache/",
-    "MODEL_SAVE": "../Models/",
+    "MODEL_SAVE": "../../Models/",
     "MODEL_NAME": "test",
     "GPU_MAX_MEMORY_IN_USED": [
         14000

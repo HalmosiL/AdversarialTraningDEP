@@ -16,7 +16,7 @@ def start(CONFIG_PATH, script):
     list_files = subprocess.Popen(bashCommand, stdout=subprocess.PIPE)
 
 def conConfInit(mode):
-    with open("../Configs/config_com.json", 'r+') as f:
+    with open("../configs/config_com.json", 'r+') as f:
         data_json = json.load(f)
 
         if(mode == "train"):
@@ -39,12 +39,16 @@ if __name__ == '__main__':
     CONFIG_PATH = sys.argv[1]
     CONFIG = json.load(open(CONFIG_PATH, "r+"))
     
+    print("init com conf...")
+    conConfInit(CONFIG["MODE"])
+
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     for m in models_in_cache:
         os.remove(m)
 
-    start(CONFIG_PATH, "./start_executor.sh")
+    if(CONFIG["START_EXECUTOR"]):
+        start(CONFIG_PATH, "./start_executor.sh")
 
     train_loader_adversarial = getDatasetLoader(
         CONFIG_PATH,

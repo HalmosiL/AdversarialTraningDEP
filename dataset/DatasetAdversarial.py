@@ -2,18 +2,23 @@ import os
 import torch
 import time
 import json
+import sys
 
 class DatasetAdversarial:    
     def __init__(self, con_conf_path, data_queue_path, slice_, mode_):
         self.con_conf_path = con_conf_path
         self.data_queue_path = data_queue_path
         self.slice_ = slice_
+        self.mode_ = mode_
+
+    def __len__(self):
+        return sys.maxsize
 
     def __getitem__(self, idx):
         image_ = None
         label_ = None
         
-        path_a = int(idx / self.slice_) + 1
+        path_a = int(idx / self.slice_)
         path_b = idx % self.slice_
         
         count_no_data = 0
@@ -23,15 +28,15 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            con_conf = json(open(self.con_conf_path))
+            con_conf = json.load(open(self.con_conf_path))
 
             if(self.mode_ == "train"):
                 if(con_conf['Executor_Finished_Train']):
-                    return None
+                    return []
                     
-            elif(self.mode == "val"):
+            elif(self.mode_ == "val"):
                 if(con_conf['Executor_Finished_Val']):
-                    return None
+                    return []
 
             if(
                 os.path.exists(image_path) and

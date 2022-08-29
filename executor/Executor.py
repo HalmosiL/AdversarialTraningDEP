@@ -152,7 +152,7 @@ class Executor:
                 return model
 
     def alertGenerationFinished(self, mode):
-        with open("../Configs/config_com.json", 'r+') as f:
+        with open("../configs/config_com.json", 'r+') as f:
             data_json = json.load(f)
 
             if(mode == "train"):
@@ -164,8 +164,14 @@ class Executor:
 
             f.seek(0)
             json.dump(data_json, f, indent=4)
-            f.truncate() 
+            f.truncate()
 
+    def data_queue_is_not_full(self, com_conf_mode):
+        if(com_conf_mode == "train"):
+            return (len(glob.glob(self.data_queue + "*.pt")) / 2) < self.queue_size_train
+        elif(com_conf_mode == "val"):
+            return (len(glob.glob(self.data_queue[:-1] + "_val/*.pt")) / 2) < self.queue_size_val
+            
     def generateTrainData(self, mode):
         if(mode == "train"):
             iter_ = iter(self.train_data_set_loader)
@@ -176,6 +182,8 @@ class Executor:
         model = None
 
         while(True):        
+            data_json = None
+            
             with open("../configs/config_com.json", 'r+') as f:
                 data_json = json.load(f)
                 if(data_json['MODE'] == "off"):
@@ -184,28 +192,32 @@ class Executor:
 
             model = self.updateModel(model)
 
-            if(model is not None):
-                try:
-                    batch = next(iter_)
-                        
-                    run(
-                        id_=element_id,
-                        batch=batch,
-                        device=self.device,
-                        model=model,
-                        attack=self.attack,
-                        number_of_steps=self.number_of_steps,
-                        data_queue=self.data_queue,
-                        split=self.split,
-                        split_size=self.split_size
-                    )                               
+            if(self.data_queue_is_not_full(data_json['MODE'])):
+                if(model is not None):
+                    try:
+                        batch = next(iter_)
+                            
+                        run(
+                            id_=element_id,
+                            batch=batch,
+                            device=self.device,
+                            model=model,
+                            attack=self.attack,
+                            number_of_steps=self.number_of_steps,
+                            data_queue=self.data_queue if data_json['MODE'] == "train" else self.data_queue[:-1] + "_val/",
+                            split=self.split,
+                            split_size=self.split_size,
+                            gen=(mode == "train")
+                        )                               
 
-                    element_id += 1
-                except StopIteration:
-                    if(mode == "train"):
-                        self.alertGenerationFinished("train")
-                    elif(mode == "val"):
-                        self.alertGenerationFinished("val")
+                        element_id += 1
+                    except StopIteration:
+                        if(mode == "train"):
+                            self.alertGenerationFinished("train")
+                        elif(mode == "val"):
+                            self.alertGenerationFinished("val")
+            else:
+                print("Data queue is full...")
 
     def start(self):
         while(True):
@@ -214,7 +226,9 @@ class Executor:
 
                 if(not data_json['Executor_Finished_Train'] and data_json['MODE'] == "train"):
                     self.generateTrainData("train")
+                    self.alertGenerationFinished("train")
 
                 if(not data_json['Executor_Finished_Val'] and data_json['MODE'] == "val"):
                     self.generateTrainData("val")
+                    self.alertGenerationFinished("val")
                 

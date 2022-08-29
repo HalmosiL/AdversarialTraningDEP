@@ -7,10 +7,10 @@ def slice_model(model, level="Encoder"):
         return model.getSliceModel().eval()
 
 def get_model(device):
-    return Dummy()
+    return Dummy().to(device)
 
 def load_model(path, device):
-    return Dummy()
+    return Dummy().to(device)
 
 def load_model_slice(path, device):
     model = Dummy().getSliceModel().eval()

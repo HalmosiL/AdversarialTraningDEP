@@ -20,6 +20,8 @@ class Dummy(nn.Module):
         self.cls = torch.nn.Conv2d(in_channels=2, out_channels=19, kernel_size=3, stride=1, padding=1)
         self.aux = torch.nn.Conv2d(in_channels=2, out_channels=19, kernel_size=3, stride=1, padding=1)
 
+        self.criterion = torch.nn.CrossEntropyLoss(ignore_index=255)
+
     def forward(self, x, y=None):
         x = self.layer0(x)
         x = self.layer1(x)
@@ -30,9 +32,12 @@ class Dummy(nn.Module):
         x = self.cls(x_t)
         aux = self.aux(x_t)
 
-        main_loss = self.criterion(x, y)
-        aux_loss = self.criterion(aux, y)
-        return x.max(1)[1], main_loss, aux_loss, x
+        if(y is not None):
+            main_loss = self.criterion(x, y)
+            aux_loss = self.criterion(aux, y)
+            return x.max(1)[1], main_loss, aux_loss, x
+        else:
+            return x.max(1)[1], x
             
     def getSliceModel(self):
         return self.layer0
