@@ -4,6 +4,7 @@ import torch
 import os
 import json
 import numpy as np
+import time
 
 sys.path.insert(0, "../")
 
@@ -166,6 +167,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
             data = next(train_loader_adversarial_iter)
 
+        time.sleep(5)
         setMode("val")
 
         loss_train_epoch = loss_train_epoch / batch_id
@@ -236,4 +238,5 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
         logger.log_acc_epoch_val_adversarial(e, acc_val_epoch)
 
+        time.sleep(5)
         setMode("train")
