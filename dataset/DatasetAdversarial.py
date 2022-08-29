@@ -32,7 +32,7 @@ class DatasetAdversarial:
             
             while(not exit):
                 try:
-                    con_conf = json.load(open(self.con_conf_path, "r+"))
+                    con_conf = json.load(open(self.con_conf_path, "r"))
                     exit = True
                 except:
                     print("json error...")
