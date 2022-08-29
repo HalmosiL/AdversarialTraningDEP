@@ -152,29 +152,23 @@ class Executor:
                 return model
 
     def alertGenerationFinished(self, mode):
-        exit = False
         data_json = None
-        
-        while(not exit):
-            try:
-                with open("../configs/config_com.json", "r+") as f:
-                    data_json = json.load(f)
 
-                with open("../configs/config_com.json", 'w') as f:
-                    if(mode == "train"):
-                        data_json["Executor_Finished_Train"] = True
-                        data_json["Executor_Finished_Val"] = False
-                    elif(mode == "val"):
-                        data_json["Executor_Finished_Train"] = False
-                        data_json["Executor_Finished_Val"] = True
+        with open("../configs/config_com.json", "r+") as f:
+            data_json = json.load(f)
+            f.close()
 
-                    f.seek(0)
-                    json.dump(data_json, f, indent=4)
-                    f.truncate()
-                
-                exit = True
-            except:
-                print("json error")
+        with open("../configs/config_com.json", 'w') as f:
+            if(mode == "train"):
+                data_json["Executor_Finished_Train"] = True
+                data_json["Executor_Finished_Val"] = False
+            elif(mode == "val"):
+                data_json["Executor_Finished_Train"] = False
+                data_json["Executor_Finished_Val"] = True
+
+            f.seek(0)
+            json.dump(data_json, f, indent=4)
+            f.close()
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
