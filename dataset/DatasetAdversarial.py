@@ -34,7 +34,8 @@ class DatasetAdversarial:
                 try:
                     con_conf = json.load(open(self.con_conf_path, "r"))
                     exit = True
-                except:
+                except Exception as e: 
+                    print(e)
                     print("json error...")
                 
             if(self.mode_ == "train"):
