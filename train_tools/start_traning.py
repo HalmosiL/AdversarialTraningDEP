@@ -30,7 +30,7 @@ def conConfInit(mode):
 
         f.seek(0)
         json.dump(data_json, f, indent=4)
-        f.truncate() 
+        f.close()
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
