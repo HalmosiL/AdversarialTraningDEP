@@ -154,8 +154,8 @@ class Executor:
     def alertGenerationFinished(self, mode):
         data_json = None
         
-        with open("../configs/config_com.json", 'r+') as f:
-            data_json = json.load(f)
+        with open("../configs/config_com.json", encoding='utf-8-sig', errors='ignore') as f:
+            data_json = json.load(f, strict=False)
 
         with open("../configs/config_com.json", 'w') as f:
             if(mode == "train"):
