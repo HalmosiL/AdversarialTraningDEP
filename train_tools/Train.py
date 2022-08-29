@@ -46,7 +46,7 @@ def setMode(mode):
         with open("../configs/config_com.json", 'w') as f:    
             data_json["MODE"] = mode
             f.seek(0)
-            json.dump(data_json, f, indent=4)
+            json.dump(data_json, f)
             f.close()
                 
 def cacheModel(cache_id, model, CONFIG):
