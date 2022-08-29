@@ -39,20 +39,16 @@ def setMode(mode):
     data_json = None
         
     while(not exit):
-        try:
-            with open("../configs/config_com.json", 'r+') as f:
-                data_json = json.load(f)
+        with open("../configs/config_com.json", 'r+') as f:
+            data_json = json.load(f)
+            f.close()
 
-            with open("../configs/config_com.json", 'w') as f:    
-                data_json["MODE"] = mode
-                f.seek(0)
-                json.dump(data_json, f, indent=4)
-                f.truncate()
+        with open("../configs/config_com.json", 'w') as f:    
+            data_json["MODE"] = mode
+            f.seek(0)
+            json.dump(data_json, f, indent=4)
+            f.close()
                 
-            exit = True
-        except:
-            print("Train json error...")
-
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     models.sort(key=sort_)
