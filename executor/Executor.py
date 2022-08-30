@@ -155,7 +155,7 @@ class Executor:
 
         with open("../configs/config_com.json", "r") as f:
             try:
-                data_json = json.load(f)
+                data_json = json.load(f.read())
                 f.close()
             except:
                 raise ValueError(f.read())
