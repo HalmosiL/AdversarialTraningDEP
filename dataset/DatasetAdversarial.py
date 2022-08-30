@@ -31,7 +31,10 @@ class DatasetAdversarial:
             con_conf = None
             
             with open("../configs/config_com.json", 'r+') as f:
-                con_conf = json.load(f)
+                try:
+                    con_conf = json.load(f)
+                except:
+                    raise ValueError(open("../configs/config_com.json", 'r+').read())
                 
             if(self.mode_ == "train"):
                 if(con_conf['Executor_Finished_Train']):
