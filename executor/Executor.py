@@ -154,8 +154,11 @@ class Executor:
         data_json = None
 
         with open("../configs/config_com.json", "r") as f:
-            data_json = json.load(f)
-            f.close()
+            try:
+                data_json = json.load(f)
+                f.close()
+            except:
+                raise ValueError(f.read())
 
         with open("../configs/config_com.json", 'w') as f:
             if(mode == "train"):
