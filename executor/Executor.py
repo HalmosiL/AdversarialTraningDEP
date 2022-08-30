@@ -156,13 +156,13 @@ class Executor:
         with open("../configs/config_com.json", 'w') as f:
             if(mode == "train"):
                 data_json = {
-                    "MODE": "train"
+                    "MODE": "train",
                     "Executor_Finished_Train": False,
                     "Executor_Finished_Val": True
                 }
             elif(mode == "val"):
                 data_json = {
-                    "MODE": "val"
+                    "MODE": "val",
                     "Executor_Finished_Train": True,
                     "Executor_Finished_Val": False
                 }
