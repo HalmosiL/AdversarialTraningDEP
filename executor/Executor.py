@@ -153,7 +153,7 @@ class Executor:
     def alertGenerationFinished(self, mode):
         data_json = None
 
-        with open("../configs/config_com.json", "r+") as f:
+        with open("../configs/config_com.json", "r") as f:
             data_json = json.load(f)
             f.close()
 
@@ -166,7 +166,7 @@ class Executor:
                 data_json["Executor_Finished_Val"] = True
 
             f.seek(0)
-            json.dump(data_json, f, indent=4)
+            json.dump(data_json, f)
             f.close()
 
     def data_queue_is_not_full(self, com_conf_mode):
