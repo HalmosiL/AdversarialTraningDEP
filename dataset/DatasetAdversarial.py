@@ -32,7 +32,7 @@ class DatasetAdversarial:
             
             with open("../configs/config_com.json", 'r+') as f:
                 try:
-                    con_conf = json.load(f)
+                    con_conf = json.loads(f.read())
                 except:
                     raise ValueError(f.read())
                 
