@@ -153,7 +153,7 @@ class Executor:
     def alertGenerationFinished(self, mode):
         data_json = None
 
-        with open("../configs/config_com.json", 'w') as f:
+        with open("../configs/config_com.json", encoding='utf-8') as f:
             if(mode == "train"):
                 data_json = {
                     "MODE": "train",
