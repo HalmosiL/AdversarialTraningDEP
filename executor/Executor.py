@@ -168,7 +168,8 @@ class Executor:
                 }
 
             f.seek(0)
-            json.dump(data_json, f)
+            json.dump(data_json, f, indent=4)
+            f.truncate()
             f.close()
 
     def data_queue_is_not_full(self, com_conf_mode):
