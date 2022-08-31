@@ -36,7 +36,7 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            con_conf = readConf()
+            con_conf = self.readConf()
                 
             if(self.mode_ == "train"):
                 if(con_conf['root']['Executor_Finished_Train']['#text']):
