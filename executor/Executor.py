@@ -137,7 +137,7 @@ class Executor:
             my_xml = file_.read()
 
             if(len(my_xml) != 0):
-                if(my_xml[-2:] == "t>"):
+                if(my_xml[-4:] == "t>t>"):
                     my_xml = my_xml[:-2]
                     
                 print(my_xml)
