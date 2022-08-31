@@ -18,7 +18,7 @@ class DatasetAdversarial:
         while(True):
             file_ = open('../configs/config_com.xml', 'r', encoding='utf-8')
             my_xml = file_.read()
-
+            file_.close()
             if(len(my_xml) != 0):
                 return xmltodict.parse(my_xml)
 
