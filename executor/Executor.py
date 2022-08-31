@@ -164,14 +164,14 @@ class Executor:
             if(mode == "train"):
                 data = {
                     'MODE': 'train',
-                    'Executor_Finished_Train': False,
-                    'Executor_Finished_Val': True
+                    'Executor_Finished_Train': True,
+                    'Executor_Finished_Val': False
                 }
             elif(mode == "val"):
                 data = {
                     'MODE': 'val',
-                    'Executor_Finished_Train': True,
-                    'Executor_Finished_Val': False
+                    'Executor_Finished_Train': False,
+                    'Executor_Finished_Val': True
                 }
 
             f = open("../configs/config_com.xml", 'w')
