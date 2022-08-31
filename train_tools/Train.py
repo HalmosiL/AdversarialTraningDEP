@@ -35,27 +35,32 @@ def removeFiles(data):
     for m in remove_files:
         os.remove(m)
 
-def setMode(mode):    
-    if(mode == "val"):
-        data = {
-            'MODE': 'val',
-            'Executor_Finished_Train': True, 
-            'Executor_Finished_Val': False
-        }
-    elif(mode == "train"):
-        data = {
-            'MODE': 'train',
-            'Executor_Finished_Train': False, 
-            'Executor_Finished_Val': True
-        }
-        
-    f = open("../configs/config_com.xml", 'w')
+def setMode(mode): 
+    while(True):
+        if(mode == "val"):
+            data = {
+                'MODE': 'val',
+                'Executor_Finished_Train': True, 
+                'Executor_Finished_Val': False
+            }
+        elif(mode == "train"):
+            data = {
+                'MODE': 'train',
+                'Executor_Finished_Train': False, 
+                'Executor_Finished_Val': True
+            }
 
-    xml = dicttoxml.dicttoxml(data)
-    xml_decode = xml.decode()
+        f = open("../configs/config_com.xml", 'w')
 
-    f.write(xml_decode)
-    f.close() 
+        xml = dicttoxml.dicttoxml(data)
+        xml_decode = xml.decode()
+
+        f.write(xml_decode)
+        f.close()
+
+        f = open("../configs/config_com.xml", 'r')
+        if(len(f.read()) != 0):
+            return
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
