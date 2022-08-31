@@ -46,6 +46,9 @@ class DatasetAdversarial:
                 if(con_conf['root']['Executor_Finished_Val']['#text'] == "True"):
                     return []
 
+            print(image_path)
+            print(label_path)
+                
             if(
                 os.path.exists(image_path) and
                 os.path.exists(label_path)
