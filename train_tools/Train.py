@@ -66,6 +66,7 @@ def setMode(mode):
         f.close() 
         if(len(r) != 0 and r[-4:] != "t>t>"):
             if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
+                print(xmltodict.parse(r)['root']['MODE']['#text'])
                 return
                 
 def cacheModel(cache_id, model, CONFIG):
