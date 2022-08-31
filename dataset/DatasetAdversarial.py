@@ -39,11 +39,11 @@ class DatasetAdversarial:
             con_conf = self.readConf()
                 
             if(self.mode_ == "train"):
-                if(con_conf['root']['Executor_Finished_Train']['#text']):
+                if(con_conf['root']['Executor_Finished_Train']['#text'] == "True"):
                     return []
                     
             elif(self.mode_ == "val"):
-                if(con_conf['root']['Executor_Finished_Val']['#text']):
+                if(con_conf['root']['Executor_Finished_Val']['#text'] == "True"):
                     return []
 
             if(
