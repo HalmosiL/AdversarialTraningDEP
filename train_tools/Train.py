@@ -40,6 +40,8 @@ def removeFiles(data):
 
 def setMode(mode): 
     while(True):
+        f = open("../configs/config_com.xml", 'w+')
+        
         if(mode == "val"):
             data = {
                 'MODE': 'val',
@@ -52,8 +54,6 @@ def setMode(mode):
                 'Executor_Finished_Train': False, 
                 'Executor_Finished_Val': True
             }
-
-        f = open("../configs/config_com.xml", 'w')
 
         xml = dicttoxml.dicttoxml(data)
         xml_decode = xml.decode()
