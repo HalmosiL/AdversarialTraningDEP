@@ -139,6 +139,8 @@ class Executor:
             if(len(my_xml) != 0):
                 if(my_xml[-2:] == "t>"):
                     my_xml = my_xml[:-2]
+                    
+                print(my_xml)
                 return xmltodict.parse(my_xml)
         
     def updateModel(self, model):
