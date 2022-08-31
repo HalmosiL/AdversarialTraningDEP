@@ -137,7 +137,10 @@ class Executor:
             my_xml = file_.read()
 
             if(len(my_xml) != 0):
-                return xmltodict.parse(my_xml)
+                try:
+                    return xmltodict.parse(my_xml)
+                except Exception as e:
+                    print(e)
         
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
