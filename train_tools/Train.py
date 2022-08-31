@@ -2,8 +2,9 @@ import glob
 import sys
 import torch
 import os
-import json
 import numpy as np
+import json
+import dicttoxml
 
 sys.path.insert(0, "../")
 
@@ -34,20 +35,27 @@ def removeFiles(data):
     for m in remove_files:
         os.remove(m)
 
-def setMode(mode):
-    exit = False
-    data_json = None
+def setMode(mode):    
+    if(mode == "val"):
+        data = {
+            'MODE': 'val',
+            'Executor_Finished_Train': True, 
+            'Executor_Finished_Val': False
+        }
+    elif(mode == "train"):
+        data = {
+            'MODE': 'train',
+            'Executor_Finished_Train': False, 
+            'Executor_Finished_Val': True
+        }
         
-    while(not exit):
-        with open("../configs/config_com.json", 'r+') as f:
-            data_json = json.load(f)
-            f.close()
+    f = open("../configs/config_com.xml", 'w')
 
-        with open("../configs/config_com.json", 'w') as f:    
-            data_json["MODE"] = mode
-            f.seek(0)
-            json.dump(data_json, f)
-            f.close()
+    xml = dicttoxml.dicttoxml(data_json)
+    xml_decode = xml.decode()
+
+    f.write(xml_decode)
+    f.close() 
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
