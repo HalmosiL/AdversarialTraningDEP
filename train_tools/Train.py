@@ -51,7 +51,7 @@ def setMode(mode):
         
     f = open("../configs/config_com.xml", 'w')
 
-    xml = dicttoxml.dicttoxml(data_json)
+    xml = dicttoxml.dicttoxml(data)
     xml_decode = xml.decode()
 
     f.write(xml_decode)
