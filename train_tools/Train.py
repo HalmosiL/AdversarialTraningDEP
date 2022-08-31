@@ -217,7 +217,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 time.sleep(0.25)
         
         setMode("val")
-        
+        sys.exit(0)
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
 
