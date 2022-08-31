@@ -58,6 +58,8 @@ class DatasetAdversarial:
                 except Exception as e:
                     return [remove_queue]
             else:
+                print(image_path)
+                print(label_path)
                 count_no_data += 1
                 if(count_no_data > 1 and count_no_data % 200 == 0):
                     print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...", end="\r")
