@@ -159,26 +159,31 @@ class Executor:
             else:
                 return model
 
-    def alertGenerationFinished(self, mode):   
-        if(mode == "train"):
-            data = {
-                'MODE': 'train',
-                'Executor_Finished_Train': False,
-                'Executor_Finished_Val': True
-            }
-        elif(mode == "val"):
-            data = {
-                'MODE': 'val',
-                'Executor_Finished_Train': True,
-                'Executor_Finished_Val': False
-            }
+    def alertGenerationFinished(self, mode):
+        while(True):
+            if(mode == "train"):
+                data = {
+                    'MODE': 'train',
+                    'Executor_Finished_Train': False,
+                    'Executor_Finished_Val': True
+                }
+            elif(mode == "val"):
+                data = {
+                    'MODE': 'val',
+                    'Executor_Finished_Train': True,
+                    'Executor_Finished_Val': False
+                }
 
-        f = open("../configs/config_com.xml", 'w')
-        xml = dicttoxml.dicttoxml(data)
-        xml_decode = xml.decode()
+            f = open("../configs/config_com.xml", 'w')
+            xml = dicttoxml.dicttoxml(data)
+            xml_decode = xml.decode()
 
-        f.write(xml_decode)
-        f.close() 
+            f.write(xml_decode)
+            f.close() 
+
+            f = open("../configs/config_com.xml", 'r')
+            if(len(f.read()) != 0):
+                return
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
