@@ -6,6 +6,7 @@ import time
 import numpy as np
 import json
 import dicttoxml
+import xmltodict
 import time
 
 sys.path.insert(0, "../")
@@ -63,8 +64,9 @@ def setMode(mode):
         f = open("../configs/config_com.xml", 'r')
         r = f.read()
         f.close() 
-        if(len(r) != 0 and r[-4:] != "t>t>" and r['root']['MODE']['#text'] == mode):
-            return
+        if(len(r) != 0 and r[-4:] != "t>t>"):
+            if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
+                return
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
