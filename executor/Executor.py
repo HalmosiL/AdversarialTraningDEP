@@ -3,7 +3,6 @@ import time
 import torch
 import os
 import math
-import json
 import sys
 
 from executor.Gen import run
@@ -130,6 +129,14 @@ class Executor:
             clip_size=self.clip_size
         )
 
+    def readConf(self):    
+        while(True):
+            file_ = open('../configs/config_com.xml', 'r', encoding='utf-8')
+            my_xml = file_.read()
+
+            if(len(my_xml) != 0):
+                return xmltodict.parse(my_xml)
+        
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
         print(self.model_cache + "*.pt")
@@ -152,13 +159,13 @@ class Executor:
 
     def alertGenerationFinished(self, mode):   
         if(mode == "train"):
-            data_json = {
+            data = {
                 'MODE': 'train',
                 'Executor_Finished_Train': False,
                 'Executor_Finished_Val': True
             }
         elif(mode == "val"):
-            data_json = {
+            data = {
                 'MODE': 'val',
                 'Executor_Finished_Train': True,
                 'Executor_Finished_Val': False
@@ -170,7 +177,6 @@ class Executor:
 
         f.write(xml_decode)
         f.close() 
-
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
@@ -188,17 +194,14 @@ class Executor:
         model = None
 
         while(True):        
-            data_json = None
-            
-            with open("../configs/config_com.json", 'r+') as f:
-                data_json = json.load(f)
-                if(data_json['MODE'] == "off"):
-                    print("Executor is stoped...")
-                    break
+            data = self.readConf()
+            if(data['root']['MODE']['#text'] == "off"):
+                print("Executor is stoped...")
+                break
 
             model = self.updateModel(model)
 
-            if(self.data_queue_is_not_full(data_json['MODE'])):
+            if(self.data_queue_is_not_full(data['root']['MODE']['#text'])):
                 if(model is not None):
                     try:
                         batch = next(iter_)
@@ -210,7 +213,7 @@ class Executor:
                             model=model,
                             attack=self.attack,
                             number_of_steps=self.number_of_steps,
-                            data_queue=self.data_queue if data_json['MODE'] == "train" else self.data_queue[:-1] + "_val/",
+                            data_queue=self.data_queue if data['root']['MODE']['#text'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
                             gen=(mode == "train")
@@ -227,14 +230,13 @@ class Executor:
 
     def start(self):
         while(True):
-            with open("../configs/config_com.json", 'r+') as f:
-                data_json = json.load(f)
+                data = self.readConf()
 
-                if(not data_json['Executor_Finished_Train'] and data_json['MODE'] == "train"):
+                if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
 
-                if(not data_json['Executor_Finished_Val'] and data_json['MODE'] == "val"):
+                if(not data['root']['Executor_Finished_Val']['#text'] == 'True' and data['root']['MODE']['#text'] == "val"):
                     self.generateTrainData("val")
                     self.alertGenerationFinished("val")
                 
