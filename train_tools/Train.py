@@ -40,7 +40,7 @@ def removeFiles(data):
 
 def setMode(mode): 
     while(True):
-        f = open("../configs/config_com.xml", 'w+')
+        f = open("../configs/config_com.xml", 'w')
         
         if(mode == "val"):
             data = {
