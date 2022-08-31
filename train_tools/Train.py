@@ -227,6 +227,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         batch_id = 0
 
+        print(xmltodict.parse(open("../configs/config_com.xml", 'r').read())['root']['MODE']['#text'])
         while(len(data)):
             with torch.no_grad():
                 if(len(data) == 3):
@@ -255,8 +256,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
                     cut_ = cut_ + 1
-                
+                print(xmltodict.parse(open("../configs/config_com.xml", 'r').read())['root']['MODE']['#text'])
                 data = next(val_loader_adversarial_iter)
+                print(xmltodict.parse(open("../configs/config_com.xml", 'r').read())['root']['MODE']['#text'])
                 
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
         iou_val_epoch = iou_val_epoch / (batch_id - cut_)
