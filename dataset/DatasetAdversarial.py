@@ -20,6 +20,8 @@ class DatasetAdversarial:
             my_xml = file_.read()
 
             if(len(my_xml) != 0):
+                if(my_xml[-2:] == "t>"):
+                    my_xml = my_xml[:-2]
                 return xmltodict.parse(my_xml)
 
     def __getitem__(self, idx):
