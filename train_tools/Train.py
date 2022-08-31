@@ -61,12 +61,12 @@ def setMode(mode):
         f.write(xml_decode)
         f.close()
 
-        with open("../configs/config_com.xml", 'r') as f:
-            r = f.read()
-            if(len(r) != 0 and r[-4:] != "t>t>"):
-                if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
-                    print(xmltodict.parse(r)['root']['MODE']['#text'])
-                    return
+        f = open("../configs/config_com.xml", 'r')
+        r = f.read()
+        if(len(r) != 0 and r[-4:] != "t>t>"):
+            if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
+                print(xmltodict.parse(r)['root']['MODE']['#text'])
+                return f
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
@@ -215,7 +215,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
             while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
                 time.sleep(0.25)
         
-        setMode("val")
+        setMode("val").close()
         sys.exit(0)
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
