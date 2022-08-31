@@ -1,7 +1,7 @@
 import os
 import torch
 import time
-import json
+import xmltodict
 import sys
 
 class DatasetAdversarial:    
@@ -13,6 +13,14 @@ class DatasetAdversarial:
 
     def __len__(self):
         return sys.maxsize
+    
+    def readConf(self):        
+        while(True):
+            file_ = open('../configs/config_com.xml', 'r', encoding='utf-8')
+            my_xml = file_.read()
+
+            if(len(my_xml) != 0):
+                return xmltodict.parse(my_xml)
 
     def __getitem__(self, idx):
         image_ = None
@@ -28,20 +36,14 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            con_conf = None
-            
-            with open("../configs/config_com.json", 'r+') as f:
-                try:
-                    con_conf = json.load(f)
-                except:
-                    raise ValueError(f.read())
+            con_conf = readConf()
                 
             if(self.mode_ == "train"):
-                if(con_conf['Executor_Finished_Train']):
+                if(con_conf['root']['Executor_Finished_Train']['#text']):
                     return []
                     
             elif(self.mode_ == "val"):
-                if(con_conf['Executor_Finished_Val']):
+                if(con_conf['root']['Executor_Finished_Val']['#text']):
                     return []
 
             if(
