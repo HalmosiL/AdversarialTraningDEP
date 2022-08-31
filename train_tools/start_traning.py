@@ -17,19 +17,19 @@ def start(CONFIG_PATH, script):
 def conConfInit(mode):
     f = open("../configs/config_com.xml", 'w+')
     if(mode == "train"):
-        data_json = {
+        data = {
             'MODE': 'train',
             'Executor_Finished_Train': False, 
             'Executor_Finished_Val': True
         }
     elif(mode == "val"):
-        data_json = {
+        data = {
             'MODE': 'val',
             'Executor_Finished_Train': True, 
             'Executor_Finished_Val': False
         }
 
-    xml = dicttoxml.dicttoxml(data_json)
+    xml = dicttoxml.dicttoxml(data)
     xml_decode = xml.decode()
 
     f.write(xml_decode)
