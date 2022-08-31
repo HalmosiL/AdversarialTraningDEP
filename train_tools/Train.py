@@ -2,9 +2,11 @@ import glob
 import sys
 import torch
 import os
+import time
 import numpy as np
 import json
 import dicttoxml
+import time
 
 sys.path.insert(0, "../")
 
@@ -207,6 +209,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         val_status = 0
 
+        while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0)
+            time.sleep(0.25)
+        
         setMode("val")
         
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
