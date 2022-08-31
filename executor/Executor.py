@@ -182,7 +182,8 @@ class Executor:
             f.close() 
 
             f = open("../configs/config_com.xml", 'r')
-            if(len(f.read()) != 0):
+            r = f.read()
+            if(len(r) != 0 and r[-2] != "t>"):
                 return
 
     def data_queue_is_not_full(self, com_conf_mode):
