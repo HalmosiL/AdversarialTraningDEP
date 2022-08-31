@@ -46,7 +46,6 @@ if __name__ == '__main__':
     
     print("Init com_conf...")
     conConfInit(CONFIG["MODE"])
-    sys.exit("Marks is less than 20")
 
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
