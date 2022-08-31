@@ -63,10 +63,10 @@ def setMode(mode):
 
         f = open("../configs/config_com.xml", 'r')
         r = f.read()
-        f.close()
         if(len(r) != 0 and r[-4:] != "t>t>"):
             if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
                 print(xmltodict.parse(r)['root']['MODE']['#text'])
+                f.close()
                 return
                 
 def cacheModel(cache_id, model, CONFIG):
@@ -217,14 +217,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 time.sleep(0.25)
         
         setMode("val")
-        sys.exit(0)
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
 
         val_loader_adversarial_iter = iter(val_loader_adversarial)
-        print(xmltodict.parse(open("../configs/config_com.xml", 'r').read())['root']['MODE']['#text'])
         data = next(val_loader_adversarial_iter)
-        print(xmltodict.parse(open("../configs/config_com.xml", 'r').read())['root']['MODE']['#text'])
 
         batch_id = 0
 
