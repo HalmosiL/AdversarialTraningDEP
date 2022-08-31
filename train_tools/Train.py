@@ -183,7 +183,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
             data = next(train_loader_adversarial_iter)
 
-        setMode("val")
+        clearDataQueue(CONFIG, "val")
+
 
         loss_train_epoch = loss_train_epoch / batch_id
         iou_train_epoch = iou_train_epoch / batch_id
@@ -206,7 +207,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         val_status = 0
 
-        clearDataQueue(CONFIG, "val")
+        setMode("val")
         
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
