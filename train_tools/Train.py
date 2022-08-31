@@ -61,12 +61,12 @@ def setMode(mode):
         f.write(xml_decode)
         f.close()
 
-        f = open("../configs/config_com.xml", 'r')
-        r = f.read()
-        if(len(r) != 0 and r[-4:] != "t>t>"):
-            if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
-                print(xmltodict.parse(r)['root']['MODE']['#text'])
-                return
+        with open("../configs/config_com.xml", 'r') as f:
+            r = f.read()
+            if(len(r) != 0 and r[-4:] != "t>t>"):
+                if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
+                    print(xmltodict.parse(r)['root']['MODE']['#text'])
+                    return
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
