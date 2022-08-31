@@ -244,6 +244,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     removeFiles(remove_files)
                     cut_ = cut_ + 1
                 
+                data = next(val_loader_adversarial_iter)
+                
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
         iou_val_epoch = iou_val_epoch / (batch_id - cut_)
         acc_val_epoch = acc_val_epoch / (batch_id - cut_)
