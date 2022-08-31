@@ -44,7 +44,7 @@ if __name__ == '__main__':
     CONFIG_PATH = sys.argv[1]
     CONFIG = json.load(open(CONFIG_PATH, "r+"))
     
-    print("init com conf...")
+    print("Init com_conf...")
     conConfInit(CONFIG["MODE"])
 
     print("Clear model cache...")
