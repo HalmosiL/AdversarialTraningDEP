@@ -27,7 +27,7 @@ def clearDataQueue(CONFIG, mode):
             for filename in glob.glob(CONFIG['DATA_QUEUE'] + "*.pt"):
                 os.unlink(filename)
     elif(mode == "val"):
-        if(os.path.exists(CONFIG['DATA_QUEUE'] + "_val/")):
+        if(os.path.exists(CONFIG['DATA_QUEUE'][:-1] + "_val/")):
             for filename in glob.glob(CONFIG['DATA_QUEUE'] + "_val/*.pt"):
                 os.unlink(filename)
 
