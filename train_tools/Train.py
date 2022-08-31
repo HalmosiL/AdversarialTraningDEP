@@ -60,7 +60,7 @@ def setMode(mode):
 
         f = open("../configs/config_com.xml", 'r')
         r = f.read()
-        if(len(r) != 0 and r[-2] != "t>"):
+        if(len(r) != 0 and r[-2:] != "t>"):
             return
                 
 def cacheModel(cache_id, model, CONFIG):
