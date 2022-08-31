@@ -189,9 +189,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
             data = next(train_loader_adversarial_iter)
 
-        clearDataQueue(CONFIG, "val")
-
-
         loss_train_epoch = loss_train_epoch / batch_id
         iou_train_epoch = iou_train_epoch / batch_id
         acc_train_epoch = acc_train_epoch / batch_id
@@ -213,10 +210,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         val_status = 0
 
-        while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
-            time.sleep(0.25)
+        if(CONFIG["START_EXECUTOR"]):
+            clearDataQueue(CONFIG, "val")
+            
+            while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
+                time.sleep(0.25)
         
         setMode("val")
+        print(xmltodict.parse(open("../configs/config_com.xml", 'r'))['root']['MODE']['#text'])
         
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
