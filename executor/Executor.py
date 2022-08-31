@@ -137,10 +137,6 @@ class Executor:
             my_xml = file_.read()
 
             if(len(my_xml) != 0):
-                if(my_xml[-4:] == "t>t>"):
-                    my_xml = my_xml[:-2]
-                    
-                print(my_xml)
                 return xmltodict.parse(my_xml)
         
     def updateModel(self, model):
@@ -186,7 +182,8 @@ class Executor:
             f.close() 
 
             f = open("../configs/config_com.xml", 'r')
-            if(len(f.read()) != 0):
+            r = f.read()
+            if(len(r) != 0 and r[-4:] != "t>t>"):
                 return
 
     def data_queue_is_not_full(self, com_conf_mode):
