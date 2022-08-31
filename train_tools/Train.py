@@ -209,7 +209,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         val_status = 0
 
-        while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0)
+        while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
             time.sleep(0.25)
         
         setMode("val")
