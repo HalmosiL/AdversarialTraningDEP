@@ -240,17 +240,9 @@ class Executor:
                 print("Data queue is full...")
 
     def start(self):
-        ok = True
         while(True):
-                if(ok):
-                    data = self.readConf()
+                data = self.readConf()
                 time.sleep(2)
-                print(data['root']['Executor_Finished_Train']['#text'])
-                print(data['root']['Executor_Finished_Train']['#text'] == "False")
-
-                if(data['root']['Executor_Finished_Train']['#text'] == 'True' and ok):
-                    ok = False
-                    print("change")
                 
                 if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
                     self.generateTrainData("train")
