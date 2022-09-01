@@ -235,6 +235,9 @@ class Executor:
                             self.alertGenerationFinished("val")
                             
                         return
+                else:
+                    print("There is no model to use yet....")
+                    time.sleep(2)
             else:
                 print("Data queue is full...")
 
