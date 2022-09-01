@@ -16,11 +16,10 @@ class DatasetAdversarial:
     
     def readConf(self):        
         while(True):
-            file_ = open('../configs/config_com.xml', 'r', encoding='utf-8')
-            my_xml = file_.read()
-            file_.close()
-            if(len(my_xml) != 0):
-                return xmltodict.parse(my_xml)
+            with open("../configs/config_com.xml", 'w') as f:
+                my_xml = f.read()
+                if(len(my_xml) != 0):
+                    return xmltodict.parse(my_xml)
 
     def __getitem__(self, idx):
         image_ = None
