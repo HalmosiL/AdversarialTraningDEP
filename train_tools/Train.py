@@ -39,12 +39,12 @@ def removeFiles(data):
 def setMode(mode): 
     if(mode == "val"):
         os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = True
-        os.environ['Executor_Finished_Val'] = False
+        os.environ['Executor_Finished_Train'] = "True"
+        os.environ['Executor_Finished_Val'] = "False"
     elif(mode == "train"):
         os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = False
-        os.environ['Executor_Finished_Val'] = True
+        os.environ['Executor_Finished_Train'] = "False"
+        os.environ['Executor_Finished_Val'] = "True"
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
