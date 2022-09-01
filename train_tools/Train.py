@@ -5,8 +5,6 @@ import os
 import time
 import numpy as np
 import json
-import dicttoxml
-import xmltodict
 import time
 
 sys.path.insert(0, "../")
@@ -39,32 +37,14 @@ def removeFiles(data):
         os.remove(m)
 
 def setMode(mode): 
-    while(True):
-        with open("../configs/config_com.xml", 'w') as f:
-            if(mode == "val"):
-                data = {
-                    'MODE': 'val',
-                    'Executor_Finished_Train': True, 
-                    'Executor_Finished_Val': False
-                }
-            elif(mode == "train"):
-                data = {
-                    'MODE': 'train',
-                    'Executor_Finished_Train': False, 
-                    'Executor_Finished_Val': True
-                }
-
-            xml = dicttoxml.dicttoxml(data)
-            xml_decode = xml.decode()
-
-            f.write(xml_decode)
-
-        with open("../configs/config_com.xml", 'r') as f:
-            r = f.read()
-            if(len(r) != 0 and r[-4:] != "t>t>"):
-                if(xmltodict.parse(r)['root']['MODE']['#text'] == mode):
-                    print(xmltodict.parse(r)['root']['MODE']['#text'])
-                    return
+    if(mode == "val"):
+        os.environ['MODE'] = 'val'
+        os.environ['Executor_Finished_Train'] = True
+        os.environ['Executor_Finished_Val'] = False
+    elif(mode == "train"):
+        os.environ['MODE'] = 'train'
+        os.environ['Executor_Finished_Train'] = False
+        os.environ['Executor_Finished_Val'] = True
                 
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
@@ -142,52 +122,49 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         data = next(train_loader_adversarial_iter)
 
         while(len(data)):
-            if(data[0] == "check"):
-                setMode("train")
+            if(len(data) == 3):
+                image = data[0][0].to(CONFIG["DEVICE"][0])
+                target = data[1][0].to(CONFIG["DEVICE"][0])
+
+                current_iter = e * len(train_loader_adversarial) + batch_id + 1 - cut
+                #poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
+
+                remove_files = np.array(data[2]).flatten()
+                optimizer.zero_grad()
+
+                output, main_loss, aux_loss, _ = model(image, target)
+                loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
+
+                loss.backward()
+                optimizer.step()
+
+                intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
+                intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
+
+                iou = np.mean(intersection / (union + 1e-10))
+                acc = sum(intersection) / (sum(target) + 1e-10)
+
+                logger.log_loss_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, loss.item())
+                logger.log_iou_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, iou)
+                logger.log_acc_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, acc)
+
+                iou_train_epoch += iou
+                loss_train_epoch += loss.item()
+                acc_train_epoch += acc
+
+                if(e % CONFIG["MODEL_CACHE_PERIOD"] == 0):
+                    cache_id = cacheModel(cache_id, model, CONFIG)
+
+                removeFiles(remove_files)
+                batch_id += 1
             else:
-                if(len(data) == 3):
-                    image = data[0][0].to(CONFIG["DEVICE"][0])
-                    target = data[1][0].to(CONFIG["DEVICE"][0])
+                print("Jump..")
+                remove_files = np.array(data[0]).flatten()
+                removeFiles(remove_files)
 
-                    current_iter = e * len(train_loader_adversarial) + batch_id + 1 - cut
-                    #poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
+                cut += 1
 
-                    remove_files = np.array(data[2]).flatten()
-                    optimizer.zero_grad()
-
-                    output, main_loss, aux_loss, _ = model(image, target)
-                    loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
-
-                    loss.backward()
-                    optimizer.step()
-
-                    intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
-                    intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
-
-                    iou = np.mean(intersection / (union + 1e-10))
-                    acc = sum(intersection) / (sum(target) + 1e-10)
-
-                    logger.log_loss_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, loss.item())
-                    logger.log_iou_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, iou)
-                    logger.log_acc_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, acc)
-
-                    iou_train_epoch += iou
-                    loss_train_epoch += loss.item()
-                    acc_train_epoch += acc
-
-                    if(e % CONFIG["MODEL_CACHE_PERIOD"] == 0):
-                        cache_id = cacheModel(cache_id, model, CONFIG)
-
-                    removeFiles(remove_files)
-                    batch_id += 1
-                else:
-                    print("Jump..")
-                    remove_files = np.array(data[0]).flatten()
-                    removeFiles(remove_files)
-
-                    cut += 1
-
-                data = next(train_loader_adversarial_iter)
+            data = next(train_loader_adversarial_iter)
 
         loss_train_epoch = loss_train_epoch / batch_id
         iou_train_epoch = iou_train_epoch / batch_id
@@ -228,38 +205,35 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         model = model.eval()
         
         while(len(data)):
-            if(data[0] == "check"):
-                setMode("val")
-            else:
-                with torch.no_grad():
-                    if(len(data) == 3):
-                        image_val = data[0][0].to(CONFIG["DEVICE"][0])
-                        target = data[1][0].to(CONFIG["DEVICE"][0])
-                        remove_files = np.array(data[2]).flatten()
+            with torch.no_grad():
+                if(len(data) == 3):
+                    image_val = data[0][0].to(CONFIG["DEVICE"][0])
+                    target = data[1][0].to(CONFIG["DEVICE"][0])
+                    remove_files = np.array(data[2]).flatten()
 
-                        output, _ = model(image_val)
+                    output, _ = model(image_val)
 
-                        intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
-                        intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
+                    intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
+                    intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
 
-                        iou = np.mean(intersection / (union + 1e-10))
-                        acc = sum(intersection) / (sum(target) + 1e-10)
+                    iou = np.mean(intersection / (union + 1e-10))
+                    acc = sum(intersection) / (sum(target) + 1e-10)
 
-                        iou_val_epoch += iou
-                        loss_val_epoch += loss
-                        acc_val_epoch += acc
-                        val_status += 1
+                    iou_val_epoch += iou
+                    loss_val_epoch += loss
+                    acc_val_epoch += acc
+                    val_status += 1
 
-                        print("Val finished:" + str(val_status / (val_loader_len - cut_))[:5] + "%", end="\r")
-                        removeFiles(remove_files)
-                        batch_id += 1
-                    else:
-                        print("jump...")
-                        remove_files = np.array(data[0]).flatten()
-                        removeFiles(remove_files)
-                        cut_ = cut_ + 1
+                    print("Val finished:" + str(val_status / (val_loader_len - cut_))[:5] + "%", end="\r")
+                    removeFiles(remove_files)
+                    batch_id += 1
+                else:
+                    print("jump...")
+                    remove_files = np.array(data[0]).flatten()
+                    removeFiles(remove_files)
+                    cut_ = cut_ + 1
 
-                    data = next(val_loader_adversarial_iter)
+                data = next(val_loader_adversarial_iter)
 
                 
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
