@@ -245,10 +245,12 @@ class Executor:
                 time.sleep(2)
                 
                 if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
+                    print("Start train gen...")
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
 
                 if(not data['root']['Executor_Finished_Val']['#text'] == 'True' and data['root']['MODE']['#text'] == "val"):
+                    print("Start val gen...")
                     self.generateTrainData("val")
                     self.alertGenerationFinished("val")
                 
