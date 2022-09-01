@@ -144,8 +144,7 @@ class Executor:
         
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
-        print(self.model_cache + "*.pt")
-
+        
         if(not len(new_model_name)):
             if(self.model_name is None):
                 print("There is no model to use yet...")
