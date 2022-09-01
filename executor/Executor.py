@@ -160,12 +160,12 @@ class Executor:
     def alertGenerationFinished(self, mode):
         if(mode == "val"):
             os.environ['MODE'] = 'train'
-            os.environ['Executor_Finished_Train'] = True
-            os.environ['Executor_Finished_Val'] = False
+            os.environ['Executor_Finished_Train'] = "True"
+            os.environ['Executor_Finished_Val'] = "False"
         elif(mode == "train"):
             os.environ['MODE'] = 'val'
-            os.environ['Executor_Finished_Train'] = False
-            os.environ['Executor_Finished_Val'] = True
+            os.environ['Executor_Finished_Train'] = "False"
+            os.environ['Executor_Finished_Val'] = "True"
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
