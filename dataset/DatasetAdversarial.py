@@ -61,6 +61,5 @@ class DatasetAdversarial:
 
                 if(count_no_data > 1 and count_no_data % 200 == 0):
                     print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...", end="\r")
-                    print(con_conf)
                 
         return [image_, label_, remove_queue]
