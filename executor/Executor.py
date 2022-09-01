@@ -158,11 +158,11 @@ class Executor:
                 return model
 
     def alertGenerationFinished(self, mode):
-        if(mode == "val"):
+        if(mode == "train"):
             os.environ['MODE'] = 'train'
             os.environ['Executor_Finished_Train'] = "True"
             os.environ['Executor_Finished_Val'] = "False"
-        elif(mode == "train"):
+        elif(mode == "val"):
             os.environ['MODE'] = 'val'
             os.environ['Executor_Finished_Train'] = "False"
             os.environ['Executor_Finished_Val'] = "True"
