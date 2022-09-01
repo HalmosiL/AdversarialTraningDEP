@@ -2,6 +2,7 @@ from models.Network import PSPNet, Dummy
 import torch
 import torch.nn as nn
 
+'''
 def slice_model(model, level="Encoder"):
     if(level == "Encoder"):
         return model.getSliceModel().eval()
@@ -17,7 +18,12 @@ def load_model_slice(path, device):
     model = model.to(device)
     return model
 
-'''def get_model(device):
+'''
+def slice_model(model, level="Encoder"):
+    if(level == "Encoder"):
+        return model.getSliceModel().eval()
+
+def get_model(device):
     model = PSPNet(
         layers=50,
         bins=(1, 2, 3, 6),
@@ -66,4 +72,3 @@ def load_model_slice(path, device):
     model.load_state_dict(torch.load(path, map_location=device))
     model = model.to(device).eval()
     return model
-'''
