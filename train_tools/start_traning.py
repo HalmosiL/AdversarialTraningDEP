@@ -3,7 +3,6 @@ import glob
 import os
 import torch
 import json
-import dicttoxml
 import subprocess
 
 sys.path.insert(0, "../")
@@ -17,30 +16,14 @@ def start(CONFIG_PATH, script):
     list_files = subprocess.Popen(bashCommand, stdout=subprocess.PIPE)
 
 def conConfInit(mode):
-    while(True):
-        with open("../configs/config_com.xml", 'w+') as f:
-            if(mode == "train"):
-                data = {
-                    'MODE': 'train',
-                    'Executor_Finished_Train': False, 
-                    'Executor_Finished_Val': True
-                }
-            elif(mode == "val"):
-                data = {
-                    'MODE': 'val',
-                    'Executor_Finished_Train': True, 
-                    'Executor_Finished_Val': False
-                }
-
-            xml = dicttoxml.dicttoxml(data)
-            xml_decode = xml.decode()
-
-            f.write(xml_decode)
-
-        with open("../configs/config_com.xml", 'r') as f:
-            r = f.read()
-            if(len(r) != 0 and r[-4:] != "t>t>"):
-                return
+    if(mode == "val"):
+        os.environ['MODE'] = 'val'
+        os.environ['Executor_Finished_Train'] = True
+        os.environ['Executor_Finished_Val'] = False
+    elif(mode == "train"):
+        os.environ['MODE'] = 'train'
+        os.environ['Executor_Finished_Train'] = False
+        os.environ['Executor_Finished_Val'] = True
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
