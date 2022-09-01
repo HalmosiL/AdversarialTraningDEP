@@ -13,6 +13,7 @@ from util.Optimizer import poly_learning_rate
 from models.Model import get_model
 from util.Metrics import intersectionAndUnion
 from util.WBLogger import LogerWB
+from util.Comunication import Comunication
 
 def sort_(key):
     key = key.split("_")[-1]
@@ -36,16 +37,6 @@ def removeFiles(data):
     for m in remove_files:
         os.remove(m)
 
-def setMode(mode): 
-    if(mode == "val"):
-        os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = "True"
-        os.environ['Executor_Finished_Val'] = "False"
-    elif(mode == "train"):
-        os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = "False"
-        os.environ['Executor_Finished_Val'] = "True"
-                
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     models.sort(key=sort_)
@@ -58,7 +49,8 @@ def cacheModel(cache_id, model, CONFIG):
 
 def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader):
     logger = LogerWB(CONFIG["WB_LOG"], print_messages=CONFIG["PRINT_LOG"])
-
+    comunication = Comunication()
+    
     if(CONFIG["MODE_LOADE"]):
         print("Continum Traning.....")
         model = get_model(CONFIG['DEVICE'][0])
@@ -194,7 +186,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
             while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
                 time.sleep(0.25)
         
-        setMode("val")
+        comunication.setMode("val")
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
 
@@ -245,4 +237,4 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
         logger.log_acc_epoch_val_adversarial(e, acc_val_epoch)
 
-        setMode("train")
+        comunication.setMode("train")
