@@ -13,7 +13,7 @@ import util.Transforms as transform
 from dataset.Dataset import SemData
 
 from models.Model import slice_model, load_model_slice
-from utils.Comunication import Comunication
+from util.Comunication import Comunication
 
 class Executor:
     def sort_(self, key):
