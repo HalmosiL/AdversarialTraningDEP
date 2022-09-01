@@ -30,7 +30,7 @@ class Comunication(SingletonClass):
     elif(mode == "train"):
         data = {
           'MODE': 'train'
-          'Executor_Finished_Train': "True"
+          'Executor_Finished_Train': "True",
           'Executor_Finished_Val': "False"
         }
         
@@ -51,7 +51,7 @@ class Comunication(SingletonClass):
     elif(mode == "train"):
         data = {
           'MODE': 'train'
-          'Executor_Finished_Train': "False"
+          'Executor_Finished_Train': "False",
           'Executor_Finished_Val': "True"
         }
         
@@ -72,7 +72,7 @@ class Comunication(SingletonClass):
     elif(mode == "train"):
         data = {
           'MODE': 'train'
-          'Executor_Finished_Train': "False"
+          'Executor_Finished_Train': "False",
           'Executor_Finished_Val': "True"
         }
         
