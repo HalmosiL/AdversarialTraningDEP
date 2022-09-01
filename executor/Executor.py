@@ -230,14 +230,14 @@ class Executor:
                     print("Stop Executor...")
                     break
                 
-                if(not data['Executor_Finished_Train'] and data['MODE'] == "train"):
+                if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
                     print("Start train gen...")
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
 
                 self.model_name = None 
                     
-                if(not data['Executor_Finished_Val'] and data['MODE'] == "val"):
+                if(not data['Executor_Finished_Val'] == "True" and data['MODE'] == "val"):
                     print("Start val gen...")
                     self.generateTrainData("val")
                     self.alertGenerationFinished("val")
