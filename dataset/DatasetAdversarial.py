@@ -16,7 +16,7 @@ class DatasetAdversarial:
     
     def readConf(self):        
         while(True):
-            with open("../configs/config_com.xml", 'w') as f:
+            with open("../configs/config_com.xml", 'r') as f:
                 my_xml = f.read()
                 if(len(my_xml) != 0):
                     return xmltodict.parse(my_xml)
