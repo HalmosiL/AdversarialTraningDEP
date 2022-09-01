@@ -51,7 +51,6 @@ class DatasetAdversarial:
             else:
                 count_no_data += 1
                 
-                print(con_conf)
                 if(self.mode_ == "train"):
                     if(con_conf['Executor_Finished_Train'] == "True"):
                         return []
@@ -62,5 +61,6 @@ class DatasetAdversarial:
 
                 if(count_no_data > 1 and count_no_data % 200 == 0):
                     print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...", end="\r")
+                    print(con_conf)
                 
         return [image_, label_, remove_queue]
