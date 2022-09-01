@@ -243,7 +243,8 @@ class Executor:
                 if(ok):
                     data = self.readConf()
                 time.sleep(2)
-                print(type(data['root']['Executor_Finished_Train']['#text']))
+                print(data['root']['Executor_Finished_Train']['#text'])
+                print(data['root']['Executor_Finished_Train']['#text'] == "False")
 
                 if(data['root']['Executor_Finished_Train']['#text'] == 'True' and ok):
                     ok = False
