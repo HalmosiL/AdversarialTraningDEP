@@ -48,7 +48,6 @@ class DatasetAdversarial:
                 count_no_data += 1
                 if(count_no_data > 1 and count_no_data % 200 == 0):
                     print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...")
-                    print(con_conf)
                 if(
                     (self.mode_ == "train" and con_conf['Executor_Finished_Train'] == "True") or
                     (self.mode_ == "val" and con_conf['Executor_Finished_Val'] == "True")
