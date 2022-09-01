@@ -13,6 +13,7 @@ import util.Transforms as transform
 from dataset.Dataset import SemData
 
 from models.Model import slice_model, load_model_slice
+from utils.Comunication import Comunication
 
 class Executor:
     def sort_(self, key):
@@ -38,6 +39,7 @@ class Executor:
         clip_size
     ):
         self.mode = None
+        self.comunication = Comunication()
         
         try: 
             print("Create data cache...")
@@ -130,13 +132,6 @@ class Executor:
             step_size=self.step_size,
             clip_size=self.clip_size
         )
-
-    def readConf(self):    
-        return {
-            'MODE': os.environ['MODE'],
-            'Executor_Finished_Train': os.environ['Executor_Finished_Train'],
-            'Executor_Finished_Val': os.environ['Executor_Finished_Val']
-        }
         
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
@@ -157,16 +152,6 @@ class Executor:
             else:
                 return model
 
-    def alertGenerationFinished(self, mode):
-        if(mode == "train"):
-            os.environ['MODE'] = 'train'
-            os.environ['Executor_Finished_Train'] = "True"
-            os.environ['Executor_Finished_Val'] = "False"
-        elif(mode == "val"):
-            os.environ['MODE'] = 'val'
-            os.environ['Executor_Finished_Train'] = "False"
-            os.environ['Executor_Finished_Val'] = "True"
-
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
             return (len(glob.glob(self.data_queue + "*.pt")) / 2) < self.queue_size_train
@@ -183,7 +168,7 @@ class Executor:
         model = None
 
         while(True):        
-            data = self.readConf()
+            data = self.comunication.readConf()
             if(data['MODE'] == "off"):
                 break
 
@@ -210,9 +195,9 @@ class Executor:
                         element_id += 1
                     except StopIteration:
                         if(mode == "train"):
-                            self.alertGenerationFinished("train")
+                            self.comunication.alertGenerationFinished("train")
                         elif(mode == "val"):
-                            self.alertGenerationFinished("val")
+                            self.comunication.alertGenerationFinished("val")
                             
                         return
                 else:
@@ -223,7 +208,7 @@ class Executor:
 
     def start(self):
         while(True):
-                data = self.readConf()
+                data = self.comunication.readConf()
                 time.sleep(2)
                 
                 if(data['MODE'] == "off"):
