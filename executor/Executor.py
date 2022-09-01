@@ -240,7 +240,8 @@ class Executor:
     def start(self):
         while(True):
                 data = self.readConf()
-
+                time.sleep(2)
+                
                 if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
