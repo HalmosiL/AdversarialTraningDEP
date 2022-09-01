@@ -142,7 +142,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         data = next(train_loader_adversarial_iter)
 
         while(len(data)):
-            if(data == ["check"]):
+            if(data[0] == "check"):
                 setMode("train")
             else:
                 if(len(data) == 3):
@@ -228,7 +228,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         model = model.eval()
         
         while(len(data)):
-            if(data == ["check"]):
+            if(data[0] == "check"):
                 setMode("val")
             else:
                 with torch.no_grad():
