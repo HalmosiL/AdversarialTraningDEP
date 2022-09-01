@@ -50,7 +50,8 @@ class DatasetAdversarial:
                     return [remove_queue]
             else:
                 count_no_data += 1
-                #if(count_no_data > 1 and count_no_data % 200 == 0):
+                if(count_no_data > 1 and count_no_data % 1000 == 0):
+                    print(con_conf)
                 #    print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...", end="\r")
                 if(
                     (self.mode_ == "train" and con_conf['Executor_Finished_Train'] == "True") or
