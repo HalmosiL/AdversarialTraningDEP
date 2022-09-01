@@ -121,8 +121,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         batch_id = 0
         train_loader_adversarial_iter = iter(train_loader_adversarial)
         data = next(train_loader_adversarial_iter)
-
-        print(data)
         
         while(len(data)):
             if(len(data) == 3):
