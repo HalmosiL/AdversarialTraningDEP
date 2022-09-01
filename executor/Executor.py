@@ -205,7 +205,6 @@ class Executor:
         while(True):        
             data = self.readConf()
             if(data['root']['MODE']['#text'] == "off"):
-                print("Executor is stoped...")
                 break
 
             model = self.updateModel(model)
@@ -243,6 +242,10 @@ class Executor:
         while(True):
                 data = self.readConf()
                 time.sleep(2)
+                
+                if(data['root']['MODE']['#text'] == "off"):
+                    print("Stop Executor...")
+                    break
                 
                 if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
                     print("Start train gen...")
