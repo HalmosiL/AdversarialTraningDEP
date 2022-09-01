@@ -18,12 +18,12 @@ def start(CONFIG_PATH, script):
 def conConfInit(mode):
     if(mode == "val"):
         os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = True
-        os.environ['Executor_Finished_Val'] = False
+        os.environ['Executor_Finished_Train'] = "True"
+        os.environ['Executor_Finished_Val'] = "False"
     elif(mode == "train"):
         os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = False
-        os.environ['Executor_Finished_Val'] = True
+        os.environ['Executor_Finished_Train'] = "False"
+        os.environ['Executor_Finished_Val'] = "True"
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
