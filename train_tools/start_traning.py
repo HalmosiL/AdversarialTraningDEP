@@ -18,31 +18,29 @@ def start(CONFIG_PATH, script):
 
 def conConfInit(mode):
     while(True):
-        f = open("../configs/config_com.xml", 'w+')
-        if(mode == "train"):
-            data = {
-                'MODE': 'train',
-                'Executor_Finished_Train': False, 
-                'Executor_Finished_Val': True
-            }
-        elif(mode == "val"):
-            data = {
-                'MODE': 'val',
-                'Executor_Finished_Train': True, 
-                'Executor_Finished_Val': False
-            }
+        with open("../configs/config_com.xml", 'w+') as f:
+            if(mode == "train"):
+                data = {
+                    'MODE': 'train',
+                    'Executor_Finished_Train': False, 
+                    'Executor_Finished_Val': True
+                }
+            elif(mode == "val"):
+                data = {
+                    'MODE': 'val',
+                    'Executor_Finished_Train': True, 
+                    'Executor_Finished_Val': False
+                }
 
-        xml = dicttoxml.dicttoxml(data)
-        xml_decode = xml.decode()
+            xml = dicttoxml.dicttoxml(data)
+            xml_decode = xml.decode()
 
-        f.write(xml_decode)
-        f.close() 
+            f.write(xml_decode)
 
-        f = open("../configs/config_com.xml", 'r')
-        r = f.read()
-        f.close() 
-        if(len(r) != 0 and r[-4:] != "t>t>"):
-            return
+        with open("../configs/config_com.xml", 'r') as f:
+            r = f.read()
+            if(len(r) != 0 and r[-4:] != "t>t>"):
+                return
 
 if __name__ == '__main__':
     if len(sys.argv) != 2:
