@@ -10,30 +10,21 @@ from dataset.GetDatasetLoader import getDatasetLoader
 from dataset.Dataset import SemData
 from train_tools.Train import train
 import util.Transforms as transform
+from util.Comunication import Comunication
 
 def start(CONFIG_PATH, script):
     bashCommand = [script, CONFIG_PATH]
     list_files = subprocess.Popen(bashCommand, stdout=subprocess.PIPE)
 
-def conConfInit(mode):
-    if(mode == "val"):
-        os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = "True"
-        os.environ['Executor_Finished_Val'] = "False"
-    elif(mode == "train"):
-        os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = "False"
-        os.environ['Executor_Finished_Val'] = "True"
-
 if __name__ == '__main__':
     if len(sys.argv) != 2:
         raise ValueError('You have to give a config file path...')
-
+        
     CONFIG_PATH = sys.argv[1]
     CONFIG = json.load(open(CONFIG_PATH, "r+"))
     
     print("Init com_conf...")
-    conConfInit(CONFIG["MODE"])
+    Comunication().conConfInit(CONFIG["MODE"])
 
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
