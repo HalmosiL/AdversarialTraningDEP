@@ -255,6 +255,8 @@ class Executor:
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
 
+                self.model_name = None 
+                    
                 if(not data['root']['Executor_Finished_Val']['#text'] == 'True' and data['root']['MODE']['#text'] == "val"):
                     print("Start val gen...")
                     self.generateTrainData("val")
