@@ -132,15 +132,11 @@ class Executor:
         )
 
     def readConf(self):    
-        while(True):
-            with open('../configs/config_com.xml', 'r') as f:
-                my_xml = f.read()
-
-                if(len(my_xml) != 0):
-                    try:
-                        return xmltodict.parse(my_xml)
-                    except Exception as e:
-                        print(e)
+        return {
+            'MODE': os.environ['MODE'],
+            'Executor_Finished_Train': os.environ['Executor_Finished_Train'],
+            'Executor_Finished_Val': os.environ['Executor_Finished_Val']
+        }
         
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
@@ -162,30 +158,14 @@ class Executor:
                 return model
 
     def alertGenerationFinished(self, mode):
-        while(True):
-            with open("../configs/config_com.xml", 'w') as f:
-                if(mode == "train"):
-                    data = {
-                        'MODE': 'train',
-                        'Executor_Finished_Train': True,
-                        'Executor_Finished_Val': False
-                    }
-                elif(mode == "val"):
-                    data = {
-                        'MODE': 'val',
-                        'Executor_Finished_Train': False,
-                        'Executor_Finished_Val': True
-                    }
-
-                xml = dicttoxml.dicttoxml(data)
-                xml_decode = xml.decode()
-
-                f.write(xml_decode)
-
-            with open("../configs/config_com.xml", 'r') as f:
-                r = f.read()
-                if(len(r) != 0 and r[-4:] != "t>t>"):
-                    return
+        if(mode == "val"):
+            os.environ['MODE'] = 'train'
+            os.environ['Executor_Finished_Train'] = True
+            os.environ['Executor_Finished_Val'] = False
+        elif(mode == "train"):
+            os.environ['MODE'] = 'val'
+            os.environ['Executor_Finished_Train'] = False
+            os.environ['Executor_Finished_Val'] = True
 
     def data_queue_is_not_full(self, com_conf_mode):
         if(com_conf_mode == "train"):
@@ -204,12 +184,12 @@ class Executor:
 
         while(True):        
             data = self.readConf()
-            if(data['root']['MODE']['#text'] == "off"):
+            if(data['MODE'] == "off"):
                 break
 
             model = self.updateModel(model)
 
-            if(self.data_queue_is_not_full(data['root']['MODE']['#text'])):
+            if(self.data_queue_is_not_full(data['MODE'])):
                 if(model is not None):
                     try:
                         batch = next(iter_)
@@ -221,7 +201,7 @@ class Executor:
                             model=model,
                             attack=self.attack,
                             number_of_steps=self.number_of_steps,
-                            data_queue=self.data_queue if data['root']['MODE']['#text'] == "train" else self.data_queue[:-1] + "_val/",
+                            data_queue=self.data_queue if data['MODE'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
                             gen=(mode == "train")
@@ -246,18 +226,18 @@ class Executor:
                 data = self.readConf()
                 time.sleep(2)
                 
-                if(data['root']['MODE']['#text'] == "off"):
+                if(data['MODE'] == "off"):
                     print("Stop Executor...")
                     break
                 
-                if(not data['root']['Executor_Finished_Train']['#text'] == 'True' and data['root']['MODE']['#text'] == "train"):
+                if(not data['Executor_Finished_Train'] and data['MODE'] == "train"):
                     print("Start train gen...")
                     self.generateTrainData("train")
                     self.alertGenerationFinished("train")
 
                 self.model_name = None 
                     
-                if(not data['root']['Executor_Finished_Val']['#text'] == 'True' and data['root']['MODE']['#text'] == "val"):
+                if(not data['Executor_Finished_Val'] and data['MODE'] == "val"):
                     print("Start val gen...")
                     self.generateTrainData("val")
                     self.alertGenerationFinished("val")
