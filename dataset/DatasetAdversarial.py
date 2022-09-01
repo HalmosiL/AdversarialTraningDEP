@@ -36,14 +36,6 @@ class DatasetAdversarial:
         
         while(label_ is None):
             con_conf = self.readConf()
-            print(con_conf)
-            if(self.mode_ == "train"):
-                if(con_conf['Executor_Finished_Train'] == "True"):
-                    return []
-                    
-            elif(self.mode_ == "val"):
-                if(con_conf['Executor_Finished_Val'] == "True"):
-                    return []
                 
             if(
                 os.path.exists(image_path) and
@@ -58,6 +50,16 @@ class DatasetAdversarial:
                     return [remove_queue]
             else:
                 count_no_data += 1
+                
+                print(con_conf)
+                if(self.mode_ == "train"):
+                    if(con_conf['Executor_Finished_Train'] == "True"):
+                        return []
+
+                elif(self.mode_ == "val"):
+                    if(con_conf['Executor_Finished_Val'] == "True"):
+                        return []
+
                 if(count_no_data > 1 and count_no_data % 200 == 0):
                     print("waiting for data sice:" + str(0.01 * count_no_data)[:5] + "(s)...", end="\r")
                 
