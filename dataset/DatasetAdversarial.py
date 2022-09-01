@@ -16,11 +16,11 @@ class DatasetAdversarial:
         return sys.maxsize
     
     def readConf(self):        
-        while(True):
-            with open("../configs/config_com.xml", 'r') as f:
-                my_xml = f.read()
-                if(len(my_xml) != 0):
-                    return xmltodict.parse(my_xml)
+        return {
+            'MODE': os.environ['MODE'],
+            'Executor_Finished_Train': os.environ['Executor_Finished_Train'],
+            'Executor_Finished_Val': os.environ['Executor_Finished_Val']
+        }
 
     def __getitem__(self, idx):
         image_ = None
@@ -39,11 +39,11 @@ class DatasetAdversarial:
             con_conf = self.readConf()
                 
             if(self.mode_ == "train"):
-                if(con_conf['root']['Executor_Finished_Train']['#text'] == "True"):
+                if(con_conf['Executor_Finished_Train']):
                     return []
                     
             elif(self.mode_ == "val"):
-                if(con_conf['root']['Executor_Finished_Val']['#text'] == "True"):
+                if(con_conf['Executor_Finished_Val']):
                     return []
                 
             if(
