@@ -95,7 +95,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
     train_loader_len = int(CONFIG["TRAIN_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
     val_loader_len = int(CONFIG["VAL_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
 
-    print("ok", os.environ['MODE'], os.environ['Executor_Finished_Train'], os.environ['Executor_Finished_Val'])
     for e in range(CONFIG["EPOCHS"]):
         model = model.train()
 
