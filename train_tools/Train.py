@@ -222,6 +222,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
         batch_id = 0
 
+        model = model.eval()
+        
         while(len(data)):
             with torch.no_grad():
                 if(len(data) == 3):
