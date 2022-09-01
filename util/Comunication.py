@@ -1,5 +1,7 @@
-import os
-
+from dicttoxml import dicttoxml
+from xml.dom.minidom import parseString
+import xmltodict
+  
 class SingletonClass(object):
   def __new__(cls):
     if not hasattr(cls, 'instance'):
@@ -8,39 +10,76 @@ class SingletonClass(object):
   
 class Comunication(SingletonClass):
   def readConf(self):    
+    with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
+        my_xml = file.read()
+        
+    my_dict = xmltodict.parse(my_xml)
     return {
-        'MODE': os.environ['MODE'],
-        'Executor_Finished_Train': os.environ['Executor_Finished_Train'],
-        'Executor_Finished_Val': os.environ['Executor_Finished_Val']
+      'MODE': my_dict['root']['MODE']['#text'],
+      'Executor_Finished_Train': my_dict['root']['Executor_Finished_Train']['#text'],
+      'Executor_Finished_Val': my_dict['root']['Executor_Finished_Val']['#text']
     }
     
   def alertGenerationFinished(self, mode):
-    if(mode == "train"):
-        os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = "True"
-        os.environ['Executor_Finished_Val'] = "False"
-    elif(mode == "val"):
-        os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = "False"
-        os.environ['Executor_Finished_Val'] = "True"
-          
-  def conConfInit(self, mode):
     if(mode == "val"):
-        os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = "True"
-        os.environ['Executor_Finished_Val'] = "False"
+        data = {
+          'MODE': 'val',
+          'Executor_Finished_Train': "False",
+          'Executor_Finished_Val': "True"
+        }
     elif(mode == "train"):
-        os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = "False"
-        os.environ['Executor_Finished_Val'] = "True"
+        data = {
+          'MODE': 'train'
+          'Executor_Finished_Train': "True"
+          'Executor_Finished_Val': "False"
+        }
+        
+    xml = dicttoxml(data)
+    xml_decode = xml.decode()
+
+    xmlfile = open("../configs/config_com.xml", "w+")
+    xmlfile.write(xml_decode)
+    xmlfile.close()
+          
+  def conConfInit(self, mode):    
+    if(mode == "val"):
+        data = {
+          'MODE': 'val',
+          'Executor_Finished_Train': "True",
+          'Executor_Finished_Val': "False"
+        }
+    elif(mode == "train"):
+        data = {
+          'MODE': 'train'
+          'Executor_Finished_Train': "False"
+          'Executor_Finished_Val': "True"
+        }
+        
+    xml = dicttoxml(data)
+    xml_decode = xml.decode()
+
+    xmlfile = open("../configs/config_com.xml", "w+")
+    xmlfile.write(xml_decode)
+    xmlfile.close()
         
   def setMode(self, mode): 
     if(mode == "val"):
-        os.environ['MODE'] = 'val'
-        os.environ['Executor_Finished_Train'] = "True"
-        os.environ['Executor_Finished_Val'] = "False"
+        data = {
+          'MODE': 'val',
+          'Executor_Finished_Train': "True",
+          'Executor_Finished_Val': "False"
+        }
     elif(mode == "train"):
-        os.environ['MODE'] = 'train'
-        os.environ['Executor_Finished_Train'] = "False"
-        os.environ['Executor_Finished_Val'] = "True"
+        data = {
+          'MODE': 'train'
+          'Executor_Finished_Train': "False"
+          'Executor_Finished_Val': "True"
+        }
+        
+    xml = dicttoxml(data)
+    xml_decode = xml.decode()
+
+    xmlfile = open("../configs/config_com.xml", "w")
+    xmlfile.write(xml_decode)
+    xmlfile.close()
                 
