@@ -240,10 +240,10 @@ class Executor:
     def start(self):
         ok = True
         while(True):
-                print(data['root']['Executor_Finished_Train']['#text'])
                 if(ok):
                     data = self.readConf()
                 time.sleep(2)
+                print(data['root']['Executor_Finished_Train']['#text'])
 
                 if(data['root']['Executor_Finished_Train']['#text'] == 'True' and ok):
                     ok = False
