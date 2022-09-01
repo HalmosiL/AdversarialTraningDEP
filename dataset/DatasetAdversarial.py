@@ -4,22 +4,18 @@ import time
 import xmltodict
 import sys
 
+from util.Comunication import Comunication
+
 class DatasetAdversarial:    
     def __init__(self, con_conf_path, data_queue_path, slice_, mode_):
         self.con_conf_path = con_conf_path
         self.data_queue_path = data_queue_path
         self.slice_ = slice_
         self.mode_ = mode_
-
+        self.comunication = Comunication()
+        
     def __len__(self):
         return sys.maxsize
-    
-    def readConf(self):        
-        return {
-            'MODE': os.environ['MODE'],
-            'Executor_Finished_Train': os.environ['Executor_Finished_Train'],
-            'Executor_Finished_Val': os.environ['Executor_Finished_Val']
-        }
 
     def __getitem__(self, idx):
         image_ = None
@@ -35,7 +31,7 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            con_conf = self.readConf()
+            con_conf = self.comunication.readConf()
                 
             if(
                 os.path.exists(image_path) and
