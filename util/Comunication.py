@@ -17,7 +17,7 @@ class Comunication(SingletonClass):
 
         my_dict = xmltodict.parse(my_xml)
         break
-      except Exeption as e:
+      except Exception as e:
         print(e)
         
     return {
