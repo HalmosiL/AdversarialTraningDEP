@@ -133,14 +133,14 @@ class Executor:
 
     def readConf(self):    
         while(True):
-            file_ = open('../configs/config_com.xml', 'r', encoding='utf-8')
-            my_xml = file_.read()
+            with open('../configs/config_com.xml', 'r') as f:
+                my_xml = f.read()
 
-            if(len(my_xml) != 0):
-                try:
-                    return xmltodict.parse(my_xml)
-                except Exception as e:
-                    print(e)
+                if(len(my_xml) != 0):
+                    try:
+                        return xmltodict.parse(my_xml)
+                    except Exception as e:
+                        print(e)
         
     def updateModel(self, model):
         new_model_name = glob.glob(self.model_cache + "*.pt")
