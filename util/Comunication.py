@@ -9,11 +9,17 @@ class SingletonClass(object):
     return cls.instance
   
 class Comunication(SingletonClass):
-  def readConf(self):    
-    with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
-        my_xml = file.read()
+  def readConf(self):   
+    while(True):
+      try:
+        with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
+            my_xml = file.read()
+
+        my_dict = xmltodict.parse(my_xml)
+        break
+      except Exeption as e:
+        print(e)
         
-    my_dict = xmltodict.parse(my_xml)
     return {
       'MODE': my_dict['root']['MODE']['#text'],
       'Executor_Finished_Train': my_dict['root']['Executor_Finished_Train']['#text'],
