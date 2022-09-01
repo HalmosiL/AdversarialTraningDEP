@@ -234,6 +234,8 @@ class Executor:
                             self.alertGenerationFinished("train")
                         elif(mode == "val"):
                             self.alertGenerationFinished("val")
+                            
+                        return
             else:
                 print("Data queue is full...")
 
