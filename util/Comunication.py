@@ -1,6 +1,7 @@
 from dicttoxml import dicttoxml
 from xml.dom.minidom import parseString
 import xmltodict
+import time
   
 class SingletonClass(object):
   def __new__(cls):
@@ -8,23 +9,26 @@ class SingletonClass(object):
       cls.instance = super(SingletonClass, cls).__new__(cls)
     return cls.instance
   
-class Comunication(SingletonClass):
-  def readConf(self):   
-    while(True):
-      try:
-        with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
-            my_xml = file.read()
+class Comunication(SingletonClass):  
+  def readConf(self):  
+    if(not force_file):
+      while(True):
+        try:
+          with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
+              my_xml = file.read()
 
-        my_dict = xmltodict.parse(my_xml)
-        break
-      except Exception as e:
-        print(e)
-        
-    return {
-      'MODE': my_dict['root']['MODE']['#text'],
-      'Executor_Finished_Train': my_dict['root']['Executor_Finished_Train']['#text'],
-      'Executor_Finished_Val': my_dict['root']['Executor_Finished_Val']['#text']
-    }
+          my_dict = xmltodict.parse(my_xml)
+          break
+        except Exception as e:
+          print(e)
+
+      data = {
+        'MODE': my_dict['root']['MODE']['#text'],
+        'Executor_Finished_Train': my_dict['root']['Executor_Finished_Train']['#text'],
+        'Executor_Finished_Val': my_dict['root']['Executor_Finished_Val']['#text']
+      }
+
+      return data
     
   def alertGenerationFinished(self, mode):
     if(mode == "val"):
