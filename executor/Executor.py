@@ -34,12 +34,10 @@ class Executor:
         train_batch_size,
         args_dataset,
         step_size,
-        clip_size,
-        host,
-        port
+        clip_size
     ):
         self.mode = None
-        self.comunication = Comunication(host, port)
+        self.comunication = Comunication()
         
         try: 
             print("Create data cache...")
