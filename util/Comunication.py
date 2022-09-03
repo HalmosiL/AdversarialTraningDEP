@@ -2,9 +2,9 @@ import json
 import socket
 
 class SingletonClass(object):
-  def __new__(cls):
+  def __new__(cls, port, host):
     if not hasattr(cls, 'instance'):
-      cls.instance = super(SingletonClass, cls).__new__(cls)
+      cls.instance = super(SingletonClass, cls).__new__(cls, port, host)
     return cls.instance
 
 class Comunication(SingletonClass):
