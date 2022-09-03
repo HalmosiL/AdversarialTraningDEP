@@ -12,7 +12,10 @@ if __name__ == '__main__':
 
     print("Use config:" + str(sys.argv[1]) + "...")
     CONFIG = json.load(open(sys.argv[1]))
-     
+    
+    Comunication.PORT = CONFIG['CONFMANAGER_PORT']
+    Comunication.HOST = CONFIG['CONFMANAGER_HOST']
+    
     Executor(
         model_cache=CONFIG['MODEL_CACHE'],
         queue_size_train=CONFIG['QUEUE_SIZE_TRAIN'],
