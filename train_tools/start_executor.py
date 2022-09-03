@@ -13,8 +13,7 @@ if __name__ == '__main__':
     print("Use config:" + str(sys.argv[1]) + "...")
     CONFIG = json.load(open(sys.argv[1]))
     
-    Comunication.PORT = CONFIG['CONFMANAGER_PORT']
-    Comunication.HOST = CONFIG['CONFMANAGER_HOST']
+    Comunication.tcp_socket = socket.create_connection((CONFIG["CONFMANAGER_HOST"], CONFIG["CONFMANAGER_PORT"]))
     
     Executor(
         model_cache=CONFIG['MODEL_CACHE'],
