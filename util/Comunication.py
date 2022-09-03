@@ -13,12 +13,7 @@ class Comunication:
 
             response = Comunication.tcp_socket.recv(4096).decode()
             if(response != "RESEND"):
-                try:
-                    response = json.loads(response)
-                except:
-                    print(response)
-                    
-                return response
+                return json.loads(response.split("}")[0] + "}")
 
     def readConf(self):
         return self.send('GET_CONF')
