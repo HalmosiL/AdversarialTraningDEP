@@ -5,6 +5,7 @@ import torch
 import json
 import subprocess
 import time
+import socket
 
 sys.path.insert(0, "../")
 from dataset.GetDatasetLoader import getDatasetLoader
@@ -28,8 +29,7 @@ if __name__ == '__main__':
     start(CONFIG_PATH, "./start_com_server.sh")
     time.sleep(5)
     
-    Comunication.PORT = CONFIG["CONFMANAGER_PORT"]
-    Comunication.HOST = CONFIG["CONFMANAGER_HOST"]
+    Comunication.tcp_socket = socket.create_connection((CONFIG["CONFMANAGER_HOST"], CONFIG["CONFMANAGER_PORT"]))
     
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
