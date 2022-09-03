@@ -49,7 +49,7 @@ def cacheModel(cache_id, model, CONFIG):
 
 def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader):
     logger = LogerWB(CONFIG["WB_LOG"], print_messages=CONFIG["PRINT_LOG"])
-    comunication = Comunication(CONFIG['CONFMANAGER_HOST'], CONFIG['CONFMANAGER_PORT'])
+    comunication = Comunication()
     
     if(CONFIG["MODE_LOADE"]):
         print("Continum Traning.....")
