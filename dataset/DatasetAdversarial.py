@@ -11,7 +11,7 @@ class DatasetAdversarial:
         self.data_queue_path = data_queue_path
         self.slice_ = slice_
         self.mode_ = mode_
-        self.comunication = Comunication(host_, port_))
+        self.comunication = Comunication(host_, port_)
         
     def __len__(self):
         return sys.maxsize
