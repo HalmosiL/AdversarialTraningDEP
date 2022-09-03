@@ -12,8 +12,7 @@ class Comunication(SingletonClass):
     HOST = None
   
     def __init__(self):
-        print(Comunication.PORT, Comunication.HOST)
-        self.tcp_socket = socket.create_connection((Comunication.PORT, Comunication.HOST))
+        self.tcp_socket = socket.create_connection((Comunication.HOST, Comunication.PORT))
 
     def send(self, data):
         while(True):
