@@ -4,6 +4,7 @@ import socket
 
 sys.path.append('../')
 from executor.Executor import Executor
+from util.Comunication import Comunication
 
 if __name__ == '__main__':
     print(sys.argv)
