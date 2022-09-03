@@ -50,6 +50,9 @@ def start(server):
 
 if __name__ == "__main__":
     conf = readConfig(sys.argv[1])
+    print("Read Config...")
     config.confInit(conf)
+    print("Init Server...")
     server = serverInit(conf)
+    print("Start Server...")
     start(server)
