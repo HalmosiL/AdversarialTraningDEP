@@ -1,10 +1,12 @@
 import json
 import socket
+import time
 
 class Comunication:
     tcp_socket = None
 
     def send(self, data):
+        s = time.time()
         while(True):
             Comunication.tcp_socket.sendall(data.encode())
             if(data != 'GET_CONF'):
@@ -13,6 +15,7 @@ class Comunication:
             response = Comunication.tcp_socket.recv(4096).decode()
             response = json.loads(response)
             if(response != "RESEND"):
+                print("w_", data, s - time.time())
                 return response
 
     def readConf(self):
