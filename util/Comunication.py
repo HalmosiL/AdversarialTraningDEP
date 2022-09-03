@@ -8,19 +8,15 @@ class SingletonClass(object):
     return cls.instance
 
 class Comunication(SingletonClass):
-    PORT = None
-    HOST = None
-  
-    def __init__(self):
-        self.tcp_socket = socket.create_connection((Comunication.HOST, Comunication.PORT))
+    tcp_socket = None
 
     def send(self, data):
         while(True):
-            self.tcp_socket.sendall(data.encode())
+            Comunication.tcp_socket.sendall(data.encode())
             if(data != 'GET_CONF'):
-                self.tcp_socket.sendall('GET_CONF'.encode())
+                Comunication.tcp_socket.sendall('GET_CONF'.encode())
 
-            response = self.tcp_socket.recv(4096).decode()
+            response = Comunication.tcp_socket.recv(4096).decode()
             response = json.loads(response)
             if(response != "RESEND"):
                 return response
