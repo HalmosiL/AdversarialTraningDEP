@@ -166,10 +166,6 @@ class Executor:
         model = None
 
         while(True):        
-            data = self.comunication.readConf()
-            if(data['MODE'] == "off"):
-                break
-
             model = self.updateModel(model)
 
             if(self.data_queue_is_not_full(data['MODE'])):
