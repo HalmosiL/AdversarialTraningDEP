@@ -26,6 +26,9 @@ if __name__ == '__main__':
     print("Init com_conf...")
     start(CONFIG_PATH, "./start_com_server.sh")
     
+    Comunication.PORT = CONFIG["CONFMANAGER_PORT"]
+    Comunication.HOST = CONFIG["CONFMANAGER_HOST"]
+    
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     for m in models_in_cache:
