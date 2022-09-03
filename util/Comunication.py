@@ -12,7 +12,7 @@ class Comunication:
                 Comunication.tcp_socket.sendall('GET_CONF'.encode())
 
             response = Comunication.tcp_socket.recv(4096).decode()
-            if(response != "RESEND"):
+            if(response != '"RESEND"'):
                 try:
                     return json.loads(response.split("}")[0] + "}")
                 except:
