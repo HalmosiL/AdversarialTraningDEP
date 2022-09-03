@@ -24,8 +24,8 @@ if __name__ == '__main__':
     CONFIG = json.load(open(CONFIG_PATH, "r+"))
     
     print("Init com_conf...")
-    Comunication().conConfInit(CONFIG["MODE"])
-
+    start(CONFIG_PATH, "./start_com_server.sh")
+    
     print("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     for m in models_in_cache:
