@@ -26,7 +26,7 @@ if __name__ == '__main__':
         number_of_steps=CONFIG['NUMBER_OF_STEPS'],
         args_dataset=CONFIG['DATASET'],
         step_size=CONFIG['STEPS_SIZE'],
-        clip_size=CONFIG['CLIP_SIZE']
+        clip_size=CONFIG['CLIP_SIZE'],
         host=CONFIG['CONFMANAGER_PORT'],
         port=['CONFMANAGER_HOST']
     ).start()
