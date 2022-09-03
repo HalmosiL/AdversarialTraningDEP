@@ -22,18 +22,14 @@ def getDatasetLoader(CONFIG_PATH, type_="train", num_workers=0, pin_memory=False
             con_conf_path="../configs/config_com.json",
             data_queue_path=CONFIG['DATA_QUEUE'],
             slice_=slice_,
-            mode_="train",
-            host_=CONFIG["CONFMANAGER_HOST"],
-            port_=CONFIG["CONFMANAGER_PORT"]
+            mode_="train"
         )
     else:
         dataset = DatasetAdversarial(
             con_conf_path="../configs/config_com.json",
             data_queue_path=CONFIG['DATA_QUEUE'][:-1]+ "_val/",
             slice_=slice_,
-            mode_="val",
-            host_=CONFIG["CONFMANAGER_HOST"],
-            port_=CONFIG["CONFMANAGER_PORT"]
+            mode_="val"
         )
 
     return torch.utils.data.DataLoader(dataset, batch_size=1, num_workers=num_workers, pin_memory=pin_memory)
