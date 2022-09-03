@@ -7,12 +7,12 @@ import sys
 from util.Comunication import Comunication
 
 class DatasetAdversarial:    
-    def __init__(self, con_conf_path, data_queue_path, slice_, mode_):
+    def __init__(self, con_conf_path, data_queue_path, slice_, mode_, host_, port_):
         self.con_conf_path = con_conf_path
         self.data_queue_path = data_queue_path
         self.slice_ = slice_
         self.mode_ = mode_
-        self.comunication = Comunication()
+        self.comunication = Comunication(host_, port_))
         
     def __len__(self):
         return sys.maxsize
