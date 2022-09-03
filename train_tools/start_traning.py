@@ -4,6 +4,7 @@ import os
 import torch
 import json
 import subprocess
+import time
 
 sys.path.insert(0, "../")
 from dataset.GetDatasetLoader import getDatasetLoader
@@ -25,6 +26,7 @@ if __name__ == '__main__':
     
     print("Init com_conf...")
     start(CONFIG_PATH, "./start_com_server.sh")
+    time.sleep(5)
     
     Comunication.PORT = CONFIG["CONFMANAGER_PORT"]
     Comunication.HOST = CONFIG["CONFMANAGER_HOST"]
