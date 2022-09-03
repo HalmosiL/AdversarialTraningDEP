@@ -8,8 +8,11 @@ class SingletonClass(object):
     return cls.instance
 
 class Comunication(SingletonClass):
+    PORT = None
+    HOST = None
+  
     def __init__(self):
-        self.tcp_socket = socket.create_connection((port, host))
+        self.tcp_socket = socket.create_connection((Comunication.PORT, Comunication.HOST))
 
     def send(self, data):
         while(True):
