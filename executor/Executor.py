@@ -165,6 +165,8 @@ class Executor:
         element_id = 0
         model = None
 
+        data = self.comunication.readConf()
+        
         while(True):        
             model = self.updateModel(model)
 
