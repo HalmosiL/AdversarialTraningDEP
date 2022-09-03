@@ -30,9 +30,7 @@ class DatasetAdversarial:
         remove_queue = []
         
         while(label_ is None):
-            s = time.time()
             con_conf = self.comunication.readConf()
-            print("w", time.time() - s)
                 
             if(
                 os.path.exists(image_path) and
