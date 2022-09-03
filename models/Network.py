@@ -148,8 +148,6 @@ class DeepLabV3(nn.Module):
         if self.use_aspp:
             x = self.aspp(x)
         x = self.cls(x)
-        if self.zoom_factor != 1:
-            x = F.interpolate(x, size=(h, w), mode='bilinear', align_corners=True)
 
         if self.training or indicate == 1:
             aux = self.aux(x_tmp)
@@ -159,7 +157,36 @@ class DeepLabV3(nn.Module):
             aux_loss = self.criterion(aux, y)
             return x.max(1)[1], main_loss, aux_loss, x
         else:
-            return x
+            return x.max(1)[1], x
+        
+    def getSliceModel(self):
+        class SliceModule(nn.Module):
+            def __init__(self, 
+                layer0,
+                layer1,
+                layer2,
+                layer3
+            ):
+                super().__init__()
+                self.layer0 = layer0
+                self.layer1 = layer1
+                self.layer2 = layer2
+                self.layer3 = layer3
+
+            def forward(self, x):
+                x = self.layer0(x)
+                x = self.layer1(x)
+                x = self.layer2(x)
+                x = self.layer3(x)
+
+                return x
+
+        return SliceModule(
+            self.layer0,
+            self.layer1,
+            self.layer2,
+            self.layer3
+        )
 
 
 class DeepLabV3_DDCAT(nn.Module):
