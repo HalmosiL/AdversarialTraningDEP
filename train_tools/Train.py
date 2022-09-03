@@ -95,6 +95,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
     train_loader_len = int(CONFIG["TRAIN_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
     val_loader_len = int(CONFIG["VAL_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
 
+    current_iter = 0
+    
     for e in range(CONFIG["EPOCHS"]):
         model = model.train()
 
@@ -118,7 +120,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 image = data[0][0].to(CONFIG["DEVICE"][0])
                 target = data[1][0].to(CONFIG["DEVICE"][0])
 
-                current_iter = e * len(train_loader_adversarial) + batch_id + 1 - cut
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
                 remove_files = np.array(data[2]).flatten()
@@ -149,6 +150,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
                 removeFiles(remove_files)
                 batch_id += 1
+                current_iter += 1
             else:
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -193,7 +195,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         data = next(val_loader_adversarial_iter)
 
         batch_id = 0
-
         model = model.eval()
         
         while(len(data)):
