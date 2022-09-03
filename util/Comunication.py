@@ -1,95 +1,48 @@
-from dicttoxml import dicttoxml
-from xml.dom.minidom import parseString
-import xmltodict
-import time
-  
+import json
+import socket
+
 class SingletonClass(object):
   def __new__(cls):
     if not hasattr(cls, 'instance'):
       cls.instance = super(SingletonClass, cls).__new__(cls)
     return cls.instance
-  
-class Comunication(SingletonClass):  
-  def readConf(self):  
-    if(not force_file):
-      while(True):
-        try:
-          with open('../configs/config_com.xml', 'r', encoding='utf-8') as file:
-              my_xml = file.read()
 
-          my_dict = xmltodict.parse(my_xml)
-          break
-        except Exception as e:
-          print(e)
+class Comunication(SingletonClass):
+    def __init__(self, port, host):
+        self.tcp_socket = socket.create_connection((port, host))
 
-      data = {
-        'MODE': my_dict['root']['MODE']['#text'],
-        'Executor_Finished_Train': my_dict['root']['Executor_Finished_Train']['#text'],
-        'Executor_Finished_Val': my_dict['root']['Executor_Finished_Val']['#text']
-      }
+    def send(self, data):
+        while(True):
+            self.tcp_socket.sendall(data.encode())
+            if(data != 'GET_CONF'):
+                self.tcp_socket.sendall('GET_CONF'.encode())
 
-      return data
+            response = self.tcp_socket.recv(4096).decode()
+            response = json.loads(response)
+            if(response != "RESEND"):
+                return response
+
+    def readConf(self):
+        return self.send('GET_CONF')
     
-  def alertGenerationFinished(self, mode):
-    if(mode == "val"):
-        data = {
-          'MODE': 'val',
-          'Executor_Finished_Train': "False",
-          'Executor_Finished_Val': "True"
-        }
-    elif(mode == "train"):
-        data = {
-          'MODE': 'train',
-          'Executor_Finished_Train': "True",
-          'Executor_Finished_Val': "False"
-        }
+    def alertGenerationFinished(self, mode):
+        while(True):
+            if(mode == "train"):
+                conf = self.send('ALERT_TRAIN')
+                if(conf['MODE'] == 'train' and conf['Executor_Finished_Train'] == "True" and conf['Executor_Finished_Val'] == "False"):
+                    return conf
+            elif(mode == "val"):
+                conf = self.send('ALERT_VAL')
+                if(conf['MODE'] == 'val' and conf['Executor_Finished_Train'] == "False" and conf['Executor_Finished_Val'] == "True"):
+                    return conf
         
-    xml = dicttoxml(data)
-    xml_decode = xml.decode()
-
-    xmlfile = open("../configs/config_com.xml", "w+")
-    xmlfile.write(xml_decode)
-    xmlfile.close()
-          
-  def conConfInit(self, mode):    
-    if(mode == "val"):
-        data = {
-          'MODE': 'val',
-          'Executor_Finished_Train': "True",
-          'Executor_Finished_Val': "False"
-        }
-    elif(mode == "train"):
-        data = {
-          'MODE': 'train',
-          'Executor_Finished_Train': "False",
-          'Executor_Finished_Val': "True"
-        }
-        
-    xml = dicttoxml(data)
-    xml_decode = xml.decode()
-
-    xmlfile = open("../configs/config_com.xml", "w+")
-    xmlfile.write(xml_decode)
-    xmlfile.close()
-        
-  def setMode(self, mode): 
-    if(mode == "val"):
-        data = {
-          'MODE': 'val',
-          'Executor_Finished_Train': "True",
-          'Executor_Finished_Val': "False"
-        }
-    elif(mode == "train"):
-        data = {
-          'MODE': 'train',
-          'Executor_Finished_Train': "False",
-          'Executor_Finished_Val': "True"
-        }
-        
-    xml = dicttoxml(data)
-    xml_decode = xml.decode()
-
-    xmlfile = open("../configs/config_com.xml", "w")
-    xmlfile.write(xml_decode)
-    xmlfile.close()
-                
+    def setMode(self, mode):
+        while(True):
+            if(mode == "train"):
+                conf = self.send('SET_MODE_TRAIN')
+                if(conf['MODE'] == 'train'):
+                    return conf
+            elif(mode == "val"):
+                conf = self.send('SET_MODE_VAL')
+                if(conf['MODE'] == 'val'):
+                    return conf
