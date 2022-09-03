@@ -8,7 +8,7 @@ class SingletonClass(object):
     return cls.instance
 
 class Comunication(SingletonClass):
-    def __init__(self, port, host):
+    def __init__(self):
         self.tcp_socket = socket.create_connection((port, host))
 
     def send(self, data):
