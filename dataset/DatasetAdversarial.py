@@ -1,7 +1,6 @@
 import os
 import torch
 import time
-import xmltodict
 import sys
 
 from util.Comunication import Comunication
