@@ -12,8 +12,8 @@ class Comunication:
                 Comunication.tcp_socket.sendall('GET_CONF'.encode())
 
             response = Comunication.tcp_socket.recv(4096).decode()
-            response = json.loads(response)
             if(response != "RESEND"):
+                response = json.loads(response)
                 return response
 
     def readConf(self):
