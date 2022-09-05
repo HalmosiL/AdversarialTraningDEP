@@ -112,14 +112,17 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         
         cut = 0
         batch_id = 0
+        count_no = 0
+        
         train_loader_adversarial_iter = iter(train_loader_adversarial)
-        data = next(train_loader_adversarial_iter)
         
         while(len(data)):
+            data = train_loader_adversarial_iter.__getitem__(batch_id)
+            
             if(len(data) == 3):
                 image = data[0][0].to(CONFIG["DEVICE"][0])
                 target = data[1][0].to(CONFIG["DEVICE"][0])
-
+                
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
                 remove_files = np.array(data[2]).flatten()
@@ -137,9 +140,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 iou = np.mean(intersection / (union + 1e-10))
                 acc = sum(intersection) / (sum(target) + 1e-10)
 
-                logger.log_loss_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, loss.item())
-                logger.log_iou_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, iou)
-                logger.log_acc_batch_train_adversarial(train_loader_adversarial.__len__(), e, batch_id + 1, acc)
+                logger.log_loss_batch_train_adversarial(train_loader_len, e, batch_id + 1, loss.item())
+                logger.log_iou_batch_train_adversarial(train_loader_len, e, batch_id + 1, iou)
+                logger.log_acc_batch_train_adversarial(train_loader_len, e, batch_id + 1, acc)
 
                 iou_train_epoch += iou
                 loss_train_epoch += loss.item()
@@ -151,14 +154,23 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 removeFiles(remove_files)
                 batch_id += 1
                 current_iter += 1
+                count_no = 0
+            elif(len(data) == 0):
+                count_no += 1
+                if(count_no != 0 and count_no % 200 == 0):
+                    print("Wating for data since:", int(count_no/200), "(s)")
+                
+                if(count_no == 2000):
+                    count_no = 0
+                    batch_id += 1
             else:
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
                 removeFiles(remove_files)
 
                 cut += 1
-
-            data = next(train_loader_adversarial_iter)
+                count_no = 0
+                batch_id += 1
 
         loss_train_epoch = loss_train_epoch / batch_id
         iou_train_epoch = iou_train_epoch / batch_id
@@ -192,13 +204,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         cut_ = 0
 
         val_loader_adversarial_iter = iter(val_loader_adversarial)
-        data = next(val_loader_adversarial_iter)
-
+        
         batch_id = 0
+        count_no = 0
+        
         model = model.eval()
         
         while(len(data)):
             with torch.no_grad():
+                data = val_loader_adversarial_iter.__getitem__(batch_id)
+                
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
                     target = data[1][0].to(CONFIG["DEVICE"][0])
@@ -219,16 +234,25 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
 
                     print("Val finished:" + str(val_status / (val_loader_len - cut_))[:5] + "%", end="\r")
                     removeFiles(remove_files)
+                    count_no = 0
                     batch_id += 1
+                elif(len(data) == 0):
+                    count_no += 1
+                    if(count_no != 0 and count_no % 200 == 0):
+                        print("Wating for data since:", int(count_no/200), "(s)")
+
+                    if(count_no == 2000):
+                        count_no = 0
+                        batch_id += 1
                 else:
-                    print("jump...")
+                    print("Jump..")
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
-                    cut_ = cut_ + 1
 
-                data = next(val_loader_adversarial_iter)
-
-                
+                    cut += 1
+                    count_no = 0
+                    batch_id += 1
+                    
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
         iou_val_epoch = iou_val_epoch / (batch_id - cut_)
         acc_val_epoch = acc_val_epoch / (batch_id - cut_)
