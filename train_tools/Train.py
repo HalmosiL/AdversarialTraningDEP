@@ -116,7 +116,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         
         train_loader_adversarial_iter = iter(train_loader_adversarial)
         
-        while(len(data)):
+        while(batch_id == 0 or len(data)):
             data = train_loader_adversarial_iter.__getitem__(batch_id)
             
             if(len(data) == 3):
@@ -163,6 +163,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 if(count_no == 2000):
                     count_no = 0
                     batch_id += 1
+                else:
+                    time.sleep(0.01)
             else:
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -210,7 +212,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         
         model = model.eval()
         
-        while(len(data)):
+        while(batch_id == 0 or len(data)):
             with torch.no_grad():
                 data = val_loader_adversarial_iter.__getitem__(batch_id)
                 
@@ -244,6 +246,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     if(count_no == 2000):
                         count_no = 0
                         batch_id += 1
+                    else:
+                        time.sleep(0.01)
                 else:
                     print("Jump..")
                     remove_files = np.array(data[0]).flatten()
