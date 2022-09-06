@@ -42,3 +42,7 @@ class Comunication:
                 conf = self.send('SET_MODE_VAL')
                 if(conf['MODE'] == 'val'):
                     return conf
+            elif(mode == "off"):
+                conf = self.send('SET_MODE_OFF')
+                if(conf['MODE'] == 'off'):
+                    return conf
