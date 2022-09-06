@@ -48,7 +48,7 @@ class DatasetAdversarial:
                 time.sleep(0.25)
                 
                 if(count % int(2 / time_wait) == 0):
-                    print("Wating since ", (count / int(2 / time_wait)), "(s)")
+                    print("Wating since ", (count / int(2 / time_wait)), "(s)", end='\r')
                 count += 1
                 
         return []
