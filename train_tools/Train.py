@@ -202,7 +202,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
         
-        val_loader_adversaria = torch.utils.data.DataLoader(
+        val_loader_adversarial = torch.utils.data.DataLoader(
             val_loader_adversaria_,
             batch_size=1,
             num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
