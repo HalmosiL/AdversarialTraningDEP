@@ -17,6 +17,8 @@ class Comunication:
                     return json.loads(response.split("}")[0] + "}")
                 except:
                     raise ValueError(response.split("}")[0] + "}")
+            else:
+                time.sleep(2)
 
     def readConf(self):
         return self.send('GET_CONF')
