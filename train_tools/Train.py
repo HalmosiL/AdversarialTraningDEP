@@ -187,7 +187,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     print("Stop executor...")
                     time.sleep(10)
                     print("Restart executor...")
-                    start(CONFIG_PATH, "././start_executor.sh)
+                    start(CONFIG_PATH, "././start_executor.sh")
                     comunication.setMode("train")
                     no_batch = 0
                 
