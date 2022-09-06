@@ -169,7 +169,11 @@ class Executor:
         
         while(True):        
             model = self.updateModel(model)
-
+            data = self.comunication.readConf()
+            
+            if(data['MODE'] == "off"):
+                return
+            
             if(self.data_queue_is_not_full(data['MODE'])):
                 if(model is not None):
                     try:
@@ -207,10 +211,6 @@ class Executor:
                 data = self.comunication.readConf()
                 time.sleep(2)
                 
-                if(data['MODE'] == "off"):
-                    print("Stop Executor...")
-                    break
-                
                 if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
                     print("Start train gen...")
                     self.generateTrainData("train")
@@ -221,3 +221,6 @@ class Executor:
                     print("Start val gen...")
                     self.generateTrainData("val")
                 
+                if(data['MODE'] == "off"):
+                    print("Stop Executor...")
+                    break
