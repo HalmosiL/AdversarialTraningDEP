@@ -175,7 +175,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     count_no = 0
                 else:
                     fileSampler.__back__(data)
-                    time.sleep(0.01)
+                    time.sleep(1)
             else:
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
