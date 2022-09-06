@@ -32,4 +32,4 @@ def getDatasetLoader(CONFIG_PATH, type_="train", num_workers=0, pin_memory=False
             mode_="val"
         )
 
-    return torch.utils.data.DataLoader(dataset, batch_size=1, num_workers=num_workers, pin_memory=pin_memory)
+    return dataset
