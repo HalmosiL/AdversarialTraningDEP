@@ -10,7 +10,7 @@ class Iterable:
     if(len(self.backQueueidx_) == 0):
       index_ = self.index_
       self.index_ += 1
-    else
+    else:
       index_ = self.backQueueidx_[0]
       self.backQueueidx_.pop(0)
       
