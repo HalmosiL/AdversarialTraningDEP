@@ -14,7 +14,6 @@ from models.Model import get_model
 from util.Metrics import intersectionAndUnion
 from util.WBLogger import LogerWB
 from util.Comunication import Comunication
-from util.Sampler import FileSampler
 
 def sort_(key):
     key = key.split("_")[-1]
@@ -115,19 +114,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         batch_id = 0
         count_no = 0
         
-        fileSampler = FileSampler()
-        
         train_loader_adversarial_iter = torch.utils.data.DataLoader(
             train_loader_adversarial_,
             batch_size=1,
             num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
-            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"],
-            sampler=fileSampler
+            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"]
         )
         
         train_loader_adversarial_iter = iter(train_loader_adversarial_iter)
         
-        while(batch_id == 0 or len(data)):
+        while(comunication.readConf()['Executor_Finished_Train'] != "True"):
             data = next(train_loader_adversarial_iter)
             
             if(len(data) == 3):
@@ -166,18 +162,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 current_iter += 1
                 count_no = 0
-            elif(type(data[0].item()) == int):
-                count_no += 1
-                if(count_no != 0 and count_no % 2 == 0):
-                    print("Wating for data since:", int(count_no), "(s)")
-                    print(data[0].item())
-                
-                if(count_no == 20):
-                    count_no = 0
-                else:
-                    fileSampler.__back__(data)
-                    time.sleep(1)
-            else:
+            elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
                 removeFiles(remove_files)
@@ -216,15 +201,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         comunication.setMode("val")
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
-
-        fileSampler = FileSampler()
         
         val_loader_adversaria = torch.utils.data.DataLoader(
             val_loader_adversaria_,
             batch_size=1,
             num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
-            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"],
-            sampler=fileSampler
+            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"]
         )
         
         val_loader_adversarial_iter = iter(val_loader_adversarial)
@@ -234,7 +216,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         model = model.eval()
         
-        while(batch_id == 0 or len(data)):
+        while(comunication.readConf()['Executor_Finished_Val'] != "True"):
             with torch.no_grad():
                 data = next(val_loader_adversarial_iter)
                 
@@ -260,17 +242,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     removeFiles(remove_files)
                     count_no = 0
                     batch_id += 1
-                elif(type(data[0]) == int):
-                    count_no += 1
-                    if(count_no != 0 and count_no % 2 == 0):
-                        print("Wating for data since:", int(count_no), "(s)")
-
-                    if(count_no == 20):
-                        count_no = 0
-                    else:
-                        fileSampler.__back__(data)
-                        time.sleep(1)
-                else:
+                elif(len(data) == 1):
                     print("Jump..")
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
