@@ -45,6 +45,9 @@ class DatasetAdversarial:
                     return [[image_path, label_path]]
             else:
                 time.sleep(0.25)
+                
+                if(count % int(2 / time_wait) == 0):
+                    print("Wating since ", int(2 / time_wait), "(s)")
                 count += 1
                 
         return []
