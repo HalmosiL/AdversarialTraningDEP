@@ -22,33 +22,18 @@ class DatasetAdversarial:
 
         image_path = self.data_queue_path + "image_" + str(path_a) + "_" + str(path_b) + "_.pt"
         label_path = self.data_queue_path + "label_" + str(path_a) + "_" + str(path_b) + "_.pt"
-        
-        count = 0
-        time_wait = 0.25
-        
-        if(idx < 8):
-            max_ = 60 * 1/time_wait
-        else:
-            max_ = 35 * 1/time_wait
-        
-        while(label_ is None and count != max_):
-            if(
-                os.path.exists(image_path) and
-                os.path.exists(label_path)
-            ):
-                try:
-                    count_no_data = 0
-                    image_ = torch.load(image_path).clone()
-                    label_ = torch.load(label_path).clone()
-                    return [image_.reshape(1, *image_.shape), label_.reshape(1, *label_.shape), [image_path, label_path]]
-                except Exception as e:
-                    print("wrong")
-                    return [[image_path, label_path]]
-            else:
-                time.sleep(0.25)
-                
-                if(count % int(2 / time_wait) == 0):
-                    print("Wating since ", (count / int(2 / time_wait)), "(s)", end='\r')
-                count += 1
+
+        if(
+            os.path.exists(image_path) and
+            os.path.exists(label_path)
+        ):
+            try:
+                count_no_data = 0
+                image_ = torch.load(image_path).clone()
+                label_ = torch.load(label_path).clone()
+                return [image_.reshape(1, *image_.shape), label_.reshape(1, *label_.shape), [image_path, label_path]]
+            except Exception as e:
+                print("wrong")
+                return [[image_path, label_path]]
                 
         return []
