@@ -22,10 +22,15 @@ class DatasetAdversarial:
 
         image_path = self.data_queue_path + "image_" + str(path_a) + "_" + str(path_b) + "_.pt"
         label_path = self.data_queue_path + "label_" + str(path_a) + "_" + str(path_b) + "_.pt"
-
-        remove_queue = []
         
-        while(label_ is None):
+        count = 0
+        
+        if(idx < 8):
+            max_ = 80
+        else:
+            max_ = 40
+        
+        while(label_ is None and count != max_):
             if(
                 os.path.exists(image_path) and
                 os.path.exists(label_path)
@@ -34,10 +39,11 @@ class DatasetAdversarial:
                     count_no_data = 0
                     image_ = torch.load(image_path).clone()
                     label_ = torch.load(label_path).clone()
-                    remove_queue.append([image_path, label_path])
+                    return [image_, label_, [image_path, label_path]]
                 except Exception as e:
-                    return [remove_queue]
+                    return [[image_path, label_path]]
             else:
-                return idx
+                time.sleep(0.25)
+                count += 1
                 
-        return [image_, label_, remove_queue]
+        return []
