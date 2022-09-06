@@ -7,7 +7,7 @@ class Iterable:
     self.backQueueidx_ = []
     
   def __getitem__(self, idx):
-    if(len(self.backQueueidx_) == 0)
+    if(len(self.backQueueidx_) == 0):
       index_ = self.index_
       self.index_ += 1
     else
