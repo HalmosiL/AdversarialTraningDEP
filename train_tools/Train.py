@@ -171,6 +171,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 if(check_ % 20 == 0):
                     comunication.setMode("train")
+                    print("Leave batch...")
+                    print(comunication.readConf())
                 
                 if(check_ == 40):
                     batch_id += 1
@@ -257,6 +259,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
                     if(check_ % 20 == 0):
                         comunication.setMode("val")
+                        print("Leave batch...")
+                        print(comunication.readConf())
                     
                     if(check_ == 40):
                         batch_id += 1
