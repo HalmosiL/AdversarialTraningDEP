@@ -158,8 +158,10 @@ class Executor:
             
     def generateTrainData(self, mode):
         if(mode == "train"):
+            print("Executor start train....")
             iter_ = iter(self.train_data_set_loader)
         elif(mode == "val"):
+            print("Executor start val....")
             iter_ = iter(self.val_data_set_loader)
 
         element_id = 0
@@ -167,10 +169,13 @@ class Executor:
 
         data = self.comunication.readConf()
         
-        while(True):        
+        while(True):
+            print("Step....")
             model = self.updateModel(model)
+            print("Get config....")
             data = self.comunication.readConf()
             
+            print("Generate data....")
             if(data['MODE'] == "off"):
                 return
             
@@ -208,17 +213,19 @@ class Executor:
 
     def start(self):
         while(True):
+                print("GET MAIN CONF....")
                 data = self.comunication.readConf()
+                print("SET MAIN CONF....")
                 time.sleep(2)
                 
                 if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
-                    print("Start train gen...")
+                    print("START TRAIN GEN...")
                     self.generateTrainData("train")
 
                 self.model_name = None 
                     
                 if(not data['Executor_Finished_Val'] == "True" and data['MODE'] == "val"):
-                    print("Start val gen...")
+                    print("START VAL GEN...")
                     self.generateTrainData("val")
                 
                 if(data['MODE'] == "off"):
