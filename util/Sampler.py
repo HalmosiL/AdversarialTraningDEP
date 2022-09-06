@@ -20,7 +20,7 @@ class Iterable:
       return sys.maxint
     
   def __back__(self, idx_):
-    self.backQueue.append(idx_)
+    self.backQueueidx_.append(idx_)
 
 class FileSampler(torch.utils.data.Sampler):
   def __init__(self):
