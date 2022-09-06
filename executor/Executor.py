@@ -216,6 +216,7 @@ class Executor:
                 print("GET MAIN CONF....")
                 data = self.comunication.readConf()
                 print("SET MAIN CONF....")
+                print(data)
                 time.sleep(2)
                 
                 if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
