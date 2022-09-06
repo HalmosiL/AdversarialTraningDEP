@@ -42,6 +42,7 @@ class DatasetAdversarial:
                     label_ = torch.load(label_path).clone()
                     return [image_, label_, [image_path, label_path]]
                 except Exception as e:
+                    print("wrong")
                     return [[image_path, label_path]]
             else:
                 time.sleep(0.25)
