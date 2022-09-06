@@ -171,7 +171,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 time.sleep(0.5)
                 
                 if(check_ % 20 == 0):
-                    comunication.setMode("train"
+                    comunication.setMode("train")
                     print(comunication.readConf())
                 
                 if(check_ == 60):
