@@ -173,6 +173,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     batch_id += 1
                     check = 0
                 
+                if(check % 20 == 0):
+                    comunication.setMode("train")
+                
             data = train_loader_adversarial_.__getitem__(batch_id)
 
         loss_train_epoch = loss_train_epoch / batch_id
@@ -255,6 +258,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     if(check == 40):
                         batch_id += 1
                         check = 0
+                        
+                    if(check % 20 == 0):
+                        comunication.setMode("val")
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
