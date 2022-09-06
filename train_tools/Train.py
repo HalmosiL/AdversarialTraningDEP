@@ -14,6 +14,7 @@ from models.Model import get_model
 from util.Metrics import intersectionAndUnion
 from util.WBLogger import LogerWB
 from util.Comunication import Comunication
+from util.Sampler import FileSampler
 
 def sort_(key):
     key = key.split("_")[-1]
@@ -47,7 +48,7 @@ def cacheModel(cache_id, model, CONFIG):
         
     return cache_id + 1
 
-def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader):
+def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial_, val_loader_):
     logger = LogerWB(CONFIG["WB_LOG"], print_messages=CONFIG["PRINT_LOG"])
     comunication = Comunication()
     
@@ -114,10 +115,20 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         batch_id = 0
         count_no = 0
         
-        train_loader_adversarial_iter = iter(train_loader_adversarial)
+        fileSampler = FileSampler()
+        
+        train_loader_adversarial_iter = torch.utils.data.DataLoader(
+            train_loader_adversarial_,
+            batch_size=1,
+            num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
+            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"],
+            sampler=fileSampler
+        )
+        
+        train_loader_adversarial_iter = iter(train_loader_adversarial_iter)
         
         while(batch_id == 0 or len(data)):
-            data = train_loader_adversarial_iter.__getitem__(batch_id)
+            data = next(train_loader_adversarial_iter)
             
             if(len(data) == 3):
                 image = data[0][0].to(CONFIG["DEVICE"][0])
@@ -155,15 +166,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                 batch_id += 1
                 current_iter += 1
                 count_no = 0
-            elif(len(data) == 0):
+            elif(type(data) == int):
                 count_no += 1
                 if(count_no != 0 and count_no % 200 == 0):
                     print("Wating for data since:", int(count_no/200), "(s)")
                 
                 if(count_no == 2000):
                     count_no = 0
-                    batch_id += 1
                 else:
+                    fileSampler.__back__(data)
                     time.sleep(0.01)
             else:
                 print("Jump..")
@@ -205,6 +216,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
 
+        fileSampler = FileSampler()
+        
+        val_loader_adversaria = torch.utils.data.DataLoader(
+            val_loader_adversaria_,
+            batch_size=1,
+            num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
+            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"],
+            sampler=fileSampler
+        )
+        
         val_loader_adversarial_iter = iter(val_loader_adversarial)
         
         batch_id = 0
@@ -214,7 +235,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
         
         while(batch_id == 0 or len(data)):
             with torch.no_grad():
-                data = val_loader_adversarial_iter.__getitem__(batch_id)
+                data = next(val_loader_adversarial_iter)
                 
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
@@ -238,15 +259,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial,
                     removeFiles(remove_files)
                     count_no = 0
                     batch_id += 1
-                elif(len(data) == 0):
+                elif(type(data) == int):
                     count_no += 1
                     if(count_no != 0 and count_no % 200 == 0):
                         print("Wating for data since:", int(count_no/200), "(s)")
 
                     if(count_no == 2000):
                         count_no = 0
-                        batch_id += 1
                     else:
+                        fileSampler.__back__(data)
                         time.sleep(0.01)
                 else:
                     print("Jump..")
