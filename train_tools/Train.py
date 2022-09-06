@@ -114,9 +114,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         batch_id = 0
         count_no = 0
         
-        while(comunication.readConf()['Executor_Finished_Train'] != "True"):
-            data = train_loader_adversarial_.__getitem__(batch_id)
-            
+        data = train_loader_adversarial_.__getitem__(0)
+        
+        while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
             if(len(data) == 3):
                 image = data[0][0].to(CONFIG["DEVICE"][0])
                 target = data[1][0].to(CONFIG["DEVICE"][0])
@@ -161,6 +161,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 cut += 1
                 count_no = 0
                 batch_id += 1
+            else:
+                print("Wait...")
+                time.sleep(0.5)
+                
+            data = train_loader_adversarial_.__getitem__(batch_id)
 
         loss_train_epoch = loss_train_epoch / batch_id
         iou_train_epoch = iou_train_epoch / batch_id
@@ -198,10 +203,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         model = model.eval()
         
-        while(comunication.readConf()['Executor_Finished_Val'] != "True"):
+        data = val_loader_adversarial_.__getitem__(0)
+        
+        while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
-                data = val_loader_adversarial_.__getitem__(batch_id)
-                
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
                     target = data[1][0].to(CONFIG["DEVICE"][0])
@@ -232,6 +237,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     count_no = 0
                     batch_id += 1
+                else:
+                    print("Wait...")
+                    time.sleep(0.5)
+                
+                data = train_loader_adversarial_.__getitem__(batch_id)
                     
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
         iou_val_epoch = iou_val_epoch / (batch_id - cut_)
