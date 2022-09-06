@@ -170,6 +170,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 count_no += 1
                 if(count_no != 0 and count_no % 2 == 0):
                     print("Wating for data since:", int(count_no), "(s)")
+                    print(data[0].item())
                 
                 if(count_no == 20):
                     count_no = 0
