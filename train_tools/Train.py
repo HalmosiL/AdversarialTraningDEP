@@ -171,24 +171,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 time.sleep(0.5)
                 
                 if(check_ % 20 == 0):
-                    comunication.setMode("train")
-                    
+                    comunication.setMode("train"
                     print(comunication.readConf())
                 
-                if(check_ == 40):
+                if(check_ == 60):
                     print("Leave batch...\n")
                     batch_id += 1
                     check_ = 0
                     no_batch += 1
-                    
-                if(no_batch == 3):
-                    comunication.setMode("off")
-                    print("Stop executor...")
-                    time.sleep(10)
-                    print("Restart executor...")
-                    start(CONFIG_PATH, "././start_executor.sh")
-                    comunication.setMode("train")
-                    no_batch = 0
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
@@ -272,19 +262,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                         print("Leave batch...\n", end='\r')
                         print(comunication.readConf())
                     
-                    if(check_ == 40):
+                    if(check_ == 60):
                         batch_id += 1
                         check_ = 0
                         no_batch += 1
-                        
-                    if(no_batch == 3):
-                        comunication.setMode("off")
-                        print("Stop executor...")
-                        time.sleep(10)
-                        print("Restart executor...")
-                        start(CONFIG_PATH, "././start_executor.sh")
-                        comunication.setMode("val")
-                        no_batch = 0
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
