@@ -154,7 +154,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 current_iter += 1
                 count_no = 0
-                check = 0
+                check_ = 0
             elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -163,15 +163,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 cut += 1
                 count_no = 0
                 batch_id += 1
-                check = 0
+                check_ = 0
             else:
                 print("Wait...")
-                check += 1
+                check_ += 1
                 time.sleep(0.5)
                 
-                if(check == 40):
+                if(check_ == 40):
                     batch_id += 1
-                    check = 0
+                    check_ = 0
                 
                 if(check % 20 == 0):
                     comunication.setMode("train")
@@ -249,15 +249,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     count_no = 0
                     batch_id += 1
-                    check = 0
+                    check_ = 0
                 else:
                     print("Wait...")
-                    check += 1
+                    check_ += 1
                     time.sleep(0.5)
 
                     if(check == 40):
                         batch_id += 1
-                        check = 0
+                        check_ = 0
                         
                     if(check % 20 == 0):
                         comunication.setMode("val")
