@@ -167,16 +167,17 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 check_ = 0
             else:
-                print("Wait...")
+                print("Wait...", end='\r')
                 check_ += 1
                 time.sleep(0.5)
                 
                 if(check_ % 20 == 0):
                     comunication.setMode("train")
-                    print("Leave batch...")
+                    
                     print(comunication.readConf())
                 
                 if(check_ == 40):
+                    print("Leave batch...\n")
                     batch_id += 1
                     check_ = 0
                     no_batch += 1
@@ -267,13 +268,13 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     batch_id += 1
                     check_ = 0
                 else:
-                    print("Wait...")
+                    print("Wait...", end='\r')
                     check_ += 1
                     time.sleep(0.5)
 
                     if(check_ % 20 == 0):
                         comunication.setMode("val")
-                        print("Leave batch...")
+                        print("Leave batch...\n", end='\r')
                         print(comunication.readConf())
                     
                     if(check_ == 40):
