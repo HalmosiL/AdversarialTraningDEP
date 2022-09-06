@@ -38,6 +38,6 @@ class DatasetAdversarial:
                 except Exception as e:
                     return [remove_queue]
             else:
-                return []
+                return idx
                 
         return [image_, label_, remove_queue]
