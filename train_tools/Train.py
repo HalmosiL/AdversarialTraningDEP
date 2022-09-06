@@ -104,8 +104,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         iou_train_epoch = 0
         acc_train_epoch = 0
 
-        if(CONFIG["START_EXECUTOR"]):
-            clearDataQueue(CONFIG, "train")
+        clearDataQueue(CONFIG, "train")
 
         print("Train Adversarial loader length:", train_loader_len)
         print("Val Adversarial loader length:", val_loader_len)
@@ -214,11 +213,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         val_status = 0
 
-        if(CONFIG["START_EXECUTOR"]):
-            clearDataQueue(CONFIG, "val")
-            
-            while(len(os.listdir(CONFIG["DATA_QUEUE"][:-1] + "_val/")) != 0):
-                time.sleep(0.25)
+        clearDataQueue(CONFIG, "val")
         
         comunication.setMode("val")
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
