@@ -114,17 +114,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         batch_id = 0
         count_no = 0
         
-        train_loader_adversarial_iter = torch.utils.data.DataLoader(
-            train_loader_adversarial_,
-            batch_size=1,
-            num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
-            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"]
-        )
-        
-        train_loader_adversarial_iter = iter(train_loader_adversarial_iter)
-        
         while(comunication.readConf()['Executor_Finished_Train'] != "True"):
-            data = next(train_loader_adversarial_iter)
+            data = train_loader_adversarial_.__getitem__(batch_id)
             
             if(len(data) == 3):
                 image = data[0][0].to(CONFIG["DEVICE"][0])
@@ -202,15 +193,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
         
-        val_loader_adversarial = torch.utils.data.DataLoader(
-            val_loader_adversarial_,
-            batch_size=1,
-            num_workers=CONFIG["NUMBER_OF_WORKERS_DATALOADER"],
-            pin_memory=CONFIG["PIN_MEMORY_ALLOWED_DATALOADER"]
-        )
-        
-        val_loader_adversarial_iter = iter(val_loader_adversarial)
-        
         batch_id = 0
         count_no = 0
         
@@ -218,7 +200,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         while(comunication.readConf()['Executor_Finished_Val'] != "True"):
             with torch.no_grad():
-                data = next(val_loader_adversarial_iter)
+                data = val_loader_adversarial_.__getitem__(batch_id)
                 
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
