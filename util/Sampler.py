@@ -31,3 +31,6 @@ class FileSampler(torch.utils.data.Sampler):
 
   def __len__(self):
       return len(self.iterable)
+  
+  def __back__(self, idx_):
+    self.iterable.__back__(idx_)
