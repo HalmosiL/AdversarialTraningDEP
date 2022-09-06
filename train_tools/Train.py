@@ -129,8 +129,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         while(batch_id == 0 or len(data)):
             data = next(train_loader_adversarial_iter)
-            print(type(data))
-            print(data)
+            print(type(data[0]))
+            print(data[0])
             
             if(len(data) == 3):
                 image = data[0][0].to(CONFIG["DEVICE"][0])
