@@ -208,9 +208,6 @@ class Executor:
                 else:
                     print("There is no model to use yet....")
                     time.sleep(2)
-            else:
-                print("Data queue is full...")
-
     def start(self):
         while(True):
                 print("GET MAIN CONF....")
