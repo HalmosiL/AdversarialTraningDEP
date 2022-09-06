@@ -24,11 +24,12 @@ class DatasetAdversarial:
         label_path = self.data_queue_path + "label_" + str(path_a) + "_" + str(path_b) + "_.pt"
         
         count = 0
+        time_wait = 0.25
         
         if(idx < 8):
-            max_ = 80
+            max_ = 60 * 1/time_wait
         else:
-            max_ = 40
+            max_ = 35 * 1/time_wait
         
         while(label_ is None and count != max_):
             if(
