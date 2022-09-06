@@ -115,6 +115,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         count_no = 0
         
         data = train_loader_adversarial_.__getitem__(0)
+        check_ = 0
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
             if(len(data) == 3):
@@ -153,6 +154,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 current_iter += 1
                 count_no = 0
+                check = 0
             elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -161,9 +163,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 cut += 1
                 count_no = 0
                 batch_id += 1
+                check = 0
             else:
                 print("Wait...")
+                check += 1
                 time.sleep(0.5)
+                
+                if(check == 40):
+                    batch_id += 1
+                    check = 0
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
@@ -204,6 +212,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         model = model.eval()
         
         data = val_loader_adversarial_.__getitem__(0)
+        check_ = 0
         
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
@@ -237,9 +246,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     count_no = 0
                     batch_id += 1
+                    check = 0
                 else:
                     print("Wait...")
+                    check += 1
                     time.sleep(0.5)
+
+                    if(check == 40):
+                        batch_id += 1
+                        check = 0
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
