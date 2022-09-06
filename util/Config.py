@@ -29,6 +29,12 @@ class Config:
             'Executor_Finished_Train': "False",
             'Executor_Finished_Val': "True"
             }
+        elif(mode == "off"):
+            self.config = {
+            'MODE': 'off',
+            'Executor_Finished_Train': "True",
+            'Executor_Finished_Val': "True"
+            }
 
     def alertGenerationFinished(self, mode):
         if(mode == "val"):
