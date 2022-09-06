@@ -169,12 +169,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 check_ += 1
                 time.sleep(0.5)
                 
+                if(check_ % 20 == 0):
+                    comunication.setMode("train")
+                
                 if(check_ == 40):
                     batch_id += 1
                     check_ = 0
-                
-                if(check % 20 == 0):
-                    comunication.setMode("train")
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
@@ -255,12 +255,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     check_ += 1
                     time.sleep(0.5)
 
-                    if(check == 40):
+                    if(check_ % 20 == 0):
+                        comunication.setMode("val")
+                    
+                    if(check_ == 40):
                         batch_id += 1
                         check_ = 0
-                        
-                    if(check % 20 == 0):
-                        comunication.setMode("val")
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
