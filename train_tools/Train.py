@@ -168,7 +168,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 current_iter += 1
                 count_no = 0
-            elif(type(data) == int):
+            elif(type(data[0].item()) == int):
                 count_no += 1
                 if(count_no != 0 and count_no % 200 == 0):
                     print("Wating for data since:", int(count_no/200), "(s)")
