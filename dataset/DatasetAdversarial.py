@@ -40,7 +40,7 @@ class DatasetAdversarial:
                     count_no_data = 0
                     image_ = torch.load(image_path).clone()
                     label_ = torch.load(label_path).clone()
-                    return [image_, label_, [image_path, label_path]]
+                    return [image_.reshape(1, *image_.shape), label_.reshape(1, *label_.shape), [image_path, label_path]]
                 except Exception as e:
                     print("wrong")
                     return [[image_path, label_path]]
