@@ -241,7 +241,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     print("Wait...")
                     time.sleep(0.5)
                 
-                data = train_loader_adversarial_.__getitem__(batch_id)
+                data = val_loader_adversarial_.__getitem__(batch_id)
                     
         loss_val_epoch = loss_val_epoch / (batch_id - cut_)
         iou_val_epoch = iou_val_epoch / (batch_id - cut_)
