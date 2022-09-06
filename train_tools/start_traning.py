@@ -77,4 +77,4 @@ if __name__ == '__main__':
         pin_memory=CONFIG['PIN_MEMORY_ALLOWED_DATALOADER']
     )
 
-    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader)
+    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader, start)
