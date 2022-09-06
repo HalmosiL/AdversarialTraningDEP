@@ -31,6 +31,7 @@ def handle_client(client_socket):
             "GET_CONF": lambda : client_socket.send(json.dumps(config.config, indent = 4).encode()),
             "SET_MODE_VAL": lambda : config.setMode("val"),
             "SET_MODE_TRAIN": lambda : config.setMode("train"),
+            "SET_MODE_OFF": lambda : config.setMode("off"),
             "ALERT_TRAIN": lambda : config.alertGenerationFinished("train"),
             "ALERT_VAL": lambda : config.alertGenerationFinished("val")
             }
