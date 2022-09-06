@@ -6,6 +6,8 @@ class Comunication:
     tcp_socket = None
 
     def send(self, data):
+        i = 0
+        
         while(True):
             Comunication.tcp_socket.sendall(data.encode())
             if(data != 'GET_CONF'):
@@ -18,6 +20,9 @@ class Comunication:
                 except:
                     raise ValueError(response.split("}")[0] + "}")
             else:
+                i += 1
+                if(i == 6):
+                    raise ValueError("Too much wating...")
                 time.sleep(2)
 
     def readConf(self):
