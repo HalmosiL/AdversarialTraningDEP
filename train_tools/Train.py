@@ -47,7 +47,7 @@ def cacheModel(cache_id, model, CONFIG):
         
     return cache_id + 1
 
-def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial_, val_loader_):
+def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial_, val_loader_, start):
     logger = LogerWB(CONFIG["WB_LOG"], print_messages=CONFIG["PRINT_LOG"])
     comunication = Comunication()
     
@@ -116,6 +116,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         data = train_loader_adversarial_.__getitem__(0)
         check_ = 0
+        no_batch = 0
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
             if(len(data) == 3):
@@ -155,6 +156,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 current_iter += 1
                 count_no = 0
                 check_ = 0
+                no_batch = 0
             elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -177,6 +179,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 if(check_ == 40):
                     batch_id += 1
                     check_ = 0
+                    no_batch += 1
+                    
+                if(no_batch == 3):
+                    comunication.setMode("off")
+                    print("Stop executor...")
+                    time.sleep(10)
+                    print("Restart executor...")
+                    start(CONFIG_PATH, "./start_com_server.sh")
+                    comunication.setMode("train")
+                    no_batch = 0
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
@@ -213,11 +225,13 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         batch_id = 0
         count_no = 0
+        no_batch = 0
         
         model = model.eval()
         
         data = val_loader_adversarial_.__getitem__(0)
         check_ = 0
+        no_batch = 0
         
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
@@ -265,6 +279,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     if(check_ == 40):
                         batch_id += 1
                         check_ = 0
+                        no_batch += 1
+                        
+                    if(no_batch == 3):
+                        comunication.setMode("off")
+                        print("Stop executor...")
+                        time.sleep(10)
+                        print("Restart executor...")
+                        start(CONFIG_PATH, "./start_com_server.sh")
+                        comunication.setMode("val")
+                        no_batch = 0
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
