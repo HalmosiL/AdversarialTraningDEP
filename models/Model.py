@@ -18,11 +18,11 @@ def load_model_slice(path, device):
     model = model.to(device)
     return model
 
-
+'''
 def slice_model(model, level="Encoder"):
     if(level == "Encoder"):
         return model.getSliceModel().eval()
-'''
+
 def get_model(device):
     model = PSPNet(
         layers=50,
