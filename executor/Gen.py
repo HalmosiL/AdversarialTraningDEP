@@ -28,7 +28,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 device=device
             )
             
-        image = t_n(image)
+        image_normal = t_n(image)
         image_adversarial = t_n(image_adversarial)
         
         label = batch[1]
