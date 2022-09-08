@@ -75,6 +75,10 @@ class Executor:
         self.step_size = step_size
         self.clip_size = clip_size
 
+        value_scale = 255
+        mean = [0.485, 0.456, 0.406]
+        mean = [item * value_scale for item in mean]    
+        
         train_transform = transform.Compose([
             transform.RandScale([args_dataset["scale_min"], args_dataset["scale_max"]]),
             transform.RandRotate([args_dataset["rotate_min"], args_dataset["rotate_max"]], padding=mean, ignore_label=args_dataset["ignore_label"]),
