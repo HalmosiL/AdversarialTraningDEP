@@ -1,5 +1,14 @@
 from executor.Adversarial import model_immer_attack_auto_loss
+from torchvision import transforms
 import torch
+
+value_scale = 255
+mean = [0.485, 0.456, 0.406]
+mean = [item * value_scale for item in mean]
+std = [0.229, 0.224, 0.225]
+std = [item * value_scale for item in std]
+
+t_n = transforms.Normalize(mean, std)
 
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, gen=True):
     print("Gen_", id_, " started..")
@@ -18,6 +27,9 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 number_of_steps=number_of_steps,
                 device=device
             )
+            
+        image = t_n(image)
+        image_adversarial = t_n(image_adversarial)
         
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
@@ -52,6 +64,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             )
         
         label = batch[1]
+        image = t_n(image)
     
         if(split == -1 or split == 1):
             torch.save(image.cpu().detach(), data_queue + 'image_' + str(id_) + '_0_.pt')
