@@ -205,6 +205,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         clearDataQueue(CONFIG, "val")
         
+        print("Set val...")
         comunication.setMode("val")
         print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         cut_ = 0
