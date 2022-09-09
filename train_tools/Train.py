@@ -301,6 +301,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 iou_val_epoch += iou
                 loss_val_epoch += loss
                 acc_val_epoch += acc
+            print("Val Normal Finished:", batch_id * 100 / val_loader_.__len__(), end="\r")
                 
         loss_val_epoch = loss_val_epoch / val_loader_.__len__()
         iou_val_epoch = iou_val_epoch / val_loader_.__len__()
