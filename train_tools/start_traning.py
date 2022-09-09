@@ -72,9 +72,9 @@ if __name__ == '__main__':
             data_list=CONFIG['DATASET']['val_list'],
             transform=val_transform
         ),
-        batch_size=CONFIG['TRAIN_BATCH_SIZE'],
-        num_workers=CONFIG['NUMBER_OF_WORKERS_DATALOADER'],
-        pin_memory=CONFIG['PIN_MEMORY_ALLOWED_DATALOADER']
+        batch_size=16,
+        num_workers=4,
+        pin_memory=False
     )
 
     train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader, start)
