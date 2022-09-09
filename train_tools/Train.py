@@ -277,8 +277,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
         logger.log_acc_epoch_val_adversarial(e, acc_val_epoch)
         
-        val_loader = torch.utils.data.DataLoader(val_loader_, batch_size=16, shuffle=False, num_workers=4)
-        
         loss_val_epoch = 0
         iou_val_epoch = 0
         acc_val_epoch = 0
