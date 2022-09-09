@@ -282,7 +282,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         iou_val_epoch = 0
         acc_val_epoch = 0
         
-        for data in val_loader:
+        for data in val_loader_:
             with torch.no_grad():
                 image_val = data[0][0].to(CONFIG["DEVICE"][0])
                 target = data[1][0].to(CONFIG["DEVICE"][0])
