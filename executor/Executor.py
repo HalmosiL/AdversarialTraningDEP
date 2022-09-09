@@ -77,15 +77,17 @@ class Executor:
 
         value_scale = 255
         mean = [0.485, 0.456, 0.406]
-        mean = [item * value_scale for item in mean]    
-        
+        mean = [item * value_scale for item in mean]
+        std = [0.229, 0.224, 0.225]
+
         train_transform = transform.Compose([
             transform.RandScale([args_dataset["scale_min"], args_dataset["scale_max"]]),
             transform.RandRotate([args_dataset["rotate_min"], args_dataset["rotate_max"]], padding=mean, ignore_label=args_dataset["ignore_label"]),
             transform.RandomGaussianBlur(),
             transform.RandomHorizontalFlip(),
             transform.Crop([args_dataset["train_h"], args_dataset["train_w"]], crop_type='rand', padding=mean, ignore_label=args_dataset["ignore_label"]),
-            transform.ToTensor()])
+            transform.ToTensor(),
+            transform.Normalize(mean, std)])
 
         train_data = SemData(
             split='train',
@@ -96,7 +98,8 @@ class Executor:
 
         val_transform = transform.Compose([
             transform.Crop([args_dataset["train_h"], args_dataset["train_w"]], crop_type='center', padding=mean, ignore_label=args_dataset["ignore_label"]),
-            transform.ToTensor()])
+            transform.ToTensor(),
+            transform.Normalize(mean, std)])
 
         val_data = SemData(
             split='val',
