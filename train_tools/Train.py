@@ -276,5 +276,36 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         logger.log_loss_epoch_val_adversarial(e, loss_val_epoch)
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
         logger.log_acc_epoch_val_adversarial(e, acc_val_epoch)
+        
+        val_loader = torch.utils.data.DataLoader(val_loader_, batch_size=16, shuffle=False, num_workers=4)
+        
+        loss_val_epoch = 0
+        iou_val_epoch = 0
+        acc_val_epoch = 0
+        
+        for data in val_loader:
+            with torch.no_grad():
+                image_val = data[0][0].to(CONFIG["DEVICE"][0])
+                target = data[1][0].to(CONFIG["DEVICE"][0])
+                
+                output, _ = model(image_val)
+
+                intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
+                intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
+
+                iou = np.mean(intersection / (union + 1e-10))
+                acc = sum(intersection) / (sum(target) + 1e-10)
+
+                iou_val_epoch += iou
+                loss_val_epoch += loss
+                acc_val_epoch += acc
+                
+        loss_val_epoch = loss_val_epoch / val_loader.__len__()
+        iou_val_epoch = iou_val_epoch / val_loader.__len__()
+        acc_val_epoch = acc_val_epoch / val_loader.__len__()
+
+        logger.log_loss_epoch_val(e, loss_val_epoch)
+        logger.log_iou_epoch_val(e, iou_val_epoch)
+        logger.log_acc_epoch_val(e, acc_val_epoch)
 
         comunication.setMode("train")
