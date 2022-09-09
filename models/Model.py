@@ -3,6 +3,7 @@ import torch
 import torch.nn as nn
 
 
+'''
 def slice_model(model, level="Encoder"):
     if(level == "Encoder"):
         return model.getSliceModel().eval()
@@ -72,5 +73,4 @@ def load_model_slice(path, device):
     model.load_state_dict(torch.load(path, map_location=device))
     model = model.to(device).eval()
     return model
-'''
 
