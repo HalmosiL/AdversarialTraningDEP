@@ -227,7 +227,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     target = data[1][0].to(CONFIG["DEVICE"][0])
                     remove_files = np.array(data[2]).flatten()
 
-                    output, _ = model(image_val)
+                    output, _, loss = model(image_val, target)
 
                     intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                     intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
@@ -290,7 +290,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 image_val = image_val.to(CONFIG["DEVICE"][0])
                 target = target.to(CONFIG["DEVICE"][0])
                 
-                output, _ = model(image_val)
+                output, _, loss = model(image_val, target)
 
                 intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
