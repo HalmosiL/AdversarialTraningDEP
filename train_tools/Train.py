@@ -282,6 +282,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         iou_val_epoch = 0
         acc_val_epoch = 0
         
+        batch_id = 0
+        
         for data in val_loader_:
             with torch.no_grad():
                 image_val, target = data
@@ -300,9 +302,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 loss_val_epoch += loss
                 acc_val_epoch += acc
                 
-        loss_val_epoch = loss_val_epoch / val_loader.__len__()
-        iou_val_epoch = iou_val_epoch / val_loader.__len__()
-        acc_val_epoch = acc_val_epoch / val_loader.__len__()
+        loss_val_epoch = loss_val_epoch / val_loader_.__len__()
+        iou_val_epoch = iou_val_epoch / val_loader_.__len__()
+        acc_val_epoch = acc_val_epoch / val_loader_.__len__()
 
         logger.log_loss_epoch_val(e, loss_val_epoch)
         logger.log_iou_epoch_val(e, iou_val_epoch)
