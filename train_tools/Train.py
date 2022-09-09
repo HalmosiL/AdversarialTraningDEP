@@ -284,8 +284,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         for data in val_loader_:
             with torch.no_grad():
-                image_val = data[0].to(CONFIG["DEVICE"][0])
-                target = data[1].to(CONFIG["DEVICE"][0])
+                image_val, target = data
+                image_val = image_val.to(CONFIG["DEVICE"][0])
+                target = target.to(CONFIG["DEVICE"][0])
                 
                 output, _ = model(image_val)
 
