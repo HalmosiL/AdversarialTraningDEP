@@ -53,7 +53,6 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             )
         
         label = batch[1]
-        image = t_n(image)
     
         if(split == -1 or split == 1):
             torch.save(image.cpu().detach(), data_queue + 'image_' + str(id_) + '_0_.pt')
