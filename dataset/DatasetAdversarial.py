@@ -55,10 +55,10 @@ class DatasetAdversarial:
                 os.path.exists(label_path)
             ):
                 try:
-                    print(image_path)
                     image_ = torch.load(image_path).clone()
-                    print(image_)
+                    print(label_path)
                     label_ = torch.load(label_path).clone()
+                    print(label_)
                     return [
                         image_.reshape(1, *image_.shape),
                         label_.reshape(1, *label_.shape)
