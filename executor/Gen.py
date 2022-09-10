@@ -3,9 +3,8 @@ from torchvision import transforms
 import torch
 
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, gen=True):
-    print("Gen_", id_, " started..")
-
     if(gen):
+        print("Gen_", id_, " started..")
         image = batch[0].to(device)
         image = torch.split(image, int(len(image)/2))
         image_normal = image[0]
@@ -47,7 +46,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 torch.save(image_adversarial[i].cpu().detach(), data_queue + 'image_adversarial' + str(id_) + '_' + str(i) + '_.pt')
                 torch.save(label_adversarial[i].cpu().detach(), data_queue + 'label_adversarial' + str(id_) + '_' + str(i) + '_.pt')
     else:
-        print("Gen_", id_, " started_f..")
+        print("Gen_", id_, " started_val..")
         
         image = batch[0].to(device)
         image = model_immer_attack_auto_loss(
