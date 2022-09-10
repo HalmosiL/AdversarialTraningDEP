@@ -127,7 +127,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
-                remove_files = np.array(data[5]).flatten()
+                remove_files = np.array(data[4]).flatten()
                 optimizer.zero_grad()
 
                 output, main_loss, aux_loss, _ = model(image_normal, target_normal)
