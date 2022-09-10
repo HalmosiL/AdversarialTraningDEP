@@ -13,10 +13,7 @@ class DatasetAdversarial:
     def __len__(self):
         return sys.maxsize
 
-    def __getitem__(self, idx):
-        image_ = None
-        label_ = None
-        
+    def __getitem__(self, idx):        
         path_a = int(idx / self.slice_)
         path_b = idx % self.slice_
 
@@ -58,7 +55,9 @@ class DatasetAdversarial:
                 os.path.exists(label_path)
             ):
                 try:
+                    print(image_path)
                     image_ = torch.load(image_path).clone()
+                    print(image_)
                     label_ = torch.load(label_path).clone()
                     return [
                         image_.reshape(1, *image_.shape),
