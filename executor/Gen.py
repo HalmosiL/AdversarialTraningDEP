@@ -47,16 +47,16 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 torch.save(image_adversarial[i].cpu().detach(), data_queue + 'image_adversarial' + str(id_) + '_' + str(i) + '_.pt')
                 torch.save(label_adversarial[i].cpu().detach(), data_queue + 'label_adversarial' + str(id_) + '_' + str(i) + '_.pt')
     else:
+        print("Gen_", id_, " started_f..")
+        
         image = batch[0].to(device)
-
-        if(gen):
-            image = model_immer_attack_auto_loss(
-                image=image,
-                model=model,
-                attack=attack,
-                number_of_steps=number_of_steps,
-                device=device
-            )
+        image = model_immer_attack_auto_loss(
+            image=image,
+            model=model,
+            attack=attack,
+            number_of_steps=number_of_steps,
+            device=device
+        )
         
         label = batch[1]
     
