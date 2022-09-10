@@ -32,12 +32,16 @@ class Dummy(nn.Module):
         x = self.cls(x_t)
         aux = self.aux(x_t)
 
-        if(y is not None):
-            main_loss = self.criterion(x, y)
-            aux_loss = self.criterion(aux, y)
-            return x.max(1)[1], main_loss, aux_loss, x
-        else:
-            return x.max(1)[1], x
+        if self.training:
+            if(y is not None):
+                main_loss = self.criterion(x, y)
+                aux_loss = self.criterion(aux, y)
+                return x.max(1)[1], main_loss, aux_loss, x
+            else:
+                return x.max(1)[1], x
+            
+        main_loss = self.criterion(x, y)
+        return x.max(1)[1], x, main_loss
             
     def getSliceModel(self):
         return self.layer0
