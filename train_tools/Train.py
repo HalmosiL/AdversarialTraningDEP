@@ -130,10 +130,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 remove_files = np.array(data[4]).flatten()
                 optimizer.zero_grad()
 
-                output, main_loss, aux_loss, _ = model(image_normal, target_normal)
+                output_normal, main_loss, aux_loss, _ = model(image_normal, target_normal)
                 loss_normal = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
                 
-                output, main_loss, aux_loss, _ = model(image_adversarial, target_adversarial)
+                output_adversarial, main_loss, aux_loss, _ = model(image_adversarial, target_adversarial)
                 loss_adversarial = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
 
                 if(400 <= e):
@@ -144,11 +144,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 loss.backward()
                 optimizer.step()
 
-                intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
-                intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
-
-                iou = np.mean(intersection / (union + 1e-10))
-                acc = sum(intersection) / (sum(target) + 1e-10)
+                intersection_normal, union_normal, target_normal = intersectionAndUnion(output_normal, target_normal, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
+                intersection_normal, union_normal, target_normal = intersection_normal.cpu().numpy(), union_normal.cpu().numpy(), target_normal.cpu().numpy()
+                
+                intersection_adversarial, union_adversarial, target_adversarial = intersectionAndUnion(output_adversarial, target_adversarial, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
+                intersection_adversarial, union_adversarial, target_adversarial = intersection_adversarial.cpu().numpy(), union_adversarial.cpu().numpy(), target_adversarial.cpu().numpy()
+                
+                iou = (np.mean(intersection_normal / (union_normal + 1e-10)) + np.mean(intersection_adversarial / (union_adversarial + 1e-10))) / 2
+                acc = (sum(intersection_normal) / (sum(target_normal) + 1e-10) + sum(intersection_adversarial) / (sum(target_adversarial) + 1e-10)) / 2
 
                 logger.log_loss_batch_train_adversarial(train_loader_len, e, batch_id + 1, loss.item())
                 logger.log_iou_batch_train_adversarial(train_loader_len, e, batch_id + 1, iou)
