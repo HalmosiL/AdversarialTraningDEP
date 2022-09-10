@@ -118,18 +118,29 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         no_batch = 0
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
-            if(len(data) == 3):
-                image = data[0][0].to(CONFIG["DEVICE"][0])
-                target = data[1][0].to(CONFIG["DEVICE"][0])
+            if(len(data) == 5):
+                image_normal = data[0][0].to(CONFIG["DEVICE"][0])
+                target_normal = data[1][0].to(CONFIG["DEVICE"][0])
+                
+                image_adversarial = data[2][0].to(CONFIG["DEVICE"][0])
+                target_adversarial = data[3][0].to(CONFIG["DEVICE"][0])
                 
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
-                remove_files = np.array(data[2]).flatten()
+                remove_files = np.array(data[5]).flatten()
                 optimizer.zero_grad()
 
-                output, main_loss, aux_loss, _ = model(image, target)
-                loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
+                output, main_loss, aux_loss, _ = model(image_normal, target_normal)
+                loss_normal = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
+                
+                output, main_loss, aux_loss, _ = model(image_adversarial, target_adversarial)
+                loss_adversarial = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
 
+                if(400 <= e):
+                    loss = loss_adversarial + 0 * loss_normal
+                else:
+                    loss = e/400 * loss_adversarial + (1 - e/400) * loss_normal
+                
                 loss.backward()
                 optimizer.step()
 
