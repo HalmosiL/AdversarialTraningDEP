@@ -238,6 +238,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             with torch.no_grad():
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
+                    print(image_val.shape)
                     target = data[1][0].to(CONFIG["DEVICE"][0])
                     remove_files = np.array(data[2]).flatten()
 
