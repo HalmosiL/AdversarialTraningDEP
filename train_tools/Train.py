@@ -125,6 +125,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 image_adversarial = data[2][0].to(CONFIG["DEVICE"][0])
                 target_adversarial = data[3][0].to(CONFIG["DEVICE"][0])
                 
+                print(image_normal.shape)
+                print(target_normal.shape)
+                print(image_adversarial.shape)
+                print(target_adversarial.shape)
+                
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
                 remove_files = np.array(data[4]).flatten()
