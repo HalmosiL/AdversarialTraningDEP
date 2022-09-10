@@ -10,14 +10,13 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_normal = image[0]
         image_adversarial = image[1]
 
-        if(gen):
-            image_adversarial = model_immer_attack_auto_loss(
-                image=image_adversarial,
-                model=model,
-                attack=attack,
-                number_of_steps=number_of_steps,
-                device=device
-            )
+        image_adversarial = model_immer_attack_auto_loss(
+            image=image_adversarial,
+            model=model,
+            attack=attack,
+            number_of_steps=number_of_steps,
+            device=device
+        )
         
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
