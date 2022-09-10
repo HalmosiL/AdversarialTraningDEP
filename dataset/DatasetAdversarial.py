@@ -33,7 +33,6 @@ class DatasetAdversarial:
                 os.path.exists(label_adversarial_path)
             ):
                 try:
-                    count_no_data = 0
                     image_normal = torch.load(image_normal_path).clone()
                     label_normal = torch.load(label_normal_path).clone()
                     image_adversaria = torch.load(image_adversarial_path).clone()
@@ -59,7 +58,6 @@ class DatasetAdversarial:
                 os.path.exists(label_path)
             ):
                 try:
-                    count_no_data = 0
                     image_ = torch.load(image_path).clone()
                     label_ = torch.load(label_path).clone()
                     return [
