@@ -39,10 +39,10 @@ class DatasetAdversarial:
                     image_adversaria = torch.load(image_adversarial_path).clone()
                     label_adversaria = torch.load(label_adversarial_path).clone()
                     return [
-                        image_normal.reshape(1, *image_.shape),
-                        label_normal.reshape(1, *label_.shape),
-                        image_adversaria.reshape(1, *image_.shape),
-                        label_adversaria.reshape(1, *label_.shape),
+                        image_normal.reshape(1, *image_normal.shape),
+                        label_normal.reshape(1, *label_normal.shape),
+                        image_adversaria.reshape(1, *image_normal.shape),
+                        label_adversaria.reshape(1, *label_normal.shape),
                         [image_normal_path, label_normal_path, image_adversarial_path, label_adversarial_path]
                     ]
                 except Exception as e:
