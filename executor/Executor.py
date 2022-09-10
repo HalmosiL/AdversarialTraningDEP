@@ -114,7 +114,7 @@ class Executor:
             shuffle=True,
             num_workers=self.num_workers,
             pin_memory=False,
-            drop_last=False
+            drop_last=True
         )
 
         self.val_data_set_loader = torch.utils.data.DataLoader(
