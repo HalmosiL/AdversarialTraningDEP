@@ -119,7 +119,7 @@ class Executor:
 
         self.val_data_set_loader = torch.utils.data.DataLoader(
             val_data,
-            batch_size=self.batch_size,
+            batch_size=int(self.batch_size/2),
             shuffle=False,
             num_workers=self.num_workers,
             pin_memory=False
