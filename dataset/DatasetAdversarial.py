@@ -56,12 +56,10 @@ class DatasetAdversarial:
             ):
                 try:
                     image_ = torch.load(image_path).clone()
-                    print(label_path)
                     label_ = torch.load(label_path).clone()
-                    print(label_)
                     return [
                         image_.reshape(1, *image_.shape),
-                        label_.reshape(1, *label_.shape)
+                        label_.reshape(1, *label_.shape),
                         [image_path, label_path]
                     ]
                 except Exception as e:
