@@ -66,6 +66,7 @@ class DatasetAdversarial:
                         [image_path, label_path]
                     ]
                 except Exception as e:
+                    print(e)
                     print("wrong")
                     return [[image_path, label_path]]
 
