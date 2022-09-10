@@ -228,21 +228,18 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         count_no = 0
         no_batch = 0
         
-        model = model.eval()
-        
         data = val_loader_adversarial_.__getitem__(0)
         check_ = 0
         no_batch = 0
+        
+        model = model.eval()
         
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
                 if(len(data) == 3):
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
-                    print(image_val.shape)
                     target = data[1][0].to(CONFIG["DEVICE"][0])
-                    print(target.shape)
                     remove_files = np.array(data[2]).flatten()
-                    print(len(model(image_val, target)))
 
                     output, _, loss = model(image_val, target)
 
@@ -300,6 +297,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         acc_val_epoch = 0
         
         batch_id = 0
+        
+        model = model.eval()
         
         for data in val_loader_:
             with torch.no_grad():
