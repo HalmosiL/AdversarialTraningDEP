@@ -240,7 +240,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     image_val = data[0][0].to(CONFIG["DEVICE"][0])
                     print(image_val.shape)
                     target = data[1][0].to(CONFIG["DEVICE"][0])
+                    print(target.shape)
                     remove_files = np.array(data[2]).flatten()
+                    print(len(model(image_val, target)))
 
                     output, _, loss = model(image_val, target)
 
