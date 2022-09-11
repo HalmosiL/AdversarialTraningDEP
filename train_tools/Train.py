@@ -78,7 +78,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         model = get_model(CONFIG['DEVICE'][0])
 
         print("Load Model.....")
-        model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"]))
+        model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"], strict=False))
 
         optimizer = torch.optim.SGD(
             [{'params': model.layer0.parameters()},
