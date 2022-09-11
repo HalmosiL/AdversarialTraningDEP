@@ -197,7 +197,7 @@ class Executor:
                             data_queue=self.data_queue if data['MODE'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
-                            gen=False
+                            gen= data['MODE'] == "train"
                         )                               
 
                         element_id += 1
@@ -215,9 +215,6 @@ class Executor:
                     print("Data queue is full....")
                     time.sleep(2)
     def start(self):
-        e = 1
-        n_step = 0
-        
         while(True):
                 print("GET MAIN CONF....")
                 data = self.comunication.readConf()
@@ -227,7 +224,7 @@ class Executor:
                 
                 if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
                     print("START TRAIN GEN...")
-                    self.generateTrainData("train", n_step)
+                    self.generateTrainData("train")
 
                 self.model_name = None 
                     
@@ -238,7 +235,3 @@ class Executor:
                 if(data['MODE'] == "off"):
                     print("Stop Executor...")
                     break
-                
-                if(e % 50 == 0):
-                    n_step += 1
-                e += 1
