@@ -118,33 +118,20 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         no_batch = 0
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
-            if(len(data) == 5):
+            if(len(data) == 3):
                 image_normal = data[0][0].to(CONFIG["DEVICE"][0])
                 target_normal = data[1][0].to(CONFIG["DEVICE"][0])
                 
-                image_adversarial = data[2][0].to(CONFIG["DEVICE"][0])
-                target_adversarial = data[3][0].to(CONFIG["DEVICE"][0])
-                
                 print(image_normal.shape)
                 print(target_normal.shape)
-                print(image_adversarial.shape)
-                print(target_adversarial.shape)
-                
+
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
-                remove_files = np.array(data[4]).flatten()
+                remove_files = np.array(data[2]).flatten()
                 optimizer.zero_grad()
 
                 output_normal, main_loss, aux_loss, _ = model(image_normal, target_normal)
-                loss_normal = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
-                
-                output_adversarial, main_loss, aux_loss, _ = model(image_adversarial, target_adversarial)
-                loss_adversarial = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
-
-                if(400 <= e):
-                    loss = loss_adversarial + 0 * loss_normal
-                else:
-                    loss = e/400 * loss_adversarial + (1 - e/400) * loss_normal
+                loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
                 
                 loss.backward()
                 optimizer.step()
@@ -152,11 +139,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 intersection_normal, union_normal, target_normal = intersectionAndUnion(output_normal, target_normal, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection_normal, union_normal, target_normal = intersection_normal.cpu().numpy(), union_normal.cpu().numpy(), target_normal.cpu().numpy()
                 
-                intersection_adversarial, union_adversarial, target_adversarial = intersectionAndUnion(output_adversarial, target_adversarial, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
-                intersection_adversarial, union_adversarial, target_adversarial = intersection_adversarial.cpu().numpy(), union_adversarial.cpu().numpy(), target_adversarial.cpu().numpy()
-                
-                iou = (np.mean(intersection_normal / (union_normal + 1e-10)) + np.mean(intersection_adversarial / (union_adversarial + 1e-10))) / 2
-                acc = (sum(intersection_normal) / (sum(target_normal) + 1e-10) + sum(intersection_adversarial) / (sum(target_adversarial) + 1e-10)) / 2
+                iou = np.mean(intersection_normal / (union_normal + 1e-10)
+                acc = (sum(intersection_normal) / (sum(target_normal)
 
                 logger.log_loss_batch_train_adversarial(train_loader_len, e, batch_id + 1, loss.item())
                 logger.log_iou_batch_train_adversarial(train_loader_len, e, batch_id + 1, iou)
