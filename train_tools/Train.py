@@ -117,7 +117,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
     current_iter = 0
     
     for e in range(CONFIG["EPOCHS"]):
-        model = model.eval()
+        model = model.train()
 
         loss_train_epoch = 0
         iou_train_epoch = 0
@@ -153,7 +153,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
                 
                 loss.backward()
-                #optimizer.step()
+                optimizer.step()
 
                 intersection_normal, union_normal, target_normal = intersectionAndUnion(output_normal, target_normal, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection_normal, union_normal, target_normal = intersection_normal.cpu().numpy(), union_normal.cpu().numpy(), target_normal.cpu().numpy()
