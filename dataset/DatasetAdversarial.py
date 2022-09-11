@@ -46,7 +46,7 @@ class DatasetAdversarial:
                     return [[image_normal_path, label_normal_path, image_adversarial_path, label_adversarial_path]]
 
             return []
-        elif(self.mode_ == "val"):
+        elif(self.mode_ == "val" or self.mode_ == "off"):
             image_path = self.data_queue_path + "image_" + str(path_a) + "_" + str(path_b) + "_.pt"
             label_path = self.data_queue_path + "label_" + str(path_a) + "_" + str(path_b) + "_.pt"
 
