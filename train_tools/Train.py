@@ -117,7 +117,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
     current_iter = 0
     
     for e in range(CONFIG["EPOCHS"]):
-        model = model.train()
+        model = model.eval()
 
         loss_train_epoch = 0
         iou_train_epoch = 0
