@@ -155,7 +155,10 @@ class Executor:
         elif(com_conf_mode == "val"):
             return (len(glob.glob(self.data_queue[:-1] + "_val/*.pt")) / 2) < self.queue_size_val
             
-    def generateTrainData(self, mode):
+    def generateTrainData(self, mode, number_of_steps=None):
+        if(number_of_steps is None):
+            number_of_steps = self.number_of_steps
+        
         if(mode == "train"):
             print("Executor start train....")
             iter_ = iter(self.train_data_set_loader)
@@ -189,11 +192,11 @@ class Executor:
                             device=self.device,
                             model=model,
                             attack=self.attack,
-                            number_of_steps=self.number_of_steps,
+                            number_of_steps=number_of_steps,
                             data_queue=self.data_queue if data['MODE'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
-                            gen=(mode == "train")
+                            gen=False
                         )                               
 
                         element_id += 1
@@ -211,6 +214,9 @@ class Executor:
                     print("Data queue is full....")
                     time.sleep(2)
     def start(self):
+        e = 1
+        n_step = 1
+        
         while(True):
                 print("GET MAIN CONF....")
                 data = self.comunication.readConf()
@@ -220,7 +226,7 @@ class Executor:
                 
                 if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
                     print("START TRAIN GEN...")
-                    self.generateTrainData("train")
+                    self.generateTrainData("train", n_step)
 
                 self.model_name = None 
                     
@@ -231,3 +237,7 @@ class Executor:
                 if(data['MODE'] == "off"):
                     print("Stop Executor...")
                     break
+                
+                if(e % 50 == 0):
+                    n_step += 1
+                e += 1
