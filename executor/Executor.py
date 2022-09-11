@@ -215,7 +215,7 @@ class Executor:
                     time.sleep(2)
     def start(self):
         e = 1
-        n_step = 1
+        n_step = 0
         
         while(True):
                 print("GET MAIN CONF....")
