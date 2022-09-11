@@ -89,7 +89,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             {'params': model.ppm.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
             {'params': model.cls.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
             {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
-            lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY']
+            lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
 
         print("Traning started.....")
     else:
