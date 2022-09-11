@@ -158,8 +158,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 intersection_normal, union_normal, target_normal = intersectionAndUnion(output_normal, target_normal, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection_normal, union_normal, target_normal = intersection_normal.cpu().numpy(), union_normal.cpu().numpy(), target_normal.cpu().numpy()
                 
-                iou = np.mean(intersection_normal / (union_normal + 1e-10)
-                acc = (sum(intersection_normal) / (sum(target_normal)
+                iou = np.mean(intersection_normal / (union_normal + 1e-10))
+                acc = sum(intersection_normal) / sum(target_normal)
 
                 logger.log_loss_batch_train_adversarial(train_loader_len, e, batch_id + 1, loss.item())
                 logger.log_iou_batch_train_adversarial(train_loader_len, e, batch_id + 1, iou)
