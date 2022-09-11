@@ -34,8 +34,8 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             for i in range(len(image_normal)):
                 print("save:", data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
                 print("save:", data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
-                torch.save(torch.cat((image_normal[i].cpu().detach(), image_adversarial[i].cpu().detach())), data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
-                torch.save(torch.cat((label_normal[i].cpu().detach(), label_adversarial[i].cpu().detach())), data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
+                torch.save(torch.cat([(image_normal[i].cpu().detach(), image_adversarial[i].cpu().detach())]), data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
+                torch.save(torch.cat([(label_normal[i].cpu().detach(), label_adversarial[i].cpu().detach())]), data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
     else:
         image = batch[0].to(device)
 
