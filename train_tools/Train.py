@@ -308,8 +308,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         batch_id = 0
         
-        model = model.eval()
-        
         for data in val_loader_:
             with torch.no_grad():
                 image_val, target = data
