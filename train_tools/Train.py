@@ -178,6 +178,9 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 count_no = 0
                 check_ = 0
                 no_batch = 0
+                
+                logger.log_current_iter_epoch(current_iter)
+                logger.log_epoch(e)
             elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
@@ -211,8 +214,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         logger.log_loss_epoch_train_adversarial(e, loss_train_epoch)
         logger.log_iou_epoch_train_adversarial(e, iou_train_epoch)
         logger.log_acc_epoch_train_adversarial(e, acc_train_epoch)
-        logger.log_current_iter_epoch(current_iter)
-        logger.log_epoch(e)
 
         torch.save(model.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_" + str(e) + ".pt")
         torch.save(optimizer.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_optimizer" + str(e) + ".pt")
