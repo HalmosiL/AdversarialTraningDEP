@@ -19,6 +19,10 @@ class LogerWB:
         if(self.print_messages):
             print('Epoch[' + str(epoch) + '] ' + 'Finished[' + str(batch_id / length * 100)[:5] + '%]' + 'Batch[' + str(batch_id) + ']' + 'loss_adversarial:' + str(loss))
 
+    #current_iter
+    def log_current_iter_epoch(self, iter):
+            wandb.log({"current_iter_epoch": iter})
+            
     #Train acc adversarial
     def log_acc_epoch_train_adversarial(self, epoch, loss):
             wandb.log({"epoch_train_acc_adversarial": loss})
