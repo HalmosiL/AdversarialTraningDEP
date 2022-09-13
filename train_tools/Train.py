@@ -180,7 +180,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 no_batch = 0
                 
                 logger.log_current_iter_epoch(current_iter)
-                logger.log_epoch(e)
+                logger.log_epoch(int(e))
             elif(len(data) == 1):
                 print("Jump..")
                 remove_files = np.array(data[0]).flatten()
