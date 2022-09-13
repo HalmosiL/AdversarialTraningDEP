@@ -21,7 +21,7 @@ class LogerWB:
 
     #epoch
     def log_epoch(self, epoch):
-            wandb.log({"epoch": iter})
+            wandb.log({"epoch_": iter})
             
     #current_iter
     def log_current_iter_epoch(self, iter):
