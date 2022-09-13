@@ -113,7 +113,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
     train_loader_len = int(CONFIG["TRAIN_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
     val_loader_len = int(CONFIG["VAL_DATASET_SIZE"] / CONFIG["TRAIN_BATCH_SIZE"])
-
+    
     current_iter = 0
     
     for e in range(CONFIG["EPOCHS"]):
@@ -211,6 +211,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         logger.log_loss_epoch_train_adversarial(e, loss_train_epoch)
         logger.log_iou_epoch_train_adversarial(e, iou_train_epoch)
         logger.log_acc_epoch_train_adversarial(e, acc_train_epoch)
+        logger.log_current_iter_epoch(current_iter)
+        logger.log_epoch(e)
 
         torch.save(model.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_" + str(e) + ".pt")
         torch.save(optimizer.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_optimizer" + str(e) + ".pt")
