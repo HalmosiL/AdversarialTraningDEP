@@ -19,7 +19,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         
         label = batch[1]
         label = torch.split(label, int(len(label)/4))
-        label_normal = torch.cat((label[0], label[1], , label[2]), dim=0)
+        label_normal = torch.cat((label[0], label[1], label[2]), dim=0)
         label_adversarial = label[3]
 
         if(split == -1 or split == 1):
