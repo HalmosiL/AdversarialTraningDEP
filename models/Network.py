@@ -407,19 +407,22 @@ class PSPNet(nn.Module):
                 layer0,
                 layer1,
                 layer2,
-                layer3
+                layer3,
+                layer4
             ):
                 super().__init__()
                 self.layer0 = layer0
                 self.layer1 = layer1
                 self.layer2 = layer2
                 self.layer3 = layer3
+                self.layer4 = layer4
 
             def forward(self, x):
                 x = self.layer0(x)
                 x = self.layer1(x)
                 x = self.layer2(x)
                 x = self.layer3(x)
+                x = self.layer4(x)
 
                 return x
 
@@ -427,7 +430,8 @@ class PSPNet(nn.Module):
             self.layer0,
             self.layer1,
             self.layer2,
-            self.layer3
+            self.layer3,
+            self.layer4
         )
 
 
