@@ -197,7 +197,7 @@ class Executor:
                             data_queue=self.data_queue if data['MODE'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
-                            gen= data['MODE'] == "train"
+                            gen=False
                         )                               
 
                         element_id += 1
