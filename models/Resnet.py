@@ -18,7 +18,7 @@ model_urls = {
 }
 
 model_paths = {
-    'resnet50': '../../pretrained_models/resnet50_v2.pth',
+    'resnet50': '../../pretrained_models/imagenet_linf_8.pt',
     'resnet101': '../../pretrained_models/resnet101_v2.pth',
     'resnet152': '../../pretrained_models/resnet152_v2.pth',
 }
