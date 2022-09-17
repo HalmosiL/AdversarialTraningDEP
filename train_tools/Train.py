@@ -53,7 +53,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
     
     if(CONFIG["MODE_LOADE"] == "continum"):
         print("Continum Traning.....")
-        model = get_model(CONFIG['DEVICE'][0])
+        model = get_model(CONFIG['DEVICE_TRAIN'])
 
         print("Load Model.....")
         model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"])["state_dict"])
@@ -65,7 +65,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         print("Traning started.....")
     elif(CONFIG["MODE_LOADE"] == "transfer"):
         print("Continum Traning.....")
-        model = get_model(CONFIG['DEVICE'][0])
+        model = get_model(CONFIG['DEVICE_TRAIN'])
 
         print("Load Model.....")
         model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"])["state_dict"])
@@ -73,7 +73,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         print("Traning started.....")
     else:
-        model = get_model(CONFIG['DEVICE'][0])
+        model = get_model(CONFIG['DEVICE_TRAIN'])
         optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG['LEARNING_RATE'])
         print("Traning started.....")
     
@@ -109,8 +109,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
             if(len(data) == 3):
-                image_normal = data[0][0].to(CONFIG["DEVICE"][0])
-                target_normal = data[1][0].to(CONFIG["DEVICE"][0])
+                image_normal = data[0][0].to(CONFIG['DEVICE_TRAIN'])
+                target_normal = data[1][0].to(CONFIG['DEVICE_TRAIN'])
                 
                 print(image_normal.shape)
                 print(target_normal.shape)
@@ -217,8 +217,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
                 if(len(data) == 3):
-                    image_val = data[0][0].to(CONFIG["DEVICE"][0])
-                    target = data[1][0].to(CONFIG["DEVICE"][0])
+                    image_val = data[0][0].to(CONFIG['DEVICE_TRAIN'])
+                    target = data[1][0].to(CONFIG['DEVICE_TRAIN'])
                     remove_files = np.array(data[2]).flatten()
 
                     output, _, loss = model(image_val, target)
@@ -281,8 +281,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         for data in val_loader_:
             with torch.no_grad():
                 image_val, target = data
-                image_val = image_val.to(CONFIG["DEVICE"][0])
-                target = target.to(CONFIG["DEVICE"][0])
+                image_val = image_val.to(CONFIG['DEVICE_TRAIN'])
+                target = target.to(CONFIG['DEVICE_TRAIN'])
                 
                 output, _, loss = model(image_val, target)
 
