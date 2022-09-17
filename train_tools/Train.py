@@ -57,17 +57,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         print("Load Model.....")
         model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"])["state_dict"])
-
-        optimizer = torch.optim.SGD(
-            [{'params': model.layer0.parameters()},
-            {'params': model.layer1.parameters()},
-            {'params': model.layer2.parameters()},
-            {'params': model.layer3.parameters()},
-            {'params': model.layer4.parameters()},
-            {'params': model.ppm.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.cls.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
-            lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
+        optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG['LEARNING_RATE'])
 
         print("Load optimizer.....")
         optimizer.load_state_dict(torch.load(CONFIG["OPTIMIZER_CONTINUM_PATH"])["optimizer"])
@@ -79,31 +69,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         print("Load Model.....")
         model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"])["state_dict"])
-
-        optimizer = torch.optim.SGD(
-            [{'params': model.layer0.parameters()},
-            {'params': model.layer1.parameters()},
-            {'params': model.layer2.parameters()},
-            {'params': model.layer3.parameters()},
-            {'params': model.layer4.parameters()},
-            {'params': model.ppm.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.cls.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
-            lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
+        optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG['LEARNING_RATE'])
 
         print("Traning started.....")
     else:
         model = get_model(CONFIG['DEVICE'][0])
-        optimizer = torch.optim.SGD(
-            [{'params': model.layer0.parameters()},
-            {'params': model.layer1.parameters()},
-            {'params': model.layer2.parameters()},
-            {'params': model.layer3.parameters()},
-            {'params': model.layer4.parameters()},
-            {'params': model.ppm.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.cls.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
-            {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
-            lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
+        optimizer = torch.optim.Adam(model.parameters(), lr=CONFIG['LEARNING_RATE'])
         print("Traning started.....")
     
     cache_id = 0
@@ -143,8 +114,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 print(image_normal.shape)
                 print(target_normal.shape)
-
-                poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
 
                 remove_files = np.array(data[2]).flatten()
                 optimizer.zero_grad()
