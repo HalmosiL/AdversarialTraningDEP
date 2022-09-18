@@ -3,7 +3,7 @@ from torchvision import transforms
 import torch
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, gen=True):
     print("Gen_", id_, " started..")
-    if(gen):
+    if(gen and False):
         image = batch[0].to(device)
         image = torch.split(image, int(len(image)/2))
         image_normal = image[0]
