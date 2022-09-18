@@ -39,13 +39,14 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
     else:
         image = batch[0].to(device)
 
-        image = model_immer_attack_auto_loss(
-            image=image,
-            model=model,
-            attack=attack,
-            number_of_steps=number_of_steps,
-            device=device
-        )
+        if(False):
+            image = model_immer_attack_auto_loss(
+                image=image,
+                model=model,
+                attack=attack,
+                number_of_steps=number_of_steps,
+                device=device
+            )
         
         label = batch[1]
     
