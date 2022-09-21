@@ -2,8 +2,8 @@ import glob
 import time
 import torch
 import os
-import math
 import sys
+import logging
 
 from executor.Gen import run
 from executor.Adversarial import Cosine_PDG_Adam
@@ -40,12 +40,12 @@ class Executor:
         self.comunication = Comunication()
         
         try: 
-            print("Create data cache...")
+            logging.info("Create data cache...")
             os.mkdir(data_queue)
             os.mkdir(data_queue[:-1] + "_val")
-            print("Data cache created successfuly...")
+            logging.info("Data cache created successfuly...")
         except OSError as error: 
-            print("Data cache alredy exist...")  
+            logging.info("Data cache alredy exist...")  
 
         self.split = -1
         self.split_size = 0
@@ -75,6 +75,8 @@ class Executor:
         self.step_size = step_size
         self.clip_size = clip_size
 
+        logging.basicConfig(level=logging.DEBUG)
+        
         value_scale = 255
         mean = [0.485, 0.456, 0.406]
         mean = [item * value_scale for item in mean]
@@ -136,7 +138,7 @@ class Executor:
         
         if(not len(new_model_name)):
             if(self.model_name is None):
-                print("There is no model to use yet...")
+                logging.info("There is no model to use yet...")
                 time.sleep(2)
                 return None
         else:
@@ -161,10 +163,10 @@ class Executor:
             number_of_steps = self.number_of_steps
         
         if(mode == "train"):
-            print("Executor start train....")
+            logging.info("Executor start train....")
             iter_ = iter(self.train_data_set_loader)
         elif(mode == "val"):
-            print("Executor start val....")
+            logging.info("Executor start val....")
             iter_ = iter(self.val_data_set_loader)
 
         element_id = 0
@@ -173,12 +175,12 @@ class Executor:
         data = self.comunication.readConf()
         
         while(True):
-            print("Step....")
+            logging.debug("Step....")
             model = self.updateModel(model)
-            print("Get config....")
+            logging.debug("Get config....")
             data = self.comunication.readConf()
             
-            print("Generate data....")
+            logging.debug("Generate data....")
             if(data['MODE'] == "off"):
                 return
             
@@ -209,29 +211,32 @@ class Executor:
                             
                         return
                 else:
-                    print("There is no model to use yet....")
+                    logging.debug("There is no model to use yet....")
                     time.sleep(2)
             else:
-                    print("Data queue is full....")
+                    logging.debug("Data queue is full....")
                     time.sleep(2)
     def start(self):
-        while(True):
-                print("GET MAIN CONF....")
-                data = self.comunication.readConf()
-                print("SET MAIN CONF....")
-                print(data)
-                time.sleep(2)
-                
-                if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
-                    print("START TRAIN GEN...")
-                    self.generateTrainData("train")
+        try:
+            while(True):
+                    logging.info("GET MAIN CONF....")
+                    data = self.comunication.readConf()
+                    logging.info("SET MAIN CONF....")
+                    logging.debug(data)
+                    time.sleep(2)
 
-                self.model_name = None 
-                    
-                if(not data['Executor_Finished_Val'] == "True" and data['MODE'] == "val"):
-                    print("START VAL GEN...")
-                    self.generateTrainData("val")
-                
-                if(data['MODE'] == "off"):
-                    print("Stop Executor...")
-                    break
+                    if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
+                        logging.info("START TRAIN GEN...")
+                        self.generateTrainData("train")
+
+                    self.model_name = None 
+
+                    if(not data['Executor_Finished_Val'] == "True" and data['MODE'] == "val"):
+                        logging.info("START VAL GEN...")
+                        self.generateTrainData("val")
+
+                    if(data['MODE'] == "off"):
+                        logging.info("Stop Executor...")
+                        break
+            except Exception as e:
+                logging.info(str(e))
