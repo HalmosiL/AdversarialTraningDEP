@@ -12,6 +12,7 @@ from models.Model import get_model
 from util.Metrics import intersectionAndUnion
 from util.WBLogger import LogerWB
 from util.Comunication import Comunication
+from util.AverageMeter import AverageMeter
 
 def sort_(key):
     key = key.split("_")[-1]
@@ -115,9 +116,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
     for e in range(CONFIG["EPOCHS"]):
         model = model.train()
 
-        loss_train_epoch = 0
-        iou_train_epoch = 0
-        acc_train_epoch = 0
+        loss_meter = AverageMeter()
+        intersection_meter = AverageMeter()
+        union_meter = AverageMeter()
+        target_meter = AverageMeter()
 
         clearDataQueue(CONFIG, "train")
 
@@ -151,16 +153,15 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 intersection_normal, union_normal, target_normal = intersectionAndUnion(output_normal, target_normal, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection_normal, union_normal, target_normal = intersection_normal.cpu().numpy(), union_normal.cpu().numpy(), target_normal.cpu().numpy()
                 
+                intersection_meter.update(intersection_normal), union_meter.update(union_normal), target_meter.update(target_normal)
+                loss_meter.update(loss.item(), image_normal.size(0))
+                
                 iou = np.mean(intersection_normal / (union_normal + 1e-10))
                 acc = sum(intersection_normal) / sum(target_normal)
 
                 logger.log_loss_batch_train_adversarial(train_loader_len, e, batch_id + 1, loss.item())
                 logger.log_iou_batch_train_adversarial(train_loader_len, e, batch_id + 1, iou)
                 logger.log_acc_batch_train_adversarial(train_loader_len, e, batch_id + 1, acc)
-
-                iou_train_epoch += iou
-                loss_train_epoch += loss.item()
-                acc_train_epoch += acc
 
                 if(e % CONFIG["MODEL_CACHE_PERIOD"] == 0):
                     cache_id = cacheModel(cache_id, model, CONFIG)
@@ -195,13 +196,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
-        loss_train_epoch = loss_train_epoch / batch_id
-        iou_train_epoch = iou_train_epoch / batch_id
-        acc_train_epoch = acc_train_epoch / batch_id
+        iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
+        mIoU = np.mean(iou_class)
+        
+        allAcc = sum(intersection_meter.sum) / (sum(target_meter.sum) + 1e-10)
 
-        logger.log_loss_epoch_train_adversarial(e, loss_train_epoch)
-        logger.log_iou_epoch_train_adversarial(e, iou_train_epoch)
-        logger.log_acc_epoch_train_adversarial(e, acc_train_epoch)
+        logger.log_loss_epoch_train_adversarial(e, loss_meter.sum/(train_loader.__len__() * CONFIG['TRAIN_BATCH_SIZE']))
+        logger.log_iou_epoch_train_adversarial(e, mIoU)
+        logger.log_acc_epoch_train_adversarial(e, allAcc)
 
         torch.save(model.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_" + str(e) + ".pt")
         torch.save(optimizer.state_dict(), CONFIG["MODEL_SAVE"] + CONFIG["MODEL_NAME"] + "_optimizer" + str(e) + ".pt")
@@ -210,11 +212,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         model = model.eval()
 
-        loss_val_epoch = 0
-        iou_val_epoch = 0
-        acc_val_epoch = 0
-
-        val_status = 0
+        loss_meter = AverageMeter()
+        intersection_meter = AverageMeter()
+        union_meter = AverageMeter()
+        target_meter = AverageMeter()
 
         clearDataQueue(CONFIG, "val")
         
@@ -227,8 +228,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         model = model.eval()
         
-        print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
-        
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
                 if(len(data) == 3):
@@ -240,16 +239,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
                     intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                     intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
+                    
+                    intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
+                    loss_meter.update(loss.item(), image_val.size(0))
 
-                    iou = np.mean(intersection / (union + 1e-10))
-                    acc = sum(intersection) / (sum(target) + 1e-10)
-
-                    iou_val_epoch += iou
-                    loss_val_epoch += loss
-                    acc_val_epoch += acc
-                    val_status += 1
-
-                    print("Val finished:" + str(val_status / (val_loader_len))[:5] + "%", end="\r")
+                    print("Val finished:" + str(batch_id / (val_loader_len))[:5] + "%", end="\r")
                     removeFiles(remove_files)
                     batch_id += 1
                 elif(len(data) == 1):
@@ -276,17 +270,19 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
-        loss_val_epoch = loss_val_epoch / batch_id
-        iou_val_epoch = iou_val_epoch / batch_id
-        acc_val_epoch = acc_val_epoch / batch_i
-
-        logger.log_loss_epoch_val_adversarial(e, loss_val_epoch)
-        logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
-        logger.log_acc_epoch_val_adversarial(e, acc_val_epoch)
+        iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
+        mIoU = np.mean(iou_class)
         
-        loss_val_epoch = 0
-        iou_val_epoch = 0
-        acc_val_epoch = 0
+        allAcc = sum(intersection_meter.sum) / (sum(target_meter.sum) + 1e-10)
+
+        logger.log_loss_epoch_val_adversarial(e, loss_meter.sum/(val_loader_.__len__() * CONFIG['TRAIN_BATCH_SIZE']))
+        logger.log_iou_epoch_val_adversarial(e, mIoU)
+        logger.log_acc_epoch_val_adversarial(e, allAcc)
+        
+        loss_meter = AverageMeter()
+        intersection_meter = AverageMeter()
+        union_meter = AverageMeter()
+        target_meter = AverageMeter()
         
         batch_id = 0
         
@@ -300,21 +296,19 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
                 intersection, union, target = intersectionAndUnion(output, target, CONFIG['CALSSES'], CONFIG['IGNOR_LABEL'])
                 intersection, union, target = intersection.cpu().numpy(), union.cpu().numpy(), target.cpu().numpy()
+                
+                intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
+                loss_meter.update(loss.item(), image_val.size(0))
 
-                iou = np.mean(intersection / (union + 1e-10))
-                acc = sum(intersection) / (sum(target) + 1e-10)
-
-                iou_val_epoch += iou
-                loss_val_epoch += loss
-                acc_val_epoch += acc
             print("Val Normal Finished:", batch_id * 100 / val_loader_.__len__(), end="\r")
                 
-        loss_val_epoch = loss_val_epoch / val_loader_.__len__()
-        iou_val_epoch = iou_val_epoch / val_loader_.__len__()
-        acc_val_epoch = acc_val_epoch / val_loader_.__len__()
+        iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
+        mIoU = np.mean(iou_class)
+        
+        allAcc = sum(intersection_meter.sum) / (sum(target_meter.sum) + 1e-10)
 
-        logger.log_loss_epoch_val(e, loss_val_epoch)
-        logger.log_iou_epoch_val(e, iou_val_epoch)
-        logger.log_acc_epoch_val(e, acc_val_epoch)
+        logger.log_loss_epoch_val(e, loss_meter.sum/(val_loader_.__len__() * 16))
+        logger.log_iou_epoch_val(e, mIoU)
+        logger.log_acc_epoch_val(e, allAcc)
 
         comunication.setMode("train")
