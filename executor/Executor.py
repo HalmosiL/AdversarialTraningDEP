@@ -241,5 +241,5 @@ class Executor:
                     if(data['MODE'] == "off"):
                         logging.info("Stop Executor...")
                         break
-            except Exception as e:
+        except Exception as e:
                 logging.info(str(e))
