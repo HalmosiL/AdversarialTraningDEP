@@ -39,6 +39,11 @@ class Executor:
         self.mode = None
         self.comunication = Comunication()
         
+        if(CONFIG["LOG_MODE"] == "DEBUG"):
+            logging.basicConfig(level=logging.DEBUG, filename=CONFIG['LOG_PATH_EXECUTOR'])
+        elif(CONFIG["LOG_MODE"] == "INFO"):
+            logging.basicConfig(level=logging.INFO, filename=CONFIG['LOG_PATH_EXECUTOR'])
+        
         try: 
             logging.info("Create data cache...")
             os.mkdir(data_queue)
@@ -75,11 +80,6 @@ class Executor:
         self.step_size = step_size
         self.clip_size = clip_size
 
-        if(CONFIG["LOG_MODE"] == "DEBUG"):
-            logging.basicConfig(level=logging.DEBUG, filename=CONFIG['LOG_PATH'])
-        elif(CONFIG["LOG_MODE"] == "INFO"):
-            logging.basicConfig(level=logging.INFO, filename=CONFIG['LOG_PATH'])
-        
         value_scale = 255
         mean = [0.485, 0.456, 0.406]
         mean = [item * value_scale for item in mean]
