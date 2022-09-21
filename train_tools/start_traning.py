@@ -5,7 +5,7 @@ import torch
 import json
 import subprocess
 import time
-import socket
+import logging
 
 sys.path.insert(0, "../")
 from dataset.GetDatasetLoader import getDatasetLoader
@@ -25,13 +25,18 @@ if __name__ == '__main__':
     CONFIG_PATH = sys.argv[1]
     CONFIG = json.load(open(CONFIG_PATH, "r+"))
     
-    print("Init com_conf...")
+    if(CONFIG["LOG_MODE"] == "DEBUG"):
+        logging.basicConfig(level=logging.DEBUG, filename=CONFIG['LOG_PATH'])
+    elif(CONFIG["LOG_MODE"] == "INFO"):
+        logging.basicConfig(level=logging.INFO, filename=CONFIG['LOG_PATH'])
+    
+    logging.info("Init com_conf...")
     start(CONFIG_PATH, "./start_com_server.sh")
     time.sleep(5)
     
     Comunication.tcp_socket = socket.create_connection((CONFIG["CONFMANAGER_HOST"], CONFIG["CONFMANAGER_PORT"]))
     
-    print("Clear model cache...")
+    logging.info("Clear model cache...")
     models_in_cache = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     for m in models_in_cache:
         os.remove(m)
