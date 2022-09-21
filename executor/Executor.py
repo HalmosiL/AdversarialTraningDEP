@@ -34,14 +34,15 @@ class Executor:
         train_batch_size,
         args_dataset,
         step_size,
-        clip_size
+        clip_size,
+        log_mode
     ):
         self.mode = None
         self.comunication = Comunication()
         
-        if(CONFIG["LOG_MODE"] == "DEBUG"):
+        if(log_mode == "DEBUG"):
             logging.basicConfig(level=logging.DEBUG, filename=CONFIG['LOG_PATH_EXECUTOR'])
-        elif(CONFIG["LOG_MODE"] == "INFO"):
+        elif(log_mode == "INFO"):
             logging.basicConfig(level=logging.INFO, filename=CONFIG['LOG_PATH_EXECUTOR'])
         
         try: 
