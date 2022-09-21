@@ -4,8 +4,6 @@ import torch
 import os
 import time
 import numpy as np
-import json
-import time
 
 sys.path.insert(0, "../")
 
@@ -126,13 +124,10 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         print("Train Adversarial loader length:", train_loader_len)
         print("Val Adversarial loader length:", val_loader_len)
         
-        cut = 0
         batch_id = 0
-        count_no = 0
         
         data = train_loader_adversarial_.__getitem__(0)
         check_ = 0
-        no_batch = 0
         
         while(comunication.readConf()['Executor_Finished_Train'] != "True" or len(data) != 0):
             if(len(data) == 3):
@@ -173,9 +168,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 removeFiles(remove_files)
                 batch_id += 1
                 current_iter += 1
-                count_no = 0
                 check_ = 0
-                no_batch = 0
                 
                 logger.log_current_iter_epoch(current_iter)
                 logger.log_epoch(int(e))
@@ -184,8 +177,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 remove_files = np.array(data[0]).flatten()
                 removeFiles(remove_files)
 
-                cut += 1
-                count_no = 0
                 batch_id += 1
                 check_ = 0
             else:
@@ -201,7 +192,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     print("Leave batch...\n")
                     batch_id += 1
                     check_ = 0
-                    no_batch += 1
                 
             data = train_loader_adversarial_.__getitem__(batch_id)
 
@@ -230,18 +220,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         print("Set val...")
         comunication.setMode("val")
-        print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
-        cut_ = 0
-        
-        batch_id = 0
-        count_no = 0
-        no_batch = 0
         
         data = val_loader_adversarial_.__getitem__(0)
+        batch_id = 0
         check_ = 0
-        no_batch = 0
         
         model = model.eval()
+        
+        print("Val finished:" + str(val_status / val_loader_len)[:5] + "%", end="\r")
         
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
@@ -263,18 +249,16 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     acc_val_epoch += acc
                     val_status += 1
 
-                    print("Val finished:" + str(val_status / (val_loader_len - cut_))[:5] + "%", end="\r")
+                    print("Val finished:" + str(val_status / (val_loader_len))[:5] + "%", end="\r")
                     removeFiles(remove_files)
-                    count_no = 0
                     batch_id += 1
                 elif(len(data) == 1):
                     print("Jump..")
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
 
-                    cut += 1
-                    count_no = 0
                     batch_id += 1
+                    cut += 1
                     check_ = 0
                 else:
                     print("Wait...", end='\r')
@@ -289,13 +273,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     if(check_ == 60):
                         batch_id += 1
                         check_ = 0
-                        no_batch += 1
                 
                 data = val_loader_adversarial_.__getitem__(batch_id)
                     
-        loss_val_epoch = loss_val_epoch / (batch_id - cut_)
-        iou_val_epoch = iou_val_epoch / (batch_id - cut_)
-        acc_val_epoch = acc_val_epoch / (batch_id - cut_)
+        loss_val_epoch = loss_val_epoch / batch_id
+        iou_val_epoch = iou_val_epoch / batch_id
+        acc_val_epoch = acc_val_epoch / batch_i
 
         logger.log_loss_epoch_val_adversarial(e, loss_val_epoch)
         logger.log_iou_epoch_val_adversarial(e, iou_val_epoch)
