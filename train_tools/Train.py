@@ -4,6 +4,7 @@ import torch
 import os
 import time
 import numpy as np
+import logging
 
 sys.path.insert(0, "../")
 
@@ -51,7 +52,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
     comunication = Comunication()
     
     if(CONFIG["MODE_LOADE"] == "continum"):
-        print("Continum Traning.....")
+        logging.info("Continum Traning.....")
         model = get_model(CONFIG['DEVICE_TRAIN'])
 
         print("Load Model.....")
@@ -67,12 +68,12 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
             lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
 
-        print("Load optimizer.....")
+        logging.info("Load optimizer.....")
         optimizer.load_state_dict(torch.load(CONFIG["OPTIMIZER_CONTINUM_PATH"])["optimizer"])
 
-        print("Traning started.....")
+        logging.info("Traning started.....")
     elif(CONFIG["MODE_LOADE"] == "transfer"):
-        print("Continum Traning.....")
+        logging.info("Continum Traning.....")
         model = get_model(CONFIG['DEVICE_TRAIN'])
 
         print("Load Model.....")
@@ -88,7 +89,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
             lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
 
-        print("Traning started.....")
+        logging.info("Traning started.....")
     else:
         model = get_model(CONFIG['DEVICE_TRAIN'])
         optimizer = torch.optim.SGD(
@@ -101,7 +102,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             {'params': model.cls.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10},
             {'params': model.aux.parameters(), 'lr': CONFIG['LEARNING_RATE'] * 10}],
             lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
-        print("Traning started.....")
+        logging.info("Traning started.....")
     
     cache_id = 0
     cache_id = cacheModel(cache_id, model, CONFIG)
@@ -123,8 +124,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         clearDataQueue(CONFIG, "train")
 
-        print("Train Adversarial loader length:", train_loader_len)
-        print("Val Adversarial loader length:", val_loader_len)
+        logging.info("Train Adversarial loader length:", train_loader_len)
+        logging.info("Val Adversarial loader length:", val_loader_len)
         
         batch_id = 0
         
@@ -136,8 +137,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 image_normal = data[0][0].to(CONFIG['DEVICE_TRAIN'])
                 target_normal = data[1][0].to(CONFIG['DEVICE_TRAIN'])
                 
-                print(image_normal.shape)
-                print(target_normal.shape)
+                logging.debug(image_normal.shape)
+                logging.debug(target_normal.shape)
 
                 poly_learning_rate(optimizer, CONFIG['LEARNING_RATE'], current_iter, max_iter, power=CONFIG['POWER'])
                 
@@ -174,23 +175,23 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 logger.log_current_iter_epoch(current_iter)
                 logger.log_epoch(int(e))
             elif(len(data) == 1):
-                print("Jump..")
+                logging.info("Jump..")
                 remove_files = np.array(data[0]).flatten()
                 removeFiles(remove_files)
 
                 batch_id += 1
                 check_ = 0
             else:
-                print("Wait...", end='\r')
+                logging.info("Wait...")
                 check_ += 1
                 time.sleep(0.5)
                 
                 if(check_ % 20 == 0):
                     comunication.setMode("train")
-                    print(comunication.readConf())
+                    logging.debug(comunication.readConf())
                 
                 if(check_ == 60):
-                    print("Leave batch...\n")
+                    logging.info("Leave batch...\n")
                     batch_id += 1
                     check_ = 0
                 
@@ -219,7 +220,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         clearDataQueue(CONFIG, "val")
         
-        print("Set val...")
+        logging.info("Set val...")
         comunication.setMode("val")
         
         data = val_loader_adversarial_.__getitem__(0)
@@ -243,11 +244,11 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
                     loss_meter.update(loss.item(), image_val.size(0))
 
-                    print("Val finished:" + str(batch_id / (val_loader_len))[:5] + "%", end="\r")
+                    logging.debug("Val finished:" + str(batch_id / (val_loader_len))[:5] + "%", end="\r")
                     removeFiles(remove_files)
                     batch_id += 1
                 elif(len(data) == 1):
-                    print("Jump..")
+                    logging.info("Jump..")
                     remove_files = np.array(data[0]).flatten()
                     removeFiles(remove_files)
 
@@ -255,14 +256,14 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     check_ = 0
                 else:
-                    print("Wait...", end='\r')
+                    logging.info("Wait...", end='\r')
                     check_ += 1
                     time.sleep(0.5)
 
                     if(check_ % 20 == 0):
                         comunication.setMode("val")
-                        print("Leave batch...\n", end='\r')
-                        print(comunication.readConf())
+                        logging.info("Leave batch...\n", end='\r')
+                        logging.debug(comunication.readConf())
                     
                     if(check_ == 60):
                         batch_id += 1
@@ -300,7 +301,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
                 loss_meter.update(loss.item(), image_val.size(0))
 
-            print("Val Normal Finished:", batch_id * 100 / val_loader_.__len__(), end="\r")
+            logging.debug("Val Normal Finished:", batch_id * 100 / val_loader_.__len__(), end="\r")
                 
         iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
         mIoU = np.mean(iou_class)
