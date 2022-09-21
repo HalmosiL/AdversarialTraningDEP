@@ -6,6 +6,7 @@ import json
 import subprocess
 import time
 import logging
+import socket
 
 sys.path.insert(0, "../")
 from dataset.GetDatasetLoader import getDatasetLoader
