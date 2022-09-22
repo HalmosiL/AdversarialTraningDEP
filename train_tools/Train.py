@@ -202,7 +202,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         allAcc = sum(intersection_meter.sum) / (sum(target_meter.sum) + 1e-10)
 
-        logger.log_loss_epoch_train_adversarial(e, loss_meter.sum/(train_loader.__len__() * CONFIG['TRAIN_BATCH_SIZE']))
+        logger.log_loss_epoch_train_adversarial(e, loss_meter.sum/(train_loader_len * CONFIG['TRAIN_BATCH_SIZE']))
         logger.log_iou_epoch_train_adversarial(e, mIoU)
         logger.log_acc_epoch_train_adversarial(e, allAcc)
 
@@ -276,7 +276,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         
         allAcc = sum(intersection_meter.sum) / (sum(target_meter.sum) + 1e-10)
 
-        logger.log_loss_epoch_val_adversarial(e, loss_meter.sum/(val_loader_.__len__() * CONFIG['TRAIN_BATCH_SIZE']))
+        logger.log_loss_epoch_val_adversarial(e, loss_meter.sum/(val_loader_len * CONFIG['TRAIN_BATCH_SIZE']))
         logger.log_iou_epoch_val_adversarial(e, mIoU)
         logger.log_acc_epoch_val_adversarial(e, allAcc)
         
