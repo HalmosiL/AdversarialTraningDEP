@@ -83,4 +83,7 @@ if __name__ == '__main__':
         pin_memory=False
     )
 
-    train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader, start)
+    try:
+        train(CONFIG_PATH, CONFIG, train_loader_adversarial, val_loader_adversarial, val_loader, start)
+    except Exception as e:
+        logging.exception(str(e))
