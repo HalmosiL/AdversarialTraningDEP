@@ -300,6 +300,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
                 loss_meter.update(loss.item(), image_val.size(0))
+                batch_id += 1
 
             logging.debug("Val Normal Finished:" + str(batch_id * 100 / val_loader_.__len__()))
                 
