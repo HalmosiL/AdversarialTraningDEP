@@ -124,8 +124,8 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
 
         clearDataQueue(CONFIG, "train")
 
-        logging.info("Train Adversarial loader length:", train_loader_len)
-        logging.info("Val Adversarial loader length:", val_loader_len)
+        logging.info("Train Adversarial loader length:" + str(train_loader_len))
+        logging.info("Val Adversarial loader length:" + str(val_loader_len))
         
         batch_id = 0
         
@@ -244,7 +244,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
                     loss_meter.update(loss.item(), image_val.size(0))
 
-                    logging.debug("Val finished:" + str(batch_id / (val_loader_len))[:5] + "%", end="\r")
+                    logging.debug("Val finished:" + str(batch_id / (val_loader_len))[:5] + "%")
                     removeFiles(remove_files)
                     batch_id += 1
                 elif(len(data) == 1):
@@ -256,13 +256,13 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     check_ = 0
                 else:
-                    logging.info("Wait...", end='\r')
+                    logging.info("Wait...")
                     check_ += 1
                     time.sleep(0.5)
 
                     if(check_ % 20 == 0):
                         comunication.setMode("val")
-                        logging.info("Leave batch...\n", end='\r')
+                        logging.info("Leave batch...\n")
                         logging.debug(comunication.readConf())
                     
                     if(check_ == 60):
@@ -301,7 +301,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 intersection_meter.update(intersection), union_meter.update(union), target_meter.update(target)
                 loss_meter.update(loss.item(), image_val.size(0))
 
-            logging.debug("Val Normal Finished:", batch_id * 100 / val_loader_.__len__(), end="\r")
+            logging.debug("Val Normal Finished:" + str(batch_id * 100 / val_loader_.__len__()))
                 
         iou_class = intersection_meter.sum / (union_meter.sum + 1e-10)
         mIoU = np.mean(iou_class)
