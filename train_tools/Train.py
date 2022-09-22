@@ -182,7 +182,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 batch_id += 1
                 check_ = 0
             else:
-                logging.info("Wait...")
+                logging.debug("Wait...")
                 check_ += 1
                 time.sleep(0.5)
                 
@@ -256,7 +256,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     cut += 1
                     check_ = 0
                 else:
-                    logging.info("Wait...")
+                    logging.debug("Wait...")
                     check_ += 1
                     time.sleep(0.5)
 
