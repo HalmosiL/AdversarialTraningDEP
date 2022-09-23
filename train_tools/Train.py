@@ -56,7 +56,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         model = get_model(CONFIG['DEVICE_TRAIN'])
 
         print("Load Model.....")
-        model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"])["state_dict"])
+        model.load_state_dict(torch.load(CONFIG["MODEL_CONTINUM_PATH"]))
         optimizer = torch.optim.SGD(
             [{'params': model.layer0.parameters()},
             {'params': model.layer1.parameters()},
@@ -69,7 +69,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
             lr=CONFIG['LEARNING_RATE'], momentum=CONFIG['MOMENTUM'], weight_decay=CONFIG['WEIGHT_DECAY'])
 
         logging.info("Load optimizer.....")
-        optimizer.load_state_dict(torch.load(CONFIG["OPTIMIZER_CONTINUM_PATH"])["optimizer"])
+        optimizer.load_state_dict(torch.load(CONFIG["OPTIMIZER_CONTINUM_PATH"]))
 
         logging.info("Traning started.....")
     elif(CONFIG["MODE_LOADE"] == "transfer"):
