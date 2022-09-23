@@ -253,7 +253,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                     removeFiles(remove_files)
 
                     batch_id += 1
-                    cut += 1
                     check_ = 0
                 else:
                     logging.debug("Wait...")
