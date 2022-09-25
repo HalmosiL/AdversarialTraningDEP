@@ -30,7 +30,6 @@ if __name__ == '__main__':
         args_dataset=CONFIG['DATASET'],
         step_size=CONFIG['STEPS_SIZE'],
         clip_size=CONFIG['CLIP_SIZE'],
-        log_mode=CONFIG['LOG_PATH'],
         log_path_executor=CONFIG['LOG_PATH_EXECUTOR'],
         log_mode=CONFIG['LOG_MODE']
     ).start()
