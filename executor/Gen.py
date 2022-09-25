@@ -5,11 +5,11 @@ import logging
 
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, gen=True):
     logging.debug("Gen_" + str(id_) + " started..")
-    if(gen and False):
+    if(gen):
         image = batch[0].to(device)
-        image = torch.split(image, int(len(image)/2))
-        image_normal = image[0]
-        image_adversarial = image[1]
+        image = torch.split(image, int(len(image)/4))
+        image_normal = torch.cat((image[0], image[1], image[2]), dim=0)
+        image_adversarial = image[3]
         
         image_adversarial = model_immer_attack_auto_loss(
             image=image_adversarial,
@@ -28,10 +28,10 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             torch.save(torch.cat(image_normal.cpu().detach(), image_adversarial.cpu().detach()), data_queue + 'image_' + str(id_) + '_0_.pt')
             torch.save(torch.cat(label_normal.cpu().detach(), label_adversarial.cpu().detach()), data_queue + 'label_' + str(id_) + '_0_.pt')
         else:
-            image_normal = torch.split(image_normal, int(split_size / 2))
-            image_adversarial = torch.split(image_adversarial, int(split_size / 2))
-            label_normal = torch.split(label_normal, int(split_size / 2))
-            label_adversarial = torch.split(label_adversarial, int(split_size / 2))
+            image_normal = torch.split(image_normal, int(len(image_normal) / 2))
+            image_adversarial = torch.split(image_adversarial, int(len(image_adversarial) / 2))
+            label_normal = torch.split(label_normal, int(len(image_normal) / 2))
+            label_adversarial = torch.split(label_adversarial, int(len(image_adversarial) / 2))
 
             for i in range(len(image_normal)):
                 logging.debug("save:" + data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
