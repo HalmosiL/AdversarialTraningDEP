@@ -28,12 +28,30 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             torch.save(torch.cat((image_normal.cpu().detach(), image_adversarial.cpu().detach())), data_queue + 'image_' + str(id_) + '_0_.pt')
             torch.save(torch.cat((label_normal.cpu().detach(), label_adversarial.cpu().detach())), data_queue + 'label_' + str(id_) + '_0_.pt')
         else:
+            print(image_normal.shape)
+            print(label_normal.shape)
+            
+            print(image_adversarial.shape)
+            print(label_adversarial.shape)
+            
             image_normal = torch.split(image_normal, int(len(image_normal) / 2))
             label_normal = torch.split(label_normal, int(len(image_normal) / 2))
             
             image_adversarial = torch.split(image_adversarial, int(len(image_adversarial) / 2))
             label_adversarial = torch.split(label_adversarial, int(len(image_adversarial) / 2))
 
+            print(image_normal[0].shape)
+            print(label_normal[0].shape)
+            
+            print(image_adversarial[0].shape)
+            print(label_adversarial[0].shape)
+            
+            print(image_normal[1].shape)
+            print(label_normal[1].shape)
+            
+            print(image_adversarial[1].shape)
+            print(label_adversarial[1].shape)
+            
             for i in range(len(image_normal)):
                 logging.debug("save:" + data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
                 logging.debug("save:" + data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
