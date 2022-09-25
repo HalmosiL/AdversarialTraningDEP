@@ -36,8 +36,7 @@ class Executor:
         step_size,
         clip_size,
         log_mode,
-        log_path_executor,
-        log_mode,
+        log_path_executor
     ):
         self.mode = None
         self.comunication = Comunication()
