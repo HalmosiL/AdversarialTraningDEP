@@ -35,11 +35,12 @@ class Executor:
         args_dataset,
         step_size,
         clip_size,
-        log_mode
+        log_mode,
+        log_path_executor
     ):
         self.mode = None
         self.comunication = Comunication()
-        logging.basicConfig(level=logging.DEBUG, filename=CONFIG['LOG_PATH_EXECUTOR'])
+        logging.basicConfig(level=logging.DEBUG, filename=log_path_executor)
         
         try: 
             logging.info("Create data cache...")
