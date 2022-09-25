@@ -20,9 +20,9 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         )
         
         label = batch[1]
-        label = torch.split(label, int(len(label)/2))
-        label_normal = label[0]
-        label_adversarial = label[1]
+        label = torch.split(label, int(len(label)/4))
+        label_normal = torch.cat((label[0], label[1], label[2]), dim=0)
+        label_adversarial = label[3]
 
         if(split == -1 or split == 1):
             torch.save(torch.cat(image_normal.cpu().detach(), image_adversarial.cpu().detach()), data_queue + 'image_' + str(id_) + '_0_.pt')
