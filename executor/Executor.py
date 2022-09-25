@@ -36,11 +36,16 @@ class Executor:
         step_size,
         clip_size,
         log_mode,
-        log_path_executor
+        log_path_executor,
+        log_mode,
     ):
         self.mode = None
         self.comunication = Comunication()
-        logging.basicConfig(level=logging.DEBUG, filename=log_path_executor)
+        
+        if(log_mode == "INFO"):
+            logging.basicConfig(level=logging.INFO, filename=log_path_executor)
+        elif(log_mode == "DEBUG"):
+            logging.basicConfig(level=logging.DEBUG, filename=log_path_executor)
         
         try: 
             logging.info("Create data cache...")
