@@ -92,7 +92,7 @@ def model_immer_attack_auto_loss(image, model, attack, number_of_steps, device):
     image_adv = image.clone().detach().to(device)
     image_adv.requires_grad = True
     target_shape = model(image).shape
-    target = torch.rand(*target_shape)
+    target = torch.rand(*target_shape).to(device)
 
     for i in range(number_of_steps):
         prediction = model(image_adv)        
