@@ -19,6 +19,14 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             device=device
         )
         
+        image_normal = model_immer_attack_auto_loss(
+            image=image_normal,
+            model=model,
+            attack=attack,
+            number_of_steps=1,
+            device=device
+        )
+        
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
         label_adversarial = label[0]
