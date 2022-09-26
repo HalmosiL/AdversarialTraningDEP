@@ -34,11 +34,11 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
             print(image_adversarial.shape)
             print(label_adversarial.shape)
             
-            image_normal = torch.split(image_normal, int(len(image_normal) / 2))
-            label_normal = torch.split(label_normal, int(len(image_normal) / 2))
+            image_normal = torch.split(image_normal, int(split_size / 2))
+            label_normal = torch.split(label_normal, int(split_size / 2))
             
-            image_adversarial = torch.split(image_adversarial, int(len(image_adversarial) / 2))
-            label_adversarial = torch.split(label_adversarial, int(len(image_adversarial) / 2))
+            image_adversarial = torch.split(image_adversarial, int(split_size / 2))
+            label_adversarial = torch.split(label_adversarial, int(split_size / 2))
             
             for i in range(len(image_normal)):
                 logging.debug("save:" + data_queue + 'image_' + str(id_) + '_' + str(i) + '_.pt')
