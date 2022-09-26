@@ -5,7 +5,7 @@ import logging
 
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, gen=True):
     logging.debug("Gen_" + str(id_) + " started..")
-    if(gen):
+    if(gen and False):
         image = batch[0].to(device)
         image = torch.split(image, int(len(image)/4))
         image_adversarial = torch.cat((image[0], image[1], image[2]), dim=0)
