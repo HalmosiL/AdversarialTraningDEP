@@ -163,7 +163,7 @@ class Executor:
         elif(com_conf_mode == "val"):
             return (len(glob.glob(self.data_queue[:-1] + "_val/*.pt")) / 2) < self.queue_size_val
             
-    def generateTrainData(self, mode, number_of_steps=None):
+    def generateTrainData(self, mode, epoch, number_of_steps=None):
         if(number_of_steps is None):
             number_of_steps = self.number_of_steps
         
@@ -204,6 +204,7 @@ class Executor:
                             data_queue=self.data_queue if data['MODE'] == "train" else self.data_queue[:-1] + "_val/",
                             split=self.split,
                             split_size=self.split_size,
+                            epoch=epoch,
                             gen= mode == "train"
                         )                               
 
@@ -222,6 +223,8 @@ class Executor:
                     logging.debug("Data queue is full....")
                     time.sleep(2)
     def start(self):
+        epoch = 1
+        
         try:
             while(True):
                     logging.info("GET MAIN CONF....")
@@ -232,16 +235,18 @@ class Executor:
 
                     if(not data['Executor_Finished_Train'] == "True" and data['MODE'] == "train"):
                         logging.info("START TRAIN GEN...")
-                        self.generateTrainData("train")
+                        self.generateTrainData("train", epoch)
 
                     self.model_name = None 
 
                     if(not data['Executor_Finished_Val'] == "True" and data['MODE'] == "val"):
                         logging.info("START VAL GEN...")
-                        self.generateTrainData("val")
+                        self.generateTrainData("val", 0)
 
                     if(data['MODE'] == "off"):
                         logging.info("Stop Executor...")
                         break
+                        
+                    epoch += 1
         except Exception as e:
                 logging.info(str(e))
