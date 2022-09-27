@@ -11,20 +11,17 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_adversarial = image[0]
         image_normal = image[1]
         
-        if(5 < epoch):
+        step1 = int(epoch / 10)
+        
+        if(epoch > 10):            
+            if(step > 6):
+                step1 = 6
+                
             image_adversarial = model_immer_attack_auto_loss(
                 image=image_adversarial,
                 model=model,
                 attack=attack,
-                number_of_steps=number_of_steps,
-                device=device
-            )
-
-            image_normal = model_immer_attack_auto_loss(
-                image=image_normal,
-                model=model,
-                attack=attack,
-                number_of_steps=1,
+                number_of_steps=step1,
                 device=device
             )
         
