@@ -2,6 +2,7 @@ from executor.Adversarial import model_immer_attack_auto_loss
 from torchvision import transforms
 import torch
 import logging
+import time
 
 def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, epoch, gen=True):
     logging.debug("Gen_" + str(id_) + " started..")
@@ -24,6 +25,8 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 number_of_steps=step1,
                 device=device
             )
+        else:
+            time.sleep(1)
         
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
