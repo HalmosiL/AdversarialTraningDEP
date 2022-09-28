@@ -12,21 +12,18 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_adversarial = image[0]
         image_normal = image[1]
         
-        step1 = int(epoch / 10)
-        
-        if(epoch > 10):            
-            if(step > 6):
-                step1 = 6
-                
-            image_adversarial = model_immer_attack_auto_loss(
-                image=image_adversarial,
-                model=model,
-                attack=attack,
-                number_of_steps=step1,
-                device=device
-            )
-        else:
-            time.sleep(1)
+        step1 = int(epoch / 10) + 1
+                 
+        if(step > 5):
+            step1 = 6
+
+        image_adversarial = model_immer_attack_auto_loss(
+            image=image_adversarial,
+            model=model,
+            attack=attack,
+            number_of_steps=step1,
+            device=device
+        )
         
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
