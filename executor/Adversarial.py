@@ -81,16 +81,16 @@ def model_immer_attack_auto_loss(image, model, attack, number_of_steps, device):
     model.zero_grad()
     
     input_unnorm = image.clone().detach()
-    
+        
     input_unnorm[:, 0, :, :] = input_unnorm[:, 0, :, :] * attack.std_origin[0] + attack.mean_origin[0]
     input_unnorm[:, 1, :, :] = input_unnorm[:, 1, :, :] * attack.std_origin[1] + attack.mean_origin[1]
     input_unnorm[:, 2, :, :] = input_unnorm[:, 2, :, :] * attack.std_origin[2] + attack.mean_origin[2]
-    
+
     image_min = input_unnorm - attack.clip_size
     image_max = input_unnorm + attack.clip_size
     
     image_adv = image.clone().detach().to(device)
-    image_adv = ((torch.rand(image_adv.shape) - 0.5) / 0.5) * 0.03
+    image_adv = image_adv + (((torch.rand(image_adv.shape) - 0.5) / 0.5) * 0.03).to(device)
     
     image_adv.requires_grad = True
     target_shape = model(image).shape
