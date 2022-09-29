@@ -392,8 +392,13 @@ class PSPNet(nn.Module):
             aux = self.aux(x_tmp)
             if self.zoom_factor != 1:
                 aux = F.interpolate(aux, size=(h, w), mode='bilinear', align_corners=True)
-            main_loss = self.criterion(x, y)
-            aux_loss = self.criterion(aux, y)
+                
+            x_s = torch.nn.Softmax(x, dim=1)
+            aux_s = torch.nn.Softmax(aux, dim=1)
+                
+            main_loss = self.criterion(x_s, y)
+            aux_loss = self.criterion(aux_s, y)
+            
             return x.max(1)[1], main_loss, aux_loss, x
         else:
             if y is not None:
