@@ -50,6 +50,40 @@ class Cosine_PDG_Adam:
         self.mean_origin = [0.485, 0.456, 0.406]
         self.std_origin = [0.229, 0.224, 0.225]
 
+    def step_combination(self, image_min, image_max, image, prediction, prediction_inner, target, target_inner):
+        prediction_inner = prediction_inner.reshape(prediction_inner.shape[0], -1)
+        target_inner = target_inner.reshape(target_inner.shape[0], -1)
+
+        criterion = torch.nn.CrossEntropyLoss(ignore_index=255)
+
+        print(prediction.shape)
+        print(target.shape)
+
+        loss1 = criterion(prediction, target)
+        loss2 = self.loss_function(prediction_inner, target_inner).sum()
+
+        loss = loss1 + loss2
+
+        grad1 = torch.autograd.grad(loss, image, retain_graph=False, create_graph=False)[0]
+
+        print("loss:", loss.item())
+        
+        image = self.optimizer.step(-1 * grad1, image)
+        
+        image[:, 0, :, :] = image[:, 0, :, :] * self.std_origin[0] + self.mean_origin[0]
+        image[:, 1, :, :] = image[:, 1, :, :] * self.std_origin[1] + self.mean_origin[1]
+        image[:, 2, :, :] = image[:, 2, :, :] * self.std_origin[2] + self.mean_origin[2]
+            
+        image = torch.min(image, image_max)
+        image = torch.max(image, image_min)
+        image = image.clamp(0,1)
+        
+        image[:, 0, :, :] = (image[:, 0, :, :] - self.mean_origin[0]) / self.std_origin[0]
+        image[:, 1, :, :] = (image[:, 1, :, :] - self.mean_origin[1]) / self.std_origin[1]
+        image[:, 2, :, :] = (image[:, 2, :, :] - self.mean_origin[2]) / self.std_origin[2]
+
+        return image
+
     def step(self, image_min, image_max, image, prediction, target):
         prediction = prediction.reshape(prediction.shape[0], -1)
         target = target.reshape(prediction.shape[0], -1)
@@ -76,6 +110,35 @@ class Cosine_PDG_Adam:
     
     def reset(self):
         self.optimizer = Adam_optimizer(lr=self.step_size, B1=0.9, B2=0.99)
+
+def model_immer_attack_auto_loss_combination(image, target, model, attack, number_of_steps, device):
+    model.zero_grad()
+    input_unnorm = image.clone()
+
+    print(target.shape)
+
+    input_unnorm[:, 0, :, :] = input_unnorm[:, 0, :, :] * attack.std_origin[0] + attack.mean_origin[0]
+    input_unnorm[:, 1, :, :] = input_unnorm[:, 1, :, :] * attack.std_origin[1] + attack.mean_origin[1]
+    input_unnorm[:, 2, :, :] = input_unnorm[:, 2, :, :] * attack.std_origin[2] + attack.mean_origin[2]
+
+    image_min = input_unnorm - attack.clip_size
+    image_max = input_unnorm + attack.clip_size
+    
+    image_adv = image.clone().detach().to(device)
+    image_adv = image_adv + (((torch.rand(image_adv.shape) - 0.5) / 0.5) * 0.03).to(device)
+    
+    image_adv.requires_grad = True
+    _, x, x_inner = model(image)
+    target_inner = torch.rand(*x_inner.shape).to(device)
+
+    for i in range(number_of_steps):
+        _, prediction, prediction_inner = model(image_adv)        
+        image_adv = attack.step_combination(image_min, image_max, image_adv, prediction, prediction_inner, target, target_inner)
+        model.zero_grad()
+    
+    attack.reset()
+
+    return image_adv
 
 def model_immer_attack_auto_loss(image, model, attack, number_of_steps, device):
     model.zero_grad()
