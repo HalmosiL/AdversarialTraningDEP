@@ -13,6 +13,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_normal = image[1]
 
         if(methods == "Combination"):
+            print("Combination")
             image_adversarial = model_immer_attack_auto_loss_combination(
                 image=image_adversarial,
                 model=model,
@@ -21,6 +22,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 device=device
             )
         elif(methods == "Cosine"):
+            print("Cosine")
             image_adversarial = model_immer_attack_auto_loss(
                 image=image_adversarial,
                 model=model,
