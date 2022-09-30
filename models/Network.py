@@ -388,7 +388,7 @@ class PSPNet(nn.Module):
         if self.zoom_factor != 1:
             x = F.interpolate(x, size=(h, w), mode='bilinear', align_corners=True)
 
-        if self.training or indicate==1 or True:
+        if self.training or indicate==1:
             aux = self.aux(x_tmp)
             if self.zoom_factor != 1:
                 aux = F.interpolate(aux, size=(h, w), mode='bilinear', align_corners=True)
