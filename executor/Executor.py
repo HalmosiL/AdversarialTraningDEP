@@ -153,7 +153,7 @@ class Executor:
             if(self.model_name != new_model_name):
                 self.model_name = new_model_name
 
-                return load_model_slice(new_model_name, self.device)
+                return load_model(new_model_name, self.device)
             else:
                 return model
 
@@ -205,7 +205,8 @@ class Executor:
                             split=self.split,
                             split_size=self.split_size,
                             epoch=epoch,
-                            gen= mode == "train"
+                            gen= mode == "train",
+                            methods="Normal"
                         )                               
 
                         element_id += 1
