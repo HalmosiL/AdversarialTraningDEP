@@ -1,4 +1,4 @@
-from executor.Adversarial import model_immer_attack_auto_loss
+from executor.Adversarial import model_immer_attack_auto_loss, model_immer_attack_auto_loss_combination
 from torchvision import transforms
 import torch
 import logging
