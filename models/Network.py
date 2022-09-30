@@ -406,6 +406,20 @@ class PSPNet(nn.Module):
                 return x.max(1)[1], x, main_loss
             return x.max(1)[1], x
     
+    def forward_inner(self, x):
+        x_size = x.size()
+        assert (x_size[2]-1) % 8 == 0 and (x_size[3]-1) % 8 == 0
+        h = int((x_size[2] - 1) / 8 * self.zoom_factor + 1)
+        w = int((x_size[3] - 1) / 8 * self.zoom_factor + 1)
+
+        x = self.layer0(x)
+        x = self.layer1(x)
+        x = self.layer2(x)
+        x_tmp = self.layer3(x)
+        x = self.layer4(x_tmp)
+        
+        return x
+    
     def getSliceModel(self):
         class SliceModule(nn.Module):
             def __init__(self, 
