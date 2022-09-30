@@ -145,7 +145,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 remove_files = np.array(data[2]).flatten()
                 optimizer.zero_grad()
                 
-                print(model.train)
+                print(model.training)
 
                 output_normal, main_loss, aux_loss, _ = model(image_normal, target_normal)
                 loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
@@ -228,9 +228,7 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
         data = val_loader_adversarial_.__getitem__(0)
         batch_id = 0
         check_ = 0
-        
-        model = model.eval()
-        
+
         while(comunication.readConf()['Executor_Finished_Val'] != "True" or len(data) != 0):
             with torch.no_grad():
                 if(len(data) == 3):
