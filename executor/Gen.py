@@ -4,7 +4,7 @@ import torch
 import logging
 import time
 
-def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, epoch, gen=True, methodes="Normal"):
+def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, epoch, gen=True, methods="Normal"):
     logging.debug("Gen_" + str(id_) + " started..")
     if(gen):
         image = batch[0].to(device)
@@ -12,7 +12,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_adversarial = image[0]
         image_normal = image[1]
 
-        if(methodes == "Combination"):
+        if(methods == "Combination"):
             image_adversarial = model_immer_attack_auto_loss_combination(
                 image=image_adversarial,
                 model=model,
@@ -20,7 +20,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 number_of_steps=number_of_steps,
                 device=device
             )
-        elif(methodes == "Cosine"):
+        elif(methods == "Cosine"):
             image_adversarial = model_immer_attack_auto_loss(
                 image=image_adversarial,
                 model=model,
