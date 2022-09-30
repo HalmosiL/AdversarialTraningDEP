@@ -10,7 +10,7 @@ from executor.Adversarial import Cosine_PDG_Adam
 import util.Transforms as transform
 from dataset.Dataset import SemData
 
-from models.Model import slice_model, load_model_slice
+from models.Model import slice_model, load_model
 from util.Comunication import Comunication
 
 class Executor:
