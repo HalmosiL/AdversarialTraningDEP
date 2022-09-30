@@ -62,7 +62,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 torch.save(torch.cat((label_normal[i].cpu().detach(), label_adversarial[i].cpu().detach())), data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
     else:
         image = batch[0].to(device)
-        image = model_immer_attack_auto_loss_combination(
+        image = model_immer_attack_auto_loss(
             image=image,
             model=model,
             attack=attack,
