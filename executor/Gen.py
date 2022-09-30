@@ -18,6 +18,8 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         label_normal = label[1]
         
         if(methods == "Combination"):
+            label_adversarial = label_adversarial.to(device)
+            
             print("Combination")
             image_adversarial = model_immer_attack_auto_loss_combination(
                 image=image_adversarial,
