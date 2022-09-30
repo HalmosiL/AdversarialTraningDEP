@@ -128,11 +128,11 @@ def model_immer_attack_auto_loss_combination(image, target, model, attack, numbe
     image_adv = image_adv + (((torch.rand(image_adv.shape) - 0.5) / 0.5) * 0.03).to(device)
     
     image_adv.requires_grad = True
-    _, x, x_inner = model(image)
+    _, x, x_inner = model.forward_inner_and_full(image)
     target_inner = torch.rand(*x_inner.shape).to(device)
 
     for i in range(number_of_steps):
-        _, prediction, prediction_inner = model(image_adv)        
+        _, prediction, prediction_inner = model.forward_inner_and_full(image_adv)        
         image_adv = attack.step_combination(image_min, image_max, image_adv, prediction, prediction_inner, target, target_inner)
         model.zero_grad()
     
