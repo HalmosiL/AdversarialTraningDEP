@@ -12,10 +12,16 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_adversarial = image[0]
         image_normal = image[1]
 
+        label = batch[1]
+        label = torch.split(label, int(len(label)/2))
+        label_adversarial = label[0]
+        label_normal = label[1]
+        
         if(methods == "Combination"):
             print("Combination")
             image_adversarial = model_immer_attack_auto_loss_combination(
                 image=image_adversarial,
+                target=label_adversarial,
                 model=model,
                 attack=attack,
                 number_of_steps=number_of_steps,
@@ -30,11 +36,6 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 number_of_steps=number_of_steps,
                 device=device
             )
-            
-        label = batch[1]
-        label = torch.split(label, int(len(label)/2))
-        label_adversarial = label[0]
-        label_normal = label[1]
 
         if(split == -1 or split == 1):
             torch.save(torch.cat((image_normal.cpu().detach(), image_adversarial.cpu().detach())), data_queue + 'image_' + str(id_) + '_0_.pt')
