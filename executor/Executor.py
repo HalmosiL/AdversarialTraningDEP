@@ -206,7 +206,7 @@ class Executor:
                             split_size=self.split_size,
                             epoch=epoch,
                             gen= mode == "train",
-                            methods="Combination" if epoch % 2 == 1 else "Cosine"
+                            methods="Combination"
                         )                               
 
                         element_id += 1
