@@ -40,7 +40,7 @@ def removeFiles(data):
 def cacheModel(cache_id, model, CONFIG):
     models = glob.glob(CONFIG["MODEL_CACHE"] + "*.pt")
     models.sort(key=sort_)
-    torch.save(model.eval().state_dict(), CONFIG["MODEL_CACHE"] + CONFIG["MODEL_NAME"] + "_" + str(cache_id) + ".pt")
+    torch.save(model.state_dict(), CONFIG["MODEL_CACHE"] + CONFIG["MODEL_NAME"] + "_" + str(cache_id) + ".pt")
 
     if len(models) > 5:
         os.remove(models[0])
@@ -144,8 +144,6 @@ def train(CONFIG_PATH, CONFIG, train_loader_adversarial_, val_loader_adversarial
                 
                 remove_files = np.array(data[2]).flatten()
                 optimizer.zero_grad()
-                
-                print(model.training)
 
                 output_normal, main_loss, aux_loss, _ = model(image_normal, target_normal)
                 loss = main_loss + CONFIG['AUX_WEIGHT'] * aux_loss
