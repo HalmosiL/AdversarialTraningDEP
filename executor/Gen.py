@@ -4,7 +4,7 @@ import torch
 import logging
 import time
 
-def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, epoch, gen=True):
+def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, split_size, epoch, gen=True, methodes=[{key:"Normal", length:1}]):
     logging.debug("Gen_" + str(id_) + " started..")
     if(gen):
         image = batch[0].to(device)
@@ -12,13 +12,16 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
         image_adversarial = image[0]
         image_normal = image[1]
 
-        image_adversarial = model_immer_attack_auto_loss(
-            image=image_adversarial,
-            model=model,
-            attack=attack,
-            number_of_steps=number_of_steps,
-            device=device
-        )
+        if():
+            image_adversarial = model_immer_attack_auto_loss_combination(
+                image=image_adversarial,
+                model=model,
+                attack=attack,
+                number_of_steps=number_of_steps,
+                device=device
+            )
+        elif():
+            
         
         label = batch[1]
         label = torch.split(label, int(len(label)/2))
@@ -48,7 +51,7 @@ def run(id_, batch, device, model, attack, number_of_steps, data_queue, split, s
                 torch.save(torch.cat((label_normal[i].cpu().detach(), label_adversarial[i].cpu().detach())), data_queue + 'label_' + str(id_) + '_' + str(i) + '_.pt')
     else:
         image = batch[0].to(device)
-        image = model_immer_attack_auto_loss(
+        image = model_immer_attack_auto_loss_combination(
             image=image,
             model=model,
             attack=attack,
